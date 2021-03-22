@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText":"接单施工",
+  "navigationBarBackgroundColor":"#FFFFFF",
+  "navigationBarTextStyle":"black",
+  "onReachBottomDistance": 150,
+  "enablePullDownRefresh": false
+}

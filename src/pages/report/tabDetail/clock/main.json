@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText":"打卡记录",
+  "navigationBarBackgroundColor":"#FFFFFF",
+  "navigationBarTextStyle":"black",
+  "onReachBottomDistance": 150,
+  "enablePullDownRefresh": false
+}

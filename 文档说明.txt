@@ -1,0 +1,54 @@
+组件:{
+  bottomBase:底部组件,
+  clock:打卡组件,
+  confession:交底报告组件,
+  dailyReport:每日汇报组件,
+  exceptionReport:异常报告组件,
+  dateRange:日期选择组件,
+  headerBase:头部组件,
+  infoTemplate:货物清点中的信息递归组件,
+  inventory:货物清点组件,
+  reports:施工汇报中的功能树组件,
+  radios:封装了微信的选择组件
+  modelMask:弹窗组件
+  dailyTemplate:日常模板
+  steps:封装了进度条组件(需要传入status零到五)
+  signature:签名组件
+}
+文件夹说明：{
+  首页部分:index
+  分类:search
+  个人中心:my=>{
+      个人信息:information
+      我的报价:apply
+      修改密码:changePassword
+      首页：index
+      我的消息：message
+      消息详情：msgDetail
+      金额统计：amount
+  }
+  接单施工：construction=>{
+      首页：index=>详情页：detail
+  }
+  接单报价：construction=>{
+         首页：index=>详情页：detail=>去报价：apply
+  }
+  施工汇报：report=>{
+         首页：reportStatus（注意)=>详情页：index
+         打卡：clock
+         已完工：completed=>工单详情：confirmOrder(不同步骤未分割   等对接口时修改)
+         tabDetail文件夹{
+              打卡记录：clock
+              工单详情：inventory
+              每日汇报：dailyReport
+              异常汇报：exceptionReport
+              交底报告：confession
+         }
+         满意度调查：satisfactionSurvey
+  }
+  appId:wx5d71635ece5968bd
+  域名：https://saf.ae-smith.com
+未完成：{
+  新增日常报告
+}
+

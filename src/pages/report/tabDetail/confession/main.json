@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText":"交底报告",
+  "navigationBarBackgroundColor":"#FFFFFF",
+  "navigationBarTextStyle":"black",
+  "onReachBottomDistance": 150,
+  "enablePullDownRefresh": false
+}

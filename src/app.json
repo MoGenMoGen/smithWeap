@@ -1,0 +1,72 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/search/main",
+    "pages/login/main",
+    "pages/my/index/main",
+    "pages/my/information/main",
+    "pages/my/apply/main",
+    "pages/my/message/main",
+    "pages/my/msgDetail/main",
+    "pages/my/changePassword/main",
+    "pages/my/amount/main",
+    "pages/quotation/index/main",
+    "pages/quotation/apply/main",
+    "pages/quotation/detail/main",
+    "pages/construction/index/main",
+    "pages/construction/detail/main",
+    "pages/report/index/main",
+    "pages/report/clockIn/main",
+    "pages/report/confirm/main",
+    "pages/report/reportStatus/main",
+    "pages/report/completed/main",
+    "pages/report/confirmOrder/main",
+    "pages/report/satisfactionSurvey/main",
+    "pages/report/tabDetail/clock/main",
+    "pages/report/tabDetail/confession/main",
+    "pages/report/tabDetail/dailyReport/main",
+    "pages/report/tabDetail/exceptionReport/main",
+    "pages/report/tabDetail/inventory/main"
+
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "tabBar": {
+    "color": "#606060",
+    "backgroundColor": "#FFFFFF",
+    "selectedColor": "#E51937",
+    "borderStyle": "white",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/main",
+        "iconPath": "static/tabs/home.png",
+        "selectedIconPath": "static/tabs/homeActive.png"
+      },
+      {
+        "text": "查询工单",
+        "pagePath": "pages/search/main",
+        "iconPath": "static/tabs/search.png",
+        "selectedIconPath": "static/tabs/bookmark.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/my/index/main",
+        "iconPath": "static/tabs/user.png",
+        "selectedIconPath": "static/tabs/userActive.png"
+      }
+    ],
+    "position": "bottom"
+  },
+  "usingComponents": {
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  }
+}
