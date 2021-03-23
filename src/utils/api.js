@@ -289,6 +289,14 @@ class api {
       })
     })
   }
+  //数据字典
+  dict(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/listAfterWork',data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api };
