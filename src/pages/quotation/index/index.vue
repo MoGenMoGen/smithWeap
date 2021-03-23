@@ -1,4 +1,5 @@
 <template>
+<!--接单报价列表页-->
   <div class="app">
     <div class="nav">
       <div class="searchBox">
@@ -25,27 +26,27 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in info.list" :key="index">
+        <div class="box" v-for="(item,index) in list" :key="index">
           <ul>
             <li>
               <img :src="jx"/>
               <span>经销商名称</span>
-              <p>{{item.nm}}</p>
+              <p>{{item.custNm}}</p>
             </li>
             <li>
               <img :src="type"/>
               <span>工作类型</span>
-              <p>{{item.type}}</p>
+              <p>{{item.workTypeNm}}</p>
             </li>
             <li>
               <img :src="fb"/>
               <span>发布日期</span>
-              <p>{{item.startTm}}</p>
+              <p>{{item.bidStart}}</p>
             </li>
             <li>
               <img :src="jz"/>
               <span>截止日期</span>
-              <p>{{item.finishTm}}</p>
+              <p>{{item.bidEnd}}</p>
             </li>
           </ul>
           <div>
@@ -93,33 +94,33 @@
         down,
         startTime:'开始时间',
         endTime:'结束时间',
-        info:{
-          nm:'接单报价',
-          list:[
-            {
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-              status:'1'
-            },{
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-              status:'1'
-            },{
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-              status:'2'
-            }
-          ],
-        },
+        list:[
+          {
+            nm:'南宁宾利',
+            type:'安装',
+            startTm:'2020-12-05',
+            finishTm:'2020-12-05',
+            status:'1'
+          },{
+            nm:'南宁宾利',
+            type:'安装',
+            startTm:'2020-12-05',
+            finishTm:'2020-12-05',
+            status:'1'
+          },{
+            nm:'南宁宾利',
+            type:'安装',
+            startTm:'2020-12-05',
+            finishTm:'2020-12-05',
+            status:'2'
+          }
+        ],
         array: ['安装', '安装', '施工', '施工'],
         index: 0,
       }
+    },
+    async onShow(){
+      this.getList();
     },
     methods:{
       toPage(url){

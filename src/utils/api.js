@@ -250,9 +250,9 @@ class api {
     }))
   }
   //施工汇报(待汇报)
-  listToComplete(data){
+  listToReport(data){
     return new Promise(resolve => {
-      get('/blade-works/worksorder/listToComplete',data).then(res=>{
+      get('/blade-works/worksorder/listToReport',data).then(res=>{
         resolve(res)
       })
     })
@@ -261,6 +261,30 @@ class api {
   listToAudit(data){
     return new Promise(resolve => {
       get('/blade-works/worksorder/listToAudit',data).then(res=>{
+        resolve(res.data)
+      })
+    })
+  }
+  //施工汇报(已完工)
+  listToComplete(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/listToComplete',data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //获取接单报价列表
+  listOffer(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/listOffer',data).then(res=>{
+        resolve(res.data)
+      })
+    })
+  }
+  //获取接单施工列表
+  listAfterWork(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/listAfterWork',data).then(res=>{
         resolve(res.data)
       })
     })

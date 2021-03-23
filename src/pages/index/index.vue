@@ -28,7 +28,7 @@
             <img :src="logo2"/>
             {{info.nm}}
           </p>
-          <p>
+          <p @click="toPage('/pages/quotation/index/main')">
             查看更多
             <img class="right" :src="right"/>
           </p>
@@ -38,22 +38,22 @@
             <li>
               <img :src="jx"/>
               <span>经销商名称</span>
-              <p>{{item.nm}}</p>
+              <p>{{item.custNm}}</p>
             </li>
             <li>
               <img :src="type"/>
               <span>工作类型</span>
-              <p>{{item.type}}</p>
+              <p>{{item.workTypeNm}}</p>
             </li>
             <li>
               <img :src="fb"/>
               <span>发布日期</span>
-              <p>{{item.startTm}}</p>
+              <p>{{item.bidStart}}</p>
             </li>
             <li>
               <img :src="jz"/>
               <span>截止日期</span>
-              <p>{{item.finishTm}}</p>
+              <p>{{item.bidEnd}}</p>
             </li>
           </ul>
           <div>
@@ -71,7 +71,7 @@
             <img :src="logo2"/>
             {{info2.nm}}
           </p>
-          <p>
+          <p @click="toPage('/pages/construction/index/main')">
             查看更多
             <img class="right" :src="right"/>
           </p>
@@ -81,22 +81,22 @@
             <li>
               <img :src="jx"/>
               <span>经销商名称</span>
-              <p>{{item.nm}}</p>
+              <p>{{item.custNm}}</p>
             </li>
             <li>
               <img :src="type"/>
               <span>工作类型</span>
-              <p>{{item.type}}</p>
+              <p>{{item.workTypeNm}}</p>
             </li>
             <li>
               <img :src="fb"/>
               <span>发布日期</span>
-              <p>{{item.startTm}}</p>
+              <p>{{item.bidStart}}</p>
             </li>
             <li>
               <img :src="jz"/>
               <span>截止日期</span>
-              <p>{{item.finishTm}}</p>
+              <p>{{item.bidEnd}}</p>
             </li>
           </ul>
           <div>
@@ -141,6 +141,8 @@
         swiperList:[
           swiperImg
         ],
+        current:1,
+        size:2,
         swiperStyle:'',
         navList:[
           {
@@ -159,37 +161,16 @@
         ],
         info:{
           nm:'接单报价',
-          list:[
-            {
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05'
-            },{
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05'
-            }
-          ],
+          list:[],
         },
         info2:{
           nm:'接单施工',
-          list:[
-            {
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05'
-            },{
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05'
-            }
-          ],
+          list:[],
         },
       }
+    },
+    async onShow(){
+      this.getList();
     },
     methods:{
       toPage(url){
@@ -205,6 +186,25 @@
           var swiperH = ((winWid * imgh / imgw)+ 20) + "px"; //等比设置swiper的高度。  即 屏幕宽度 / swiper高度 = 图片宽度 / 图片高度    ==》swiper高度 = 屏幕宽度 * 图片高度 / 图片宽度
           this.swiperStyle = "height:" + swiperH;
         }).exec();
+      },
+      //获取首页接单报价列表和接单施工列表
+      async getList(){
+        const param={
+          current:this.current,
+          size:this.size
+        }
+        let data =await this.api.listOffer(param)
+        let data2 = await this.api.listAfterWork(param)
+        data.data.records.forEach(item=>{
+          item.bidStart = item.bidStart.slice(0,10)
+          item.bidEnd = item.bidEnd.slice(0,10)
+        })
+        data2.data.records.forEach(item=>{
+          item.bidStart = item.bidStart.slice(0,10)
+          item.bidEnd = item.bidEnd.slice(0,10)
+        })
+        this.info.list.push(...data.data.records)
+        this.info2.list.push(...data2.data.records)
       },
     },
     components:{

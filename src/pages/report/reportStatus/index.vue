@@ -121,7 +121,7 @@
               current:this.current,
               size:this.size
             }
-            let data =await this.api.listToComplete(param)
+            let data =await this.api.listToReport(param)
             data.data.records.forEach(item=>{
               item.bidStart = item.bidStart.slice(0,10)
               item.bidEnd = item.bidEnd.slice(0,10)
