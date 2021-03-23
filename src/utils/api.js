@@ -47,7 +47,7 @@ function get(url, data, header,loading) {
       url: config.serverURL + url,
       success: function(res) {
         wx.hideLoading();
-        if (res.data.code == 0) {
+        if (res.data.code == 200) {
           resolve(res.data);
         } else if(res.data.code == 401){
           wx.removeStorageSync('token')
@@ -237,6 +237,32 @@ class api {
         resolve(res)
       })
     }))
+  }
+  //获取调查问卷详情----------待修改
+  getsurvconfig(){
+    let header = {
+      "Authorization":"Basic c3dvcmQ6c3dvcmRfc2VjcmV0",
+      "Blade-Auth":"bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJpc3N1c2VyIiwiYXVkIjoiYXVkaWVuY2UiLCJ0ZW5hbnRfaWQiOiIwMDAwMDAiLCJyb2xlX25hbWUiOiJmYWNpbGl0YXRvciIsInBvc3RfaWQiOiIxMTIzNTk4ODE3NzM4Njc1MjAxIiwidXNlcl9pZCI6IjEzNzI3MTM5MjUyODc4NzA0NjYiLCJyb2xlX2lkIjoiMTM2Njk5NTQ3NzgyMDQ0MDU3OCIsInVzZXJfbmFtZSI6InRlc3TmraYiLCJuaWNrX25hbWUiOiJ0ZXN05q2mIiwiZGV0YWlsIjp7InR5cGUiOiJ3ZWIifSwidG9rZW5fdHlwZSI6ImFjY2Vzc190b2tlbiIsImRlcHRfaWQiOiIxMzY3MDA0MDY2NzQwMDExMDEwIiwiYWNjb3VudCI6InRlc3TmraYiLCJjbGllbnRfaWQiOiJzd29yZCIsImV4cCI6MTYxNjQ2NDA5MSwibmJmIjoxNjE2Mzc3NjkxfQ.-zjo8KqSvfCzDv1q_5Rt7wwQAOG7GxOVB4KdZGxFdC-oC9T9qgf-0liuRDYn9ZCHozTAXavPjHc0qQEXiEQUpQ",
+    }
+    return new Promise(resolve=>{
+      get("/blade-surv/survconfig/info",null,header).then(res=>{
+        // console.log(res);
+        resolve(res.data);
+      })
+    })
+  }
+  //获取选择题答案----------待修改
+  getlistByPcd(){
+    let header = {
+      "Authorization":"Basic c3dvcmQ6c3dvcmRfc2VjcmV0",
+      "Blade-Auth":"bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJpc3N1c2VyIiwiYXVkIjoiYXVkaWVuY2UiLCJ0ZW5hbnRfaWQiOiIwMDAwMDAiLCJyb2xlX25hbWUiOiJmYWNpbGl0YXRvciIsInBvc3RfaWQiOiIxMTIzNTk4ODE3NzM4Njc1MjAxIiwidXNlcl9pZCI6IjEzNzI3MTM5MjUyODc4NzA0NjYiLCJyb2xlX2lkIjoiMTM2Njk5NTQ3NzgyMDQ0MDU3OCIsInVzZXJfbmFtZSI6InRlc3TmraYiLCJuaWNrX25hbWUiOiJ0ZXN05q2mIiwiZGV0YWlsIjp7InR5cGUiOiJ3ZWIifSwidG9rZW5fdHlwZSI6ImFjY2Vzc190b2tlbiIsImRlcHRfaWQiOiIxMzY3MDA0MDY2NzQwMDExMDEwIiwiYWNjb3VudCI6InRlc3TmraYiLCJjbGllbnRfaWQiOiJzd29yZCIsImV4cCI6MTYxNjQ2NDA5MSwibmJmIjoxNjE2Mzc3NjkxfQ.-zjo8KqSvfCzDv1q_5Rt7wwQAOG7GxOVB4KdZGxFdC-oC9T9qgf-0liuRDYn9ZCHozTAXavPjHc0qQEXiEQUpQ",
+    }
+    return new Promise(resolve=>{
+      get("/blade-system/dict-biz/listByPcd",{cd:"quesAnswer"},header).then(res=>{
+        // console.log(res);
+        resolve(res.data);
+      })
+    })
   }
 }
 
