@@ -63,7 +63,7 @@
               code:res.code,
             }
             that.api.login2(param).then(res=>{
-              wx.setStorageSync("token",res.token_type + ' '+res.access_token);
+              wx.setStorageSync("token",res.access_token);
               wx.setStorageSync("loginType",res.loginType);
               wx.switchTab({
                 url: '/pages/index/main'

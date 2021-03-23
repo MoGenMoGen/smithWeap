@@ -91,7 +91,7 @@
     let time = 1000*60*60*20 //时间间距
     if(wx.getStorageSync('token') && wx.getStorageSync('tokenTime') && (new Date().getTime()-new Date(wx.getStorageSync('tokenTime')).getTime()<time) ){
       console.log('不需要获取token')
-      that.api.getUser()
+      // that.api.getUser()
       return
     }
 

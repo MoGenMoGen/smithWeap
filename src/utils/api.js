@@ -32,8 +32,9 @@ function get(url, data, header,loading) {
     // console.log('=====================================')
     header = header ? header : {}
     Object.assign(header,{
-      'Blade-Auth':wx.getStorageSync('token')
+      'Blade-Auth':'bearer '+ wx.getStorageSync('token')
     })
+    // console.log(header)
   }
   let promise = new Promise((resolve, reject) => {
     wx.request({
@@ -42,12 +43,12 @@ function get(url, data, header,loading) {
       header: header
         ? header
         : {
-            "Content-Type": "application/json"
-          },
+          "Content-Type": "application/json",
+        },
       url: config.serverURL + url,
       success: function(res) {
         wx.hideLoading();
-        if (res.data.code == 0) {
+        if (res.data.code == 200 || res.data.code == 400) {
           resolve(res.data);
         } else if(res.data.code == 401){
           wx.removeStorageSync('token')
@@ -77,8 +78,16 @@ function get(url, data, header,loading) {
   return promise;
 }
 
-function post(url, data, header) {
-  // console.log(url)
+
+function post(url, data,header) {
+  if(wx.getStorageSync('token')){
+    // console.log('=====================================')
+    header = header ? header : {}
+    Object.assign(header,{
+      'Blade-Auth':'bearer '+ wx.getStorageSync('token')
+    })
+    // console.log(header)
+  }
   wx.showLoading({
     title: "加载中"
   });
@@ -100,6 +109,8 @@ function post(url, data, header) {
             })
           }
           resolve(res.data);
+
+
         }  else if(res.data.code == 401){
           wx.removeStorageSync('token')
           getToken()
@@ -129,22 +140,24 @@ function post(url, data, header) {
 }
 function login(data) {
   let header = {
-    "Content-Type": "application/x-www-form-urlencoded"
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Authorization": "Basic c3dvcmQ6c3dvcmRfc2VjcmV0"
   };
   return new Promise((resolve, reject) => {
     if(wx.getStorageSync('token')){
       resolve(wx.getStorageSync('token'));
       return
     }
-    console.log('login')
-    console.log(data)
+    // console.log('login')
+    // console.log(data)
     data.tenantId = tenantId
     post("/blade-wxMa/access/"+appid+"/login2", data, header).then(res => {
-      // wx.setStorageSync("token",res.data.token);
-      // console.log('保存token')
+      console.log('res',res);
+      wx.setStorageSync("token",res.access_token);
+      console.log('保存token')
       // store.store.commit('token',res.data.token)
-      // console.log('设置token时间')
-      // wx.setStorageSync("tokenTime",new Date());
+      console.log('设置token时间')
+      wx.setStorageSync("tokenTime",new Date());
       resolve(res.data.token);
     }).catch(e=>{
       wx.showToast({
@@ -178,7 +191,6 @@ function getToken2() {
 }
 function getToken(){
   console.log('获取token')
-
   return new Promise(resolve => {
     if(wx.getStorageSync('token')){
       resolve(wx.getStorageSync('token'));
@@ -190,7 +202,7 @@ function getToken(){
           let param = {
             code: res.code
           };
-          login(param, "no").then(res=>{
+          login(param).then(res=>{
             resolve(res)
           })
         }
@@ -202,7 +214,6 @@ function getToken(){
 class api {
   //获取token
   login(data) {
-    console.log(data);
     let header = {
       "Content-Type": "application/x-www-form-urlencoded",
       "Authorization": "Basic c3dvcmQ6c3dvcmRfc2VjcmV0"
@@ -210,13 +221,13 @@ class api {
     return new Promise((resolve, reject) => {
       data.tenantId = tenantId
       post("/blade-wxMa/access/"+appid+"/login2",data,header).then(res=>{
-        // wx.setStorageSync("token",res.access_token);
-        // wx.setStorageSync("loginInfo",res);
-        // console.log('登录')
-        // console.log(wx.getStorageSync("loginInfo"))
+        wx.setStorageSync("token",res.access_token);
+        wx.setStorageSync("loginInfo",res);
+        console.log('登录')
+        console.log(wx.getStorageSync("loginInfo"))
         // store.store.commit('token',res.token)
-        // console.log('设置token时间')
-        // wx.setStorageSync("tokenTime",new Date());
+        console.log('设置token时间')
+        wx.setStorageSync("tokenTime",new Date());
         if(res.error_code == 400){
           wx.reLaunch({
             url: '/pages/login/main'
@@ -246,7 +257,14 @@ class api {
       })
     })
   }
-  //
+  //施工汇报(待审核)
+  listToAudit(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/listToAudit',data).then(res=>{
+        resolve(res.data)
+      })
+    })
+  }
 }
 
 export { api };

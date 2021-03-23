@@ -9,37 +9,37 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in info.list" :key="index">
+        <div class="box" v-for="(item,index) in list" :key="index">
           <ul>
             <li>
               <img :src="gd"/>
               <span>工单编号</span>
-              <p>{{item.id}}</p>
+              <p>{{item.cd}}</p>
             </li>
             <li>
               <img :src="jx"/>
               <span>经销商名称</span>
-              <p>{{item.nm}}</p>
+              <p>{{item.custNm}}</p>
             </li>
             <li>
               <img :src="type"/>
               <span>工作类型</span>
-              <p>{{item.type}}</p>
+              <p>{{item.workTypeNm}}</p>
             </li>
             <li>
               <img :src="fb"/>
               <span>发布日期</span>
-              <p>{{item.startTm}}</p>
+              <p>{{item.bidStart}}</p>
             </li>
             <li>
               <img :src="jz"/>
               <span>截止日期</span>
-              <p>{{item.finishTm}}</p>
+              <p>{{item.bidEnd}}</p>
             </li>
           </ul>
           <div>
             <!--阶段性进度条-->
-            <Steps :status="item.status"></Steps>
+            <Steps :status="item.processStatus"></Steps>
             <p style="border: 1rpx solid #909090;color: #909090;" @click="toPage('/pages/report/index/main')">
               查看
             </p>
@@ -80,9 +80,6 @@
         right,
         dateIcon,
         currentIndex: 0,
-        startTime:'开始时间',
-        endTime:'结束时间',
-        searchData:'',
         navList:[
           {
             nm:'待汇报',
@@ -92,58 +89,69 @@
             nm:'已完工'
           }
         ],
-        info:{
-          nm:'接单报价',
-          list:[
-            {
-              id:'A2011036',
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-              status:1,
-            },{
-              id:'A2011036',
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-              status:2,
-            },{
-              id:'A2011036',
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-              status:3,
-            }
-          ],
-        },
+        list:[],
+        current:1,
+        size:10,
+        total:0,
       }
     },
+    onReachBottom(){
+      if(this.list.length>=this.total){
+        return
+      }
+      if(this.list.length<this.total){
+        this.current++
+        this.getList(this.currentIndex)
+      }
+    },
+    async onShow(){
+      this.changeNav(0)
+    },
     methods:{
-      async changeNav(index){
-        this.currentIndex=index
+       changeNav(index){
+         this.current = 1
+         this.list = []
+         this.currentIndex=index
+         this.getList(index)
+      },
+      async getList(index){
         switch (index){
           case 0:
-            let data = await this.api.listToComplete
-            console.log(data);
+            const param={
+              current:this.current,
+              size:this.size
+            }
+            let data =await this.api.listToComplete(param)
+            data.data.records.forEach(item=>{
+              item.bidStart = item.bidStart.slice(0,10)
+              item.bidEnd = item.bidEnd.slice(0,10)
+            })
+            this.list.push(...data.data.records)
+            this.total = data.data.total
             break
           case 1:
+            const param2={
+              current:this.current,
+              size:this.size
+            }
+            let data2 =await this.api.listToAudit(param2)
+            data2.data.records.forEach(item=>{
+              item.bidStart = item.bidStart.slice(0,10)
+              item.bidEnd = item.bidEnd.slice(0,10)
+            })
+            this.list.push(...data2.data.records)
+            this.total = data2.data.total
             break
           case 2:
             this.toPage('/pages/report/completed/main')
             this.currentIndex = 0
-                break
+            break
         }
       },
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
-      },
-      toSearch(){
-        console.log('搜索')
       },
     },
     components:{
