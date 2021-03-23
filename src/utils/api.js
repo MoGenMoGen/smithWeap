@@ -32,7 +32,7 @@ function get(url, data, header,loading) {
     // console.log('=====================================')
     header = header ? header : {}
     Object.assign(header,{
-      'Blade-Auth':'bearer '+ wx.getStorageSync('token')
+      'Blade-Auth':wx.getStorageSync('token')
     })
   }
   let promise = new Promise((resolve, reject) => {
@@ -238,6 +238,15 @@ class api {
       })
     }))
   }
+  //施工汇报(待汇报)
+  listToComplete(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/listToComplete',data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //
 }
 
 export { api };

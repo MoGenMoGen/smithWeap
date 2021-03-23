@@ -122,11 +122,19 @@
       }
     },
     methods:{
-      changeNav(index){
+      async changeNav(index){
         this.currentIndex=index
-        if(index == 2){
-          this.toPage('/pages/report/completed/main')
-          this.currentIndex = 0
+        switch (index){
+          case 0:
+            let data = await this.api.listToComplete
+            console.log(data);
+            break
+          case 1:
+            break
+          case 2:
+            this.toPage('/pages/report/completed/main')
+            this.currentIndex = 0
+                break
         }
       },
       toPage(url){
