@@ -5,9 +5,9 @@
       <div class="searchBox">
         <div>
           <div class="section">
-            <picker @change="bindPickerChange" :value="index" :range="array">
+            <picker @change="bindPickerChange" :value="index" :range="array" :range-key="dictValue">
               <div class="picker">
-                {{array[index]}}
+                {{array[index].dictValue}}
                 <img :src="down"/>
               </div>
             </picker>
@@ -98,14 +98,15 @@
         current:1,
         size:10,
         total:0,
-        array: ['安装', '安装', '施工', '施工'],
+        array: [],
         index: 0,
       }
     },
     async onShow(){
       this.current = 1
       this.list = []
-      this.getList()
+      this.getList();
+      this.getDictionary();
     },
     onReachBottom(){
       if(this.list.length>=this.total){
@@ -137,6 +138,14 @@
         })
         this.list.push(...data.data.records)
         this.total = data.data.total
+      },
+      //获取工作类型
+      async getDictionary(){
+        const param = {
+          cd:'workType'
+        }
+        let data =await this.api.getDictionary(param)
+        this.array = data.data
       },
       toDetail(status){
         switch(status){

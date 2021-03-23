@@ -290,9 +290,9 @@ class api {
     })
   }
   //数据字典
-  dict(data){
+  getDictionary(data){
     return new Promise(resolve => {
-      get('/blade-works/worksorder/listAfterWork',data).then(res=>{
+      get('/blade-system/dict-biz/listByPcd',data).then(res=>{
         resolve(res)
       })
     })
