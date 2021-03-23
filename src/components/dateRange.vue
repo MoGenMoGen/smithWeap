@@ -19,8 +19,7 @@
     data() {
       return {
         start:'2019-09-01',
-        end:'2020-09-01',
-
+        end:'2030-09-01',
       };
     },
     computed: {
@@ -28,6 +27,7 @@
     methods: {
       bindDateChange(e) {
         this.value = e.mp.detail.value
+        this.$emit('getStart',this.value)
       },
     }
   };

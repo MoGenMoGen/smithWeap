@@ -5,18 +5,18 @@
       <div class="searchBox">
         <div>
           <div class="section">
-            <picker @change="bindPickerChange" :value="index" :range="array" :range-key="dictValue">
+            <picker @change="bindPickerChange" :value="index" :range="array" range-key="dictValue">
               <div class="picker">
                 {{array[index].dictValue}}
-                <img :src="down"/>
+                <img :src="down" v-if="index != 2"/>
               </div>
             </picker>
           </div>
         </div>
         <div class="dateBox">
-          <dateRange :value="startTime"></dateRange>
+          <dateRange :value="startTime" @getStart="getDate"></dateRange>
           ~
-          <date-range :value="endTime"></date-range>
+          <date-range :value="endTime" @getStart="getDate2"></date-range>
           <img :src="dateIcon" class="icon"/>
         </div>
       </div>
@@ -98,8 +98,14 @@
         current:1,
         size:10,
         total:0,
-        array: [],
+        array:[
+          {dictValue:'安装'}
+        ],
         index: 0,
+        workType: '',
+        endDate:'',
+        startTm:'',//开始时间
+        endTm:'',//结束时间
       }
     },
     async onShow(){
@@ -124,12 +130,14 @@
         }
       },
       toSearch(){
-        console.log('搜索')
+        this.getList()
       },
       async getList(){
         const param={
           current:this.current,
-          size:this.size
+          size:this.size,
+          endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+          workType:this.workType,
         }
         let data =await this.api.listOffer(param)
         data.data.records.forEach(item=>{
@@ -158,7 +166,16 @@
         }
       },
       bindPickerChange(e) {
-          this.index = e.mp.detail.value
+        this.index = e.mp.detail.value;
+        this.workType = this.array[this.index].dictKey
+      },
+      getDate(e){
+        this.startTm = e
+        console.log(e);
+      },
+      getDate2(e){
+        this.endTm = e
+        console.log(e);
       },
     },
     components:{
@@ -180,7 +197,7 @@
       display: flex;
       align-items: center;
       background-color: #FFFFFF;
-      padding: 20rpx 30rpx;
+      padding: 20rpx 30rpx 20rpx 20rpx;
       .searchBox{
         display: flex;
         margin-right: 18rpx;
@@ -191,9 +208,9 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-right: 20rpx;
+          margin-right: 14rpx;
           height: 60rpx;
-          width: 124rpx;
+          width: 130rpx;
           .picker img{
             width: 24rpx;
             height: 16rpx;
