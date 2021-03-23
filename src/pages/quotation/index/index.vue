@@ -171,10 +171,12 @@
       },
       getDate(e){
         this.startTm = e
+        this.startTime = e
         console.log(e);
       },
       getDate2(e){
         this.endTm = e
+        this.endTime = e
         console.log(e);
       },
     },
