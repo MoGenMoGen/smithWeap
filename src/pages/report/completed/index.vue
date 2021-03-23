@@ -101,7 +101,8 @@
       }
     },
     async onShow(){
-      this.list = [],
+      this.current = 1
+      this.list = []
       this.getList()
     },
     //上滑获取下一页
@@ -111,7 +112,7 @@
       }
       if(this.list.length<this.total){
         this.current++
-        this.getList(this.currentIndex)
+        this.getList()
       }
     },
     methods:{

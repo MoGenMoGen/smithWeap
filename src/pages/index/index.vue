@@ -26,14 +26,14 @@
         <div class="title">
           <p>
             <img :src="logo2"/>
-            {{info.nm}}
+            {{infoNm}}
           </p>
           <p @click="toPage('/pages/quotation/index/main')">
             查看更多
             <img class="right" :src="right"/>
           </p>
         </div>
-        <div class="box" v-for="(item,index) in info.list" :key="index">
+        <div class="box" v-for="(item,index) in list" :key="index">
           <ul>
             <li>
               <img :src="jx"/>
@@ -69,14 +69,14 @@
         <div class="title">
           <p>
             <img :src="logo2"/>
-            {{info2.nm}}
+            {{info2Nm}}
           </p>
           <p @click="toPage('/pages/construction/index/main')">
             查看更多
             <img class="right" :src="right"/>
           </p>
         </div>
-        <div class="box" v-for="(item,index) in info2.list" :key="index">
+        <div class="box" v-for="(item,index) in list2" :key="index">
           <ul>
             <li>
               <img :src="jx"/>
@@ -159,17 +159,16 @@
             path:'/pages/report/reportStatus/main',
           }
         ],
-        info:{
-          nm:'接单报价',
-          list:[],
-        },
-        info2:{
-          nm:'接单施工',
-          list:[],
-        },
+        infoNm:'接单报价',
+        info2Nm:'接单施工',
+        list:[],
+        list2:[],
       }
     },
     async onShow(){
+      this.current = 1;
+      this.list = []
+      this.list2 = []
       this.getList();
     },
     methods:{
@@ -203,8 +202,8 @@
           item.bidStart = item.bidStart.slice(0,10)
           item.bidEnd = item.bidEnd.slice(0,10)
         })
-        this.info.list.push(...data.data.records)
-        this.info2.list.push(...data2.data.records)
+        this.list.push(...data.data.records)
+        this.list2.push(...data2.data.records)
       },
     },
     components:{

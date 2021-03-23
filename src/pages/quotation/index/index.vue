@@ -94,33 +94,27 @@
         down,
         startTime:'开始时间',
         endTime:'结束时间',
-        list:[
-          {
-            nm:'南宁宾利',
-            type:'安装',
-            startTm:'2020-12-05',
-            finishTm:'2020-12-05',
-            status:'1'
-          },{
-            nm:'南宁宾利',
-            type:'安装',
-            startTm:'2020-12-05',
-            finishTm:'2020-12-05',
-            status:'1'
-          },{
-            nm:'南宁宾利',
-            type:'安装',
-            startTm:'2020-12-05',
-            finishTm:'2020-12-05',
-            status:'2'
-          }
-        ],
+        list:[],
+        current:1,
+        size:10,
+        total:0,
         array: ['安装', '安装', '施工', '施工'],
         index: 0,
       }
     },
     async onShow(){
-      this.getList();
+      this.current = 1
+      this.list = []
+      this.getList()
+    },
+    onReachBottom(){
+      if(this.list.length>=this.total){
+        return
+      }
+      if(this.list.length<this.total){
+        this.current++
+        this.getList()
+      }
     },
     methods:{
       toPage(url){
@@ -130,6 +124,19 @@
       },
       toSearch(){
         console.log('搜索')
+      },
+      async getList(){
+        const param={
+          current:this.current,
+          size:this.size
+        }
+        let data =await this.api.listOffer(param)
+        data.data.records.forEach(item=>{
+          item.bidStart = item.bidStart.slice(0,10)
+          item.bidEnd = item.bidEnd.slice(0,10)
+        })
+        this.list.push(...data.data.records)
+        this.total = data.data.total
       },
       toDetail(status){
         switch(status){

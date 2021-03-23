@@ -30,22 +30,22 @@
             <li>
               <img :src="jx"/>
               <span>经销商名称</span>
-              <p>{{item.nm}}</p>
+              <p>{{item.custNm}}</p>
             </li>
             <li>
               <img :src="type"/>
               <span>工作类型</span>
-              <p>{{item.type}}</p>
+              <p>{{item.workTypeNm}}</p>
             </li>
             <li>
               <img :src="fb"/>
               <span>发布日期</span>
-              <p>{{item.startTm}}</p>
+              <p>{{item.bidStart}}</p>
             </li>
             <li>
               <img :src="jz"/>
               <span>截止日期</span>
-              <p>{{item.finishTm}}</p>
+              <p>{{item.bidEnd}}</p>
             </li>
           </ul>
           <div>
@@ -90,6 +90,9 @@
         down,
         startTime:'开始时间',
         endTime:'结束时间',
+        current:1,
+        size:10,
+        total:0,
         info:{
           nm:'接单报价',
           list:[
@@ -115,11 +118,38 @@
         index: 0,
       }
     },
+    async onShow(){
+      this.current = 1
+      this.list = []
+      this.getList()
+    },
+    onReachBottom(){
+      if(this.list.length>=this.total){
+        return
+      }
+      if(this.list.length<this.total){
+        this.current++
+        this.getList()
+      }
+    },
     methods:{
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
+      },
+      async getList(){
+        const param={
+          current:this.current,
+          size:this.size
+        }
+        let data =await this.api.listAfterWork(param)
+        data.data.records.forEach(item=>{
+          item.bidStart = item.bidStart.slice(0,10)
+          item.bidEnd = item.bidEnd.slice(0,10)
+        })
+        this.list.push(...data.data.records)
+        this.total = data.data.total
       },
       toSearch(){
         console.log('搜索')

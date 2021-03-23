@@ -261,7 +261,7 @@ class api {
   listToAudit(data){
     return new Promise(resolve => {
       get('/blade-works/worksorder/listToAudit',data).then(res=>{
-        resolve(res.data)
+        resolve(res)
       })
     })
   }
@@ -277,7 +277,7 @@ class api {
   listOffer(data){
     return new Promise(resolve => {
       get('/blade-works/worksorder/listOffer',data).then(res=>{
-        resolve(res.data)
+        resolve(res)
       })
     })
   }
@@ -285,7 +285,7 @@ class api {
   listAfterWork(data){
     return new Promise(resolve => {
       get('/blade-works/worksorder/listAfterWork',data).then(res=>{
-        resolve(res.data)
+        resolve(res)
       })
     })
   }
