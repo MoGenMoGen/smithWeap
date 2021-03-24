@@ -12,8 +12,9 @@
       <div class="centerBox">
         <span>上传图片:</span>
         <div class="imageList">
-          <div v-for="(item,index) in imageList">
-            <img :src="item" @click="toPhoto"/>
+          <div>
+            <img :src="tpsctb" @click="toPhoto">
+            <img v-for="(item,index) in imageList" :src="item"/>
           </div>
         </div>
         <div class="clockBox">
@@ -55,7 +56,7 @@
         array: [{
           dictValue:''
         }],
-        imageList:[tpsctb],
+        imageList:[],
         dictValue:'',
         dateInfo:{},
         timer:'',//清除定时器
@@ -129,8 +130,16 @@
         this.postInfo.types = this.index+1
       },
       toClock(){
-        // console.log(this.postInfo);
-        // this.api.newClock()
+        this.postInfo.imgUrl = this.imageList.join()
+        this.api.newClock(this.postInfo).then(res=>{
+          this.setTimeout(()=>{
+            if(res.code == 200){
+              this.toBack();
+            }else{
+              this.toBack();
+            }
+          },1000)
+        })
       },
       async toPhoto(){
         let imgUrl = await this.api.chooseImages()
