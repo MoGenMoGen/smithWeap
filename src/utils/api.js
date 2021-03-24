@@ -297,6 +297,116 @@ class api {
       })
     })
   }
+  //工单详情
+  getInfoWork(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/infoWork?orderId='+data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //打卡-列表
+  clockList(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksclockin/listPC?orderId='+data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //打卡-类型
+  clockType(data){
+    return new Promise(resolve => {
+      get('/blade-system/dict-biz/listByPcd?cd='+data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //打卡-新增
+  newClock(data){
+    return new Promise(resolve => {
+      post('/blade-works/worksclockin/add',data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //附件上传
+  putFile(data){
+    let header = {
+      "Content-Type": "multipart/form-data",
+    };
+    return new Promise(resolve => {
+      post('/blade-resource/oss/endpoint/put-file-attach',data,header).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //图片选择
+  chooseImages(type,max) {
+    wx.setStorage({
+      key:"ifClose",
+      data:'no'
+    })
+    let promise = new Promise((resolve,reject)=> {
+      let that = this
+      wx.chooseImage({
+        // count: max || 9,           //一次最多可以选择的图片张数
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: type || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+
+          wx.showLoading({
+            title: '上传中...',
+          })
+          let img = res.tempFilePaths
+          resolve(img)
+          // that.upLoad(res.tempFilePaths[0])
+        },
+        fail: function (err) {
+          console.log(err)
+        },
+        complete: function () {
+
+        }
+      })
+    })
+    return promise
+  }
+  //上传操作
+  async upLoad(imgPath){
+    let token = 'bearer '+ wx.getStorageSync('token')
+    console.log(1,imgPath)
+    return new Promise((resolve, reject) => {
+      let that = this
+      //上传文件
+      wx.uploadFile({
+        url: hostUrl + '/blade-resource/oss/endpoint/put-file-attach',
+        filePath: imgPath,
+        name: 'file',
+        header: {
+          "Content-Type": "multipart/form-data",
+          'Blade-Auth':token
+        },
+        success: function(res) {
+          console.log('================')
+          console.log(JSON.parse(res.data).data)
+          let img = JSON.parse(res.data).data
+          resolve(img)
+        },
+        fail: function(res) {
+          wx.showModal({
+            title: '错误提示',
+            content: res.msg,
+            showCancel: false,
+            success: function(res) {
+            }
+          })
+        },
+        complete: function() {
+          wx.hideLoading();
+        }
+      });
+    })
+  }
 }
 
 export { api };

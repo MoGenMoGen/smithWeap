@@ -1,12 +1,12 @@
 <template>
   <div class="component">
-    <div class="clockBox" v-if="!info.show">
+    <div class="clockBox" v-if="!list.length>0">
       <div class="clock">
         <img :src="ndk"/>
         <p>暂无打卡记录</p>
       </div>
     </div>
-    <div class="clockBox box2" v-if="info.show" v-for="(item,index) in info.list" :key="index">
+    <div class="clockBox box2" v-if="list.length>0" v-for="(item,index) in list" :key="index">
       <div class="initBox">
         <p class="title">
           <img :src="dw"/>
@@ -36,8 +36,8 @@
         </ul>
       </div>
     </div>
-    <p class="submit" @click="toPage('/pages/report/clockIn/main')" v-if="showButton">
-      {{info.show?'立即打卡':'提交'}}
+    <p class="submit" @click="toPage('/pages/report/clockIn/main?id='+id)" v-if="showButton">
+      {{list.length>0?'立即打卡':'新增'}}
     </p>
   </div>
 </template>
@@ -50,6 +50,10 @@
       showButton:{
         type:Boolean,
         default:true,
+      },
+      id:{
+        type:String,
+        default:'',
       }
     },
     data(){
@@ -57,23 +61,25 @@
         ndk,
         dw,
         tx,
-        info:{
-          list:[
-            {
-              nm:'出发打卡',
-              time:'2020-11-08 8:00',
-              addr:'宁波镇海329创业社区',
-              imgUrl:'',
-            },{
-              nm:'出发打卡',
-              time:'2020-11-08 8:00',
-              addr:'宁波镇海329创业社区',
-              imgUrl:'',
-            }
-          ],
-          show:true,
-        }
+        list:[
+          {
+            nm:'出发打卡',
+            time:'2020-11-08 8:00',
+            addr:'宁波镇海329创业社区',
+            imgUrl:'',
+          },{
+            nm:'出发打卡',
+            time:'2020-11-08 8:00',
+            addr:'宁波镇海329创业社区',
+            imgUrl:'',
+          }
+        ],
+        show:true,
+
       }
+    },
+    async mounted(){
+      this.getList(this.id)
     },
     methods:{
       toPage(url){
@@ -81,6 +87,10 @@
           this.util.aHref(url)
         }
       },
+      async getList(id){
+        let data = await this.api.clockList(id)
+        this.list = data.data
+      }
     }
   }
 </script>
@@ -97,7 +107,7 @@
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        height: 100%;
+        height: 340rpx;
         img{
           width: 60rpx;
           height: 60rpx;

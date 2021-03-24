@@ -2,9 +2,9 @@
   <div class="app">
     <div class="main">
       <div class="head">
-        <picker @change="bindPickerChange" :value="index" :range="array">
+        <picker @change="bindPickerChange" :value="index" :range="array" range-key="dictValue">
           <div class="picker">
-            {{array[index]}}
+            {{array[index].dictValue}}
             <img :src="xltb"/>
           </div>
         </picker>
@@ -13,19 +13,19 @@
         <span>上传图片:</span>
         <div class="imageList">
           <div v-for="(item,index) in imageList">
-            <img :src="item.imgUrl"/>
+            <img :src="item" @click="toPhoto"/>
           </div>
         </div>
         <div class="clockBox">
-          <div class="clockIn" :style="{backgroundImage:'url('+bg+')'}">
+          <div class="clockIn" :style="{backgroundImage:'url('+bg+')'}" @click="toClock">
             <p>立即打卡</p>
-            <p>8：30</p>
-            <p>2021-03-20</p>
+            <p>{{dateInfo.hour+':'+dateInfo.minite}}</p>
+            <p>{{dateInfo.year+'-'+dateInfo.month+'-'+dateInfo.day}}</p>
           </div>
-          <p><img :src="dwls"/>宁波镇海329创业社区</p>
         </div>
+        <p class="addr"><img :src="dwls"/>{{addr}}</p>
       </div>
-      <p class="submit" >
+      <p class="submit" @click="toBack ">
         查看打卡记录
       </p>
     </div>
@@ -52,20 +52,40 @@
         dwls,
         bg:bg,
         index:0,
-        array: ['出发打卡','到达打卡'],
-        imageList:[
-          {
-            imgUrl: tpsctb,
-          },{
-            imgUrl: cs,
-          }
-        ],
+        array: [{
+          dictValue:''
+        }],
+        imageList:[tpsctb],
+        dictValue:'',
+        dateInfo:{},
+        timer:'',//清除定时器
+        addr:'',
+        postInfo:{
+          orderId:'',
+          types:'1',
+          addr:'',
+          lng:'',
+          lat:'',
+          imgUrl:'',
+        }
       }
     },
+    async onLoad(e){
+      this.postInfo.orderId = e.id
+    },
+    async onShow(){
+      this.getData();
+      this.getDate();
+      this.timer = setInterval(()=>{
+        setTimeout(this.getDate,0)
+      },1000*60)
+      this.getLocation();
+    },
+    onUnload(){
+      clearInterval(this.timer);
+      this.timer = null;
+    },
     watch:{
-      index(e){
-        console.log(1,e);
-      }
     },
     methods:{
       toPage(url){
@@ -73,11 +93,59 @@
           this.util.aHref(url)
         }
       },
-      bindPickerChange(e) {
-        console.log('picker发送选择改变，携带值为', e.mp.detail.value)
-        this.index = e.mp.detail.value
-
+      async getData(){
+        let data =await this.api.clockType('clockin')
+        this.array =data.data
       },
+      getDate(){
+        this.dateInfo = this.util.formatDate(new Date())
+      },
+      getLocation(){
+        let _this = this
+        wx.getLocation({
+          type: 'wgs84',
+          isHighAccuracy:true,
+          success: function (res) {
+            // console.log("获取当前经纬度：" + JSON.stringify(res));
+            //发送请求通过经纬度反查地址信息
+            var getAddressUrl = "https://apis.map.qq.com/ws/geocoder/v1/?location=" + res.latitude + "," + res.longitude + "&key=E2QBZ-KAICX-C4B4Z-TT4O2-5A6ZO-RMBVE";
+            _this.longitude = res.longitude;
+            _this.latitude = res.latitude
+            _this.postInfo.lng = _this.longitude
+            _this.postInfo.lat = _this.latitude
+            wx.request({
+              url: getAddressUrl,
+              success: function (result) {
+                _this.locations = result.data.result.address
+                _this.addr = _this.locations
+                _this.postInfo.addr = _this.addr
+              }
+            })
+          }
+        })
+      },
+      bindPickerChange(e) {
+        this.index = e.mp.detail.value
+        this.postInfo.types = this.index+1
+      },
+      toClock(){
+        // console.log(this.postInfo);
+        // this.api.newClock()
+      },
+      async toPhoto(){
+        let imgUrl = await this.api.chooseImages()
+        console.log('img',imgUrl);
+        let data = await this.api.upLoad(imgUrl[0])
+        this.imageList.push(data.link)
+        console.log('data',data.link)
+        // for(let i =0; i < imgUrl.length ;i++){
+        //   let img = await this.api.upLoad(imgUrl[i])
+        //   // this.image.push(img)
+        // }
+      },
+      toBack(){
+        this.util.back(1)
+      }
     },
     components:{
       bottomBase
@@ -163,18 +231,22 @@
             }
           }
         }
-        >p{
-          display: flex;
-          align-items: center;
-          margin-top: 40rpx;
-          img{
-            margin-right: 6rpx;
-            width: 22rpx;
-            height: 28rpx;
-          }
-          color: #5E97F4;
-          font-size: 24rpx;
+      }
+      .addr{
+        display: flex;
+        align-items: center;
+        margin-top: 40rpx;
+        position: absolute;
+        left: 50%;
+        top: 60%;
+        transform: translate(-50%,-50%);
+        img{
+          margin-right: 6rpx;
+          width: 22rpx;
+          height: 28rpx;
         }
+        color: #5E97F4;
+        font-size: 24rpx;
       }
       .submit{
         width: 100%;

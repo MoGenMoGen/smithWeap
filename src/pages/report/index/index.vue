@@ -5,51 +5,51 @@
         <ul>
           <li>
             <span>发布日期</span>
-            <p>{{info.pubTm}}</p>
+            <p>{{info.bidStart}}</p>
           </li>
           <li>
             <span>截止日期</span>
-            <p>{{info.finishTm}}</p>
+            <p>{{info.bidEnd}}</p>
           </li>
           <li>
             <span>项目人员</span>
-            <p>{{info.proP}}</p>
+            <p>{{info.userId}}</p>
           </li>
           <li>
             <span>工单编号</span>
-            <p>{{info.proId}}</p>
+            <p>{{info.cd}}</p>
           </li>
           <li>
             <span>项目</span>
-            <p>{{info.pro}}</p>
+            <p>{{info.projNm}}</p>
           </li>
           <li>
             <span>经销商名称</span>
-            <p>{{info.cNm}}</p>
+            <p>{{info.custNm}}</p>
           </li>
           <li>
             <span>要求到场时间</span>
-            <p>{{info.time}}</p>
+            <p>{{info.arrivalDt}}</p>
           </li>
           <li>
             <span>工作类型</span>
-            <p>{{info.type}}</p>
+            <p>{{info.workTypeNm}}</p>
           </li>
           <li>
             <span>工作内容</span>
-            <p>{{info.content}}</p>
+            <p>{{info.workCont}}</p>
           </li>
           <li>
             <span>客户联系人</span>
-            <p>{{info.kh}}</p>
+            <p>{{info.custContact}}</p>
           </li>
           <li>
             <span>客户联系电话</span>
-            <p>{{info.khTel}}</p>
+            <p>{{info.custMob}}</p>
           </li>
           <li>
             <span>客户联系地址</span>
-            <p>{{info.khAddr}}</p>
+            <p>{{info.custAddr}}</p>
           </li>
         </ul>
       </div>
@@ -61,7 +61,7 @@
             <img :src="jt" mode="widthFix" v-show="index==currentIndex"  class="img2"/>
           </li>
         </ul>
-        <reports :index="currentIndex"></reports>
+        <reports :index="currentIndex" :id="orderId"></reports>
       </div>
     </div>
     <bottomBase></bottomBase>
@@ -129,11 +129,20 @@
         isModel:false,
         changeModel:false,
         type:1,
+        orderId:'',
       }
     },
+    async onLoad(e){
+      this.orderId = e.id
+    },
     async onShow(){
+      this.getDetail(this.orderId);
     },
     methods:{
+      async getDetail(id){
+        let data = await this.api.getInfoWork(id)
+        this.info = data.data
+      },
       showMask(type){
         switch(type){
           case 1:
@@ -172,7 +181,6 @@
 
 </style>
 <style scoped lang="less">
-@import url("../../../css/common.less");
   .app{
     width: 100%;
     height: 100%;

@@ -1,10 +1,10 @@
 <template>
   <div class="components">
-    <clock v-if="index==0"></clock>
-    <inventory v-if="index==1"></inventory>
-    <dailyReport v-if="index==2"></dailyReport>
-    <exception-report v-if="index==3"></exception-report>
-    <confession v-if="index==4"></confession>
+    <clock v-if="index==0" :id="id"></clock>
+    <inventory v-if="index==1" :id="id"></inventory>
+    <dailyReport v-if="index==2" :id="id"></dailyReport>
+    <exception-report v-if="index==3" :id="id"></exception-report>
+    <confession v-if="index==4" :id="id"></confession>
   </div>
 </template>
 <script>
@@ -18,6 +18,10 @@
       index:{
         type:Number,
         default:'0'
+      },
+      id:{
+        type:String,
+        default:''
       }
     },
     data(){
