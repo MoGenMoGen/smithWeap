@@ -5,51 +5,51 @@
         <ul>
           <li>
             <span>发布日期</span>
-            <p>{{info.pubTm}}</p>
+            <p>{{info.bidStart}}</p>
           </li>
           <li>
             <span>截止日期</span>
-            <p>{{info.finishTm}}</p>
+            <p>{{info.bidEnd}}</p>
           </li>
           <li>
             <span>项目人员</span>
-            <p>{{info.proP}}</p>
+            <p>{{info.userName}}</p>
           </li>
           <li>
             <span>工单编号</span>
-            <p>{{info.proId}}</p>
+            <p>{{info.cd}}</p>
           </li>
           <li>
             <span>项目</span>
-            <p>{{info.pro}}</p>
+            <p>{{info.projNm}}</p>
           </li>
           <li>
             <span>经销商名称</span>
-            <p>{{info.cNm}}</p>
+            <p>{{info.custNm}}</p>
           </li>
           <li>
             <span>要求到场时间</span>
-            <p>{{info.time}}</p>
+            <p>{{info.arrivalDt}}</p>
           </li>
           <li>
             <span>工作类型</span>
-            <p>{{info.type}}</p>
+            <p>{{info.workTypeNm}}</p>
           </li>
           <li>
             <span>工作内容</span>
-            <p>{{info.content}}</p>
+            <p>{{info.workCont}}</p>
           </li>
           <li>
             <span>客户联系人</span>
-            <p>{{info.kh}}</p>
+            <p>{{info.custContact}}</p>
           </li>
           <li>
             <span>客户联系电话</span>
-            <p>{{info.khTel}}</p>
+            <p>{{info.custMob}}</p>
           </li>
           <li>
             <span>客户联系地址</span>
-            <p>{{info.khAddr}}</p>
+            <p>{{info.custAddr}}</p>
           </li>
         </ul>
       </div>
@@ -57,15 +57,15 @@
         <ul>
           <li>
             <span>报价总金额</span>
-            <p>{{pushInfo.bjzje}}</p>
+            <p>{{info.quotedPrice}}</p>
           </li>
           <li>
             <span>计划开工时间</span>
-            <p>{{pushInfo.startTm}}</p>
+            <p>{{info.planedStart}}</p>
           </li>
           <li>
             <span>计划完工时间</span>
-            <p>{{pushInfo.endTm}}</p>
+            <p>{{info.planedEnd}}</p>
           </li>
         </ul>
       </div>
@@ -92,23 +92,6 @@
       return{
         fjsc,
         info:{
-          pubTm:'2021-03-20',
-          finishTm:'2021-03-20',
-          pro:'宾利',
-          proP:'项毅',
-          proId:'A2011036',
-          cNm:'南宁宾利',
-          time:'2021-03-20',
-          type:'安装',
-          content:'整体安装-有立柱（包括勘测）',
-          kh:'吴波',
-          khTel:'13806036880',
-          khAddr:'广西省南宁市江南区白沙大道100号',
-        },
-        pushInfo:{
-          bjzje:'¥1,000.00',
-          startTm:'2020-11-08',
-          endTm:'2020-11-11'
         },
         isModel:false,
         changeModel:false,
@@ -131,15 +114,41 @@
         }
       },
       //将子组件中变化的数据赋值于父组件
-      mask(e){
-        this.changeModel = e.changeModel
-        this.isModel = e.isModel
+      mask(item){
+        // console.log(item);
+        if(item.cancel){
+          if(this.type ==1){
+            const param = {
+              orderId:this.info.id,
+              constructionManager:item.constructionManager
+            }
+            this.api.orderTake(param)
+          }else{
+            const param = {
+              orderId:this.info.id,
+            }
+            this.api.orderRefused(param)
+          }
+        }
+        this.changeModel = item.changeModel
+        this.isModel = item.isModel
       },
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
       },
+      async getlist(){
+        this.api.infoAfterWork()
+      }
+    },
+    async onLoad(item){
+      const res = await this.api.infoAfterWork({orderId:item.id})
+      this.info = res.data
+      // console.log(this.info);
+    },
+    onShow(){
+      this.info = {}
     },
     components:{
       bottomBase,modelMask
