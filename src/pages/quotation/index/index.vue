@@ -50,7 +50,7 @@
             </li>
           </ul>
           <div>
-            <p :style="{backgroundColor:item.status == 1? '#E51937':'#909090' }" @click="toDetail(item.status)">
+            <p :style="{backgroundColor:item.status == 1? '#E51937':'#909090' }" @click="toDetail(item.status,item.id)">
               <img :src="tbj"/>
               {{item.status == 1?'去报价':'已报价'}}
             </p>
@@ -131,6 +131,7 @@
           size:this.size
         }
         let data =await this.api.listOffer(param)
+        console.log(data)
         data.data.records.forEach(item=>{
           item.bidStart = item.bidStart.slice(0,10)
           item.bidEnd = item.bidEnd.slice(0,10)
@@ -138,13 +139,14 @@
         this.list.push(...data.data.records)
         this.total = data.data.total
       },
-      toDetail(status){
+      toDetail(status,id){
+        console.log('我要跳转')
         switch(status){
-          case '1':
-              this.toPage('/pages/quotation/apply/main')
+          case 1:
+              this.toPage('/pages/quotation/apply/main'+'?id='+id)
             break
-          case '2':
-              this.toPage('/pages/quotation/detail/main')
+          case 2:
+              this.toPage('/pages/quotation/detail/main'+'?id='+id)
             break
         }
       },
