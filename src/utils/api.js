@@ -353,6 +353,31 @@ class api {
       })
     })
   }
+  //接受接单接口
+  orderTake(data){
+
+    return new Promise(resolve=>{
+      post("/blade-works/worksorder/orderTake?orderId="+data.orderId+'&constructionManager='+data.constructionManager).then(res=>{
+        resolve(res);
+      })
+    })
+  }
+  //拒绝接单接口
+  orderRefused(data){
+    return new Promise(resolve=>{
+      post("/blade-works/worksorder/orderRefused?orderId="+data.orderId).then(res=>{
+        resolve(res);
+      })
+    })
+  }
+  //获取接单指派列表
+  listAssigned(){
+    return new Promise(resolve=>{
+      get("/blade-works/worksorder/listAssigned").then(res=>{
+        resolve(res);
+      })
+    })
+  }
 }
 
 export { api };
