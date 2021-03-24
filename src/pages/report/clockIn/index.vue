@@ -134,10 +134,8 @@
       },
       async toPhoto(){
         let imgUrl = await this.api.chooseImages()
-        console.log('img',imgUrl);
         let data = await this.api.upLoad(imgUrl[0])
         this.imageList.push(data.link)
-        console.log('data',data.link)
         // for(let i =0; i < imgUrl.length ;i++){
         //   let img = await this.api.upLoad(imgUrl[i])
         //   // this.image.push(img)

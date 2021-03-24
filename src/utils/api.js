@@ -329,17 +329,6 @@ class api {
       })
     })
   }
-  //附件上传
-  putFile(data){
-    let header = {
-      "Content-Type": "multipart/form-data",
-    };
-    return new Promise(resolve => {
-      post('/blade-resource/oss/endpoint/put-file-attach',data,header).then(res=>{
-        resolve(res)
-      })
-    })
-  }
   //图片选择
   chooseImages(type,max) {
     wx.setStorage({
