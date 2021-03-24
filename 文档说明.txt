@@ -30,7 +30,7 @@
   接单施工：construction=>{
       首页：index=>详情页：detail
   }
-  接单报价：construction=>{
+  接单报价：quotation=>{
          首页：index=>详情页：detail=>去报价：apply
   }
   施工汇报：report=>{
