@@ -289,6 +289,22 @@ class api {
       })
     })
   }
+  //获取接单施工详情
+  infoAfterWork(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/infoAfterWork',data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //工单报价接口
+  addOffer(data){
+    return new Promise(resolve=>{
+      post("/blade-works/worksoffer/addOffer",data).then(res=>{
+        resolve(res);
+      })
+    })
+  }
   //数据字典
   getDictionary(data){
     return new Promise(resolve => {
@@ -394,6 +410,63 @@ class api {
           wx.hideLoading();
         }
       });
+    })
+  }
+  //获取调查问卷详情
+  getsurvconfig(){
+    return new Promise(resolve=>{
+      get("/blade-surv/survconfig/info").then(res=>{
+        resolve(res.data);
+      })
+    })
+  }
+  //获取选择题答案
+  getlistByPcd(){
+    return new Promise(resolve=>{
+      get("/blade-system/dict-biz/listByPcd",{cd:"quesAnswer"}).then(res=>{
+        resolve(res.data);
+      })
+    })
+  }
+  //调查问卷新增
+  AddSurvbill(data){
+    return new Promise(resolve=>{
+      post("/blade-surv/survbill/add",data).then(res=>{
+        resolve(res.data);
+      })
+    })
+  }
+  //附件上传接口
+  putFileAttach(data){
+    return new Promise(resolve=>{
+      post("/blade-resource/oss/endpoint/put-file-attach",data).then(res=>{
+        resolve(res.data);
+      })
+    })
+  }
+  //接受接单接口
+  orderTake(data){
+
+    return new Promise(resolve=>{
+      post("/blade-works/worksorder/orderTake?orderId="+data.orderId+'&constructionManager='+data.constructionManager).then(res=>{
+        resolve(res);
+      })
+    })
+  }
+  //拒绝接单接口
+  orderRefused(data){
+    return new Promise(resolve=>{
+      post("/blade-works/worksorder/orderRefused?orderId="+data.orderId).then(res=>{
+        resolve(res);
+      })
+    })
+  }
+  //获取接单指派列表
+  listAssigned(){
+    return new Promise(resolve=>{
+      get("/blade-works/worksorder/listAssigned").then(res=>{
+        resolve(res);
+      })
     })
   }
 }

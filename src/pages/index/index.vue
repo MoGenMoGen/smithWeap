@@ -57,7 +57,7 @@
             </li>
           </ul>
           <div>
-            <p style="color:#FFFFFF;background-color: #E51937">
+            <p style="color:#FFFFFF;background-color: #E51937" @click="toPage('/pages/quotation/apply/main?id='+item.id)">
               <img :src="tbj"/>
               去报价
             </p>
@@ -100,7 +100,7 @@
             </li>
           </ul>
           <div>
-            <p style="border: 1rpx solid #909090;color: #909090;">
+            <p style="border: 1rpx solid #909090;color: #909090;" @click="toPage('/pages/construction/detail/main?id='+item.id)">
               查看
             </p>
           </div>

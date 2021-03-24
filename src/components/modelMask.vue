@@ -7,7 +7,7 @@
         <p class="tips">提示</p>
         <p>您确认{{type==1?'承接':'拒接'}}此工单？</p>
       </div>
-      <div class="content" >
+      <div class="content" v-if="type == 1" >
         <span>指派</span>
         <div class="swiper">
           <swiper :current="current"
@@ -21,7 +21,7 @@
             <block v-for="(item,index) in eventList" :key="index">
               <swiper-item class="swiperBox">
                 <p :class="{active:index==current}">
-                  {{item.nm}}
+                  {{item.name}}
                 </p>
               </swiper-item>
             </block>
@@ -56,7 +56,7 @@
       return {
         val: "",
         eventList:[
-          {nm:'张三'},{nm:'李四'},{nm:'张三'}
+          // {name:'张三'},{name:'李四'},{name:'王五'}
         ],
         current:0,
       };
@@ -67,6 +67,7 @@
         this.changeModel = !this.changeModel;
         this.isModel = !this.isModel;
         const emit = {
+          cancel:false,
           changeModel:this.changeModel,
           isModel:this.isModel
         }
@@ -76,15 +77,33 @@
       confirmSend() {
         this.changeModel = !this.changeModel;
         this.isModel = !this.isModel;
-        const emit = {
-          changeModel:this.changeModel,
-          isModel:this.isModel
+        if(this.type ==1){
+          const emit = {
+            changeModel:this.changeModel,
+            isModel:this.isModel,
+            cancel:true,
+            constructionManager:this.eventList[this.current].id
+          }
+          this.$emit('tapCancel',emit)
+        }else{
+          const emit = {
+            changeModel:this.changeModel,
+            cancel:true,
+            isModel:this.isModel,
+          }
+          this.$emit('tapCancel',emit)
         }
-        this.$emit('tapCancel',emit)
+        
       },
       swiperChangeBig(e){
         this.current = e.mp.detail.current
+        // console.log(this.current);
       },
+    },
+    async created(){
+      this.eventList = []
+      const res = await this.api.listAssigned()
+      this.eventList = res.data
     }
   };
 </script>
