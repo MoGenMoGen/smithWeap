@@ -5,31 +5,31 @@
         <ul>
           <li>
             <span>发布日期</span>
-            <p>{{info.pubTm}}</p>
+            <p>{{info.bidStart}}</p>
           </li>
           <li>
             <span>截止日期</span>
-            <p>{{info.finishTm}}</p>
+            <p>{{info.bidEnd}}</p>
           </li>
           <li>
             <span>项目</span>
-            <p>{{info.pro}}</p>
+            <p>{{info.projNm}}</p>
           </li>
           <li>
             <span>经销商名称</span>
-            <p>{{info.cNm}}</p>
+            <p>{{info.custNm}}</p>
           </li>
           <li>
             <span>要求到场时间</span>
-            <p>{{info.time}}</p>
+            <p>{{info.arrivalDt}}</p>
           </li>
           <li>
             <span>工作类型</span>
-            <p>{{info.type}}</p>
+            <p>{{info.workTypeNm }}</p>
           </li>
           <li>
             <span>工作内容</span>
-            <p>{{info.content}}</p>
+            <p>{{info.workCont}}</p>
           </li>
         </ul>
       </div>
@@ -86,7 +86,7 @@
           </li>
         </ul>
       </div>
-      <p class="submit" style="color: #FFFFFF;background-color: #E51937;">
+      <p class="submit" style="color: #FFFFFF;background-color: #E51937;" @click="submit" >
         提交
       </p>
       <p class="submit" style="color: #303030;background-color: #FFFFFF">
@@ -106,13 +106,13 @@
       return{
         fjsc,
         info:{
-          pubTm:'2021-03-20',
-          finishTm:'2021-03-20',
-          pro:'宾利',
-          cNm:'南宁宾利',
-          time:'2021-03-20',
-          type:'安装',
-          content:'整体安装-有立柱（包括勘测）',
+          // pubTm:'2021-03-20',
+          // finishTm:'2021-03-20',
+          // pro:'宾利',
+          // cNm:'南宁宾利',
+          // time:'2021-03-20',
+          // type:'安装',
+          // content:'整体安装-有立柱（包括勘测）',
         },
         pushInfo:{
           material:'',
@@ -134,6 +134,24 @@
           this.util.aHref(url)
         }
       },
+      getlist(){
+        this.api.infoAfterWork()
+      },
+      submit(){
+        console.log(this.pushInfo)
+      }
+    },
+    async onLoad(item){
+      // console.log(item)
+      let id = item.id
+      //发送请求获取报单详情
+      const res = await this.api.infoAfterWork({orderId:id})
+      // console.log(res.data)
+      this.info = res.data
+      console.log(this.info)
+    },
+    async onShow(){
+
     },
     components:{
       bottomBase,
