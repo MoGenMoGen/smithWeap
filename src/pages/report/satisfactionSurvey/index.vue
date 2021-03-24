@@ -122,6 +122,13 @@ export default {
     },
     //确定按钮
     submit(){
+      if(this.phone ==''){
+        return wx.showToast({
+          icon: "none",
+          title: '请输入手机账号',
+          duration: 2000
+        });
+      }
       let param = {
         orderId:'',
         title:this.list.title,
@@ -136,11 +143,12 @@ export default {
         phone:this.phone,
         list:this.Answeruer
       }
+
       console.log('提交');
       console.log(param);
     }
   },
-  created(){
+  async onShow(){
     this.getlist()
   },
   components:{
