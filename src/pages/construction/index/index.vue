@@ -25,7 +25,7 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in info.list" :key="index">
+        <div class="box" v-for="(item,index) in list" :key="index">
           <ul>
             <li>
               <img :src="jx"/>
@@ -49,7 +49,7 @@
             </li>
           </ul>
           <div>
-            <p @click="toDetail()">
+            <p @click="toDetail('/pages/construction/detail/main?id='+item.id)">
               查看
             </p>
           </div>
@@ -93,28 +93,9 @@
         current:1,
         size:10,
         total:0,
-        info:{
-          nm:'接单报价',
-          list:[
-            {
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-            },{
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-            },{
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05',
-            }
-          ],
-        },
-        array: ['安装', '安装', '施工', '施工'],
+        //接单列表
+        list:[],
+        array: ['安装', '施工'],
         index: 0,
       }
     },
@@ -154,8 +135,8 @@
       toSearch(){
         console.log('搜索')
       },
-      toDetail(){
-        this.toPage('/pages/construction/detail/main')
+      toDetail(url){
+        this.toPage(url)
       },
       bindPickerChange(e) {
           this.index = e.mp.detail.value
