@@ -57,7 +57,7 @@
             </li>
           </ul>
           <div>
-            <p style="color:#FFFFFF;background-color: #E51937">
+            <p style="color:#FFFFFF;background-color: #E51937" @click="toPage('/pages/quotation/apply/main'+'?id='+item.id)">
               <img :src="tbj"/>
               去报价
             </p>
