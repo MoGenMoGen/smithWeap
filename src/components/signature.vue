@@ -1,7 +1,7 @@
 <template>
   <div class="written" v-show="status == 'default'">
     <canvas
-      :style="{ width: (canvaw-60)+'px', height: canvah + 'px' }"
+      :style="{ width: (canvaw-60)+'px', height: 250 + 'px' }"
       class="firstCanvas"
       canvas-id="firstCanvas"
       @touchmove="move"
@@ -144,13 +144,13 @@
 
   .button_clear {
     position: absolute;
-    transform: rotate(270deg);
-    -ms-transform: rotate(270deg); /* IE 9 */
-    -moz-transform: rotate(270deg); /* Firefox */
-    -webkit-transform: rotate(270deg); /* Safari 和 Chrome */
-    -o-transform: rotate(270deg);
-    bottom: 120rpx;
-    right: -40rpx;
+    /*transform: rotate(270deg);*/
+    /*-ms-transform: rotate(270deg); !* IE 9 *!*/
+    /*-moz-transform: rotate(270deg); !* Firefox *!*/
+    /*-webkit-transform: rotate(270deg); !* Safari 和 Chrome *!*/
+    /*-o-transform: rotate(270deg);*/
+    bottom: 0rpx;
+    left: 40rpx;
     width: 213rpx;
     height: 84rpx;
     background-color: #fff;
@@ -163,13 +163,13 @@
   }
   .button_submit {
     position: absolute;
-    transform: rotate(270deg);
-    -ms-transform: rotate(270deg); /* IE 9 */
-    -moz-transform: rotate(270deg); /* Firefox */
-    -webkit-transform: rotate(270deg); /* Safari 和 Chrome */
-    -o-transform: rotate(270deg);
-    top: 120rpx;
-    right: -40rpx;
+    /*transform: rotate(270deg);*/
+    /*-ms-transform: rotate(270deg); !* IE 9 *!*/
+    /*-moz-transform: rotate(270deg); !* Firefox *!*/
+    /*-webkit-transform: rotate(270deg); !* Safari 和 Chrome *!*/
+    /*-o-transform: rotate(270deg);*/
+    bottom: 00rpx;
+    right: 40rpx;
     width: 213rpx;
     height: 84rpx;
     background-color: #2173f9;
