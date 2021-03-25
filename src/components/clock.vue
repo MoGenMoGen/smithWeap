@@ -10,13 +10,13 @@
       <div class="initBox">
         <p class="title">
           <img :src="dw"/>
-          {{item.nm}}
+          {{item.typesNm}}
         </p>
         <ul>
           <li>
             <span>打卡时间</span>
             <p>
-              {{item.time}}
+              {{item.updateTime}}
             </p>
           </li>
           <li>
@@ -30,7 +30,7 @@
               行程记录
             </span>
             <p class="imgUrl">
-              <img :src="item.imgUrl?item.imgUrl:tx" mode="width"/>
+              <img :src="z?z:tx" v-for="(z,x) in item.imgUrl" mode="width"/>
             </p>
           </li>
         </ul>
@@ -90,6 +90,9 @@
       async getList(id){
         let data = await this.api.clockList(id)
         this.list = data.data
+        this.list.forEach(item=>{
+          item.imgUrl = item.imgUrl.split(",")
+        })
       }
     }
   }
@@ -167,8 +170,9 @@
               align-items: flex-start;
               justify-content: flex-start;
               >img{
-                width: 320rpx;
+                margin-right: 10rpx;
                 height: 170rpx;
+                width: 170rpx;
               }
             }
           }

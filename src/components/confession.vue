@@ -1,5 +1,5 @@
 <template>
-  <!--异常报告-->
+  <!--交底报告-->
   <div class="except">
     <ul>
       <li><img :src="yctb"/>现场交底情况说明</li>
@@ -31,6 +31,10 @@
       showButton:{
         type:Boolean,
         default:true,
+      },
+      id:{
+        type:String,
+        default:'',
       }
     },
     data(){

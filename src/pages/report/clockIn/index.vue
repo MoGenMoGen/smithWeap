@@ -55,7 +55,7 @@
         array: [{
           dictValue:''
         }],
-        imageList:[tpsctb],
+        imageList:[],
         dictValue:'',
         dateInfo:{},
         timer:'',//清除定时器
@@ -126,11 +126,24 @@
       },
       bindPickerChange(e) {
         this.index = e.mp.detail.value
-        this.postInfo.types = this.index+1
+        switch(this.index){
+          case '0':
+            this.postInfo.types = 1
+            break
+          case '1':
+            this.postInfo.types = 2
+            break
+        }
       },
       toClock(){
-        // console.log(this.postInfo);
-        // this.api.newClock()
+        this.postInfo.imgUrl = this.imageList.join()
+        this.api.newClock(this.postInfo).then(res=>{
+          if(res.code == 200){
+            this.toBack();
+          }else{
+            this.toBack();
+          }
+        })
       },
       async toPhoto(){
         let imgUrl = await this.api.chooseImages()
