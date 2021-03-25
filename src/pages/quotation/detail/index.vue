@@ -42,37 +42,37 @@
           </li>
           <li>
             <span>设备</span>
-            <p>{{worksOffer.deviceCost | Commas}}</p>
+            <p>{{worksOffer.deviceCost}}</p>
           </li>
           <li>
             <span>人工费</span>
-            <p>{{worksOffer.laborCost | Commas}}</p>
+            <p>{{worksOffer.laborCost}}</p>
           </li>
           <li>
           <span>交通差旅</span>
-            <p>{{worksOffer.travelCost | Commas}}</p>
+            <p>{{worksOffer.travelCost}}</p>
           </li>
           <li>
             <span>其他</span>
-            <p>{{worksOffer.other | Commas}}</p>
+            <p>{{worksOffer.other}}</p>
           </li>
           <li>
             <span>利润与税收</span>
-            <p>{{worksOffer.profitsTax | Commas}}</p>
+            <p>{{worksOffer.profitsTax}}</p>
           </li>
           <li>
             <span>报价总金额</span>
-            <p>{{worksOffer.amount | Commas}}</p>
+            <p>{{worksOffer.amount}}</p>
           </li>
           <li>
             <span>优惠总金额</span>
-            <p>{{worksOffer.discountAmount | Commas}}</p>
+            <p>{{worksOffer.discountAmount }}</p>
           </li>
           <li style="border-bottom: none">
             <span>附件上传</span>
             <div class="imgs" v-if="worksOffer.attach">
               <div v-for="(item,index) in imgUrls" :key="index">
-                <img :src="item" @click="toPhoto"/>
+                <image :src="item" mode="heightFix"  />
               </div>
             </div>
             <!-- <img :src="worksOffer.fj" mode="width"/> -->
@@ -109,22 +109,9 @@
         if(url){
           this.util.aHref(url)
         }
-      }
-    },
-    filters:{
-      Commas(nStr){
-        if(!nStr) return '¥' + '0'
-        // console.log(nStr);
-        nStr += '';
-        let x = nStr.split('.');
-        let x1 = x[0];
-        let x2 = x.length > 1 ? '.' + x[1] : '';
-        var rgx = /(\d+)(\d{3})/;
-        while (rgx.test(x1)) {
-          x1 = x1.replace(rgx, '$1' + ',' + '$2');
-        }
-        console.log('¥' + x1 + x2);
-        return '¥' + x1 + x2;
+      },
+      addCommas(val){
+        return '¥' + this.util.addCommas(val)
       }
     },
     async onLoad(item){
@@ -135,8 +122,19 @@
       //发送请求获取报单详情
       const res = await this.api.infoOffer({orderId:id})
       this.info = res.data
-      this.worksOffer = res.data.worksOffer
-      this.imgUrls = this.worksOffer.attach.split(',')
+      let data = res.data.worksOffer
+      this.worksOffer.materialCost = this.addCommas(data.materialCost)
+      this.worksOffer.deviceCost= this.addCommas(data.deviceCost)
+      this.worksOffer.laborCost= this.addCommas(data.laborCost)
+      this.worksOffer.travelCost= this.addCommas(data.travelCost)
+      this.worksOffer.other= this.addCommas(data.other)
+      this.worksOffer.profitsTax= this.addCommas(data.profitsTax)
+      this.worksOffer.amount= this.addCommas(data.amount)
+      this.worksOffer.discountAmount= this.addCommas(data.discountAmount)
+      this.worksOffer.attach = data.attach
+      this.worksOffer.rmks= data.rmks
+      //图片库
+      this.imgUrls = res.data.worksOffer.attach.split(',')
     },
     components:{
       bottomBase,
@@ -192,8 +190,8 @@
               flex: 1;
               >div{
                 display: inline-block;
-                img{
-                  width: 140rpx;
+                image{
+                  // width: 140rpx;
                   height: 140rpx;
                   margin-right: 20rpx;
                 }

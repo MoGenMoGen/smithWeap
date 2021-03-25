@@ -75,7 +75,7 @@
             <span>附件上传</span>
             <div class="imgs" v-if="pushInfo.attach">
               <div v-for="(item,index) in imgUrls" :key="index">
-                <img :src="item" @click="toPhoto"/>
+                <img :src="item" @click="toPhoto" mode="heightFix"/>
               </div>
             </div>
             <div class="img" v-else @click="toPhoto">
