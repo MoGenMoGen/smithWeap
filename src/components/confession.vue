@@ -3,21 +3,22 @@
   <div class="except">
     <ul>
       <li><img :src="yctb"/>现场交底情况说明</li>
-      <li><span>营业时间牌</span><p>1块</p><span>已交底</span></li>
-      <li><span>科室牌</span><p>26块</p><span>已交底</span></li>
-      <li><span>工位牌</span><p>单独焊吊架</p><span>已交底</span></li>
-      <li>电施工方制作</li>
+      <li v-if="info && info.state !=2"><textarea placeholder="请输入交底情况" v-model="info.descr"></textarea></li>
+      <li v-else><p v-html="info.descr"></p></li>
     </ul>
     <div class="photoBox">
       <ul>
         <li>交底照片</li>
-        <li><img :src="tpsc" mode="width"/></li>
-        <li><span>过程异常说明</span><textarea placeholder="请输入异常说明" v-model="text"></textarea></li>
+        <li>
+          <img :src="tpsc" mode="width" @click="toPhoto" v-if="info && info.state != 2"/>
+          <img v-for="(item,index) in imageList" :src="item"/>
+        </li>
+        <li><span>过程异常说明</span><textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2"></textarea></li>
       </ul>
     </div>
-    <div class="submitBox" v-if="showButton">
-      <p>保存</p>
-      <p>提交</p>
+    <div class="submitBox" v-if="info &&info.state != 2">
+      <p @click="toSave">保存</p>
+      <p @click="toAdd">提交</p>
     </div>
   </div>
 </template>
@@ -43,21 +44,57 @@
         cs,
         btb,
         tpsc,
+        id2:'',
         text:'',
-        list:[
-          {
-            content:'异常现象描述内容，异常现象描述内容，异常现象描述内容异常现象描述内容异常现象描述内容。',
-            time:'2021-02-24',
-            imgUrl:cs,
-          },{
-            content:'异常现象描述内容，异常现象描述内容，异常现象描述内容异常现象描述内容异常现象描述内容。',
-            time:'2021-02-24',
-            imgUrl:cs,
-          }
-        ],
+        cText:'',
+        info:{},
+        imageList:[],
       }
     },
+    mounted(){
+      this.getData();
+    },
     methods:{
+      async getData(){
+        let data = await this.api.getConfession(this.id)
+        this.info = data.data
+        console.log(data.data.imgUrl)
+        console.log(data.data.imgUrl.split(','))
+        this.imageList = data.data.imgUrl.split(',')
+        console.log(this.imageList);
+      },
+      toSave(){
+        const param = {
+          id:this.info.id,
+          orderId:this.id,
+          descr:this.info.descr,
+          exceptionDesc:this.info.exceptionDesc,
+          imgUrl:this.imageList.join(),
+        }
+        this.api.saveConfession(param).then(res=>{
+          if(res.code == 200){
+            this.getData();
+          }
+        })
+      },
+      toAdd(){
+        const param = {
+          orderId:this.id,
+          descr:this.info.descr,
+          exceptionDesc:this.info.exceptionDesc,
+          imgUrl:this.imageList.join(),
+        }
+        this.api.addConfession(param).then(res=>{
+          if(res.code == 200){
+            this.getData();
+          }
+        })
+      },
+      async toPhoto(){
+        let imgUrl = await this.api.chooseImages()
+        let data = await this.api.upLoad(imgUrl[0])
+        this.imageList.push(data.link)
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
