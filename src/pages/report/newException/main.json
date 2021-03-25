@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText":"异常报告",
+  "navigationBarBackgroundColor":"#FFFFFF",
+  "navigationBarTextStyle":"black",
+  "onReachBottomDistance": 150,
+  "enablePullDownRefresh": false
+}

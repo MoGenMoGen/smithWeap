@@ -17,6 +17,7 @@
     "pages/construction/detail/main",
     "pages/report/index/main",
     "pages/report/clockIn/main",
+    "pages/report/newException/main",
     "pages/report/confirm/main",
     "pages/report/reportStatus/main",
     "pages/report/completed/main",

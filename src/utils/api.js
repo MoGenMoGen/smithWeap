@@ -387,7 +387,7 @@ class api {
   //上传操作
   async upLoad(imgPath){
     let token = 'bearer '+ wx.getStorageSync('token')
-    console.log(1,imgPath)
+    // console.log(1,imgPath)
     return new Promise((resolve, reject) => {
       let that = this
       //上传文件
