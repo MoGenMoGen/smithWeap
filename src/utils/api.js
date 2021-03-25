@@ -297,6 +297,14 @@ class api {
       })
     })
   }
+  //获取工单报价详情
+  infoOffer(data){
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/infoOffer',data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
   //工单报价接口
   addOffer(data){
     return new Promise(resolve=>{

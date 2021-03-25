@@ -50,9 +50,9 @@
             </li>
           </ul>
           <div>
-            <p :style="{backgroundColor:item.status == 1? '#E51937':'#909090' }" @click="toDetail(item.status)">
+            <p :style="{backgroundColor:item.worksOfferStatusVo.state == 1? '#E51937':'#909090' }" @click="toDetail(item.worksOfferStatusVo.status,item.id)">
               <img :src="tbj"/>
-              {{item.status == 1?'去报价':'已报价'}}
+              {{item.worksOfferStatusVo.state == 1 ? '去报价':'已报价'}}
             </p>
           </div>
         </div>
@@ -145,6 +145,7 @@
           item.bidEnd = item.bidEnd.slice(0,10)
         })
         this.list.push(...data.data.records)
+        console.log(this.list);
         this.total = data.data.total
       },
       //获取工作类型
@@ -155,13 +156,13 @@
         let data =await this.api.getDictionary(param)
         this.array = data.data
       },
-      toDetail(status){
+      toDetail(status,id){
         switch(status){
-          case '1':
-              this.toPage('/pages/quotation/apply/main')
+          case 1:
+              this.toPage('/pages/quotation/apply/main?id='+id)
             break
-          case '2':
-              this.toPage('/pages/quotation/detail/main')
+          case 2:
+              this.toPage('/pages/quotation/detail/main?id='+id)
             break
         }
       },
