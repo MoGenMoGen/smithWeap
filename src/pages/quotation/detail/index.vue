@@ -5,31 +5,31 @@
         <ul>
           <li>
             <span>发布日期</span>
-            <p>{{info.pubTm}}</p>
+            <p>{{info.bidStart}}</p>
           </li>
           <li>
             <span>截止日期</span>
-            <p>{{info.finishTm}}</p>
+            <p>{{info.bidEnd}}</p>
           </li>
           <li>
             <span>项目</span>
-            <p>{{info.pro}}</p>
+            <p>{{info.projNm}}</p>
           </li>
           <li>
             <span>经销商名称</span>
-            <p>{{info.cNm}}</p>
+            <p>{{info.custNm}}</p>
           </li>
           <li>
             <span>要求到场时间</span>
-            <p>{{info.time}}</p>
+            <p>{{info.arrivalDt}}</p>
           </li>
           <li>
             <span>工作类型</span>
-            <p>{{info.type}}</p>
+            <p>{{info.workTypeNm}}</p>
           </li>
           <li>
             <span>工作内容</span>
-            <p>{{info.content}}</p>
+            <p>{{info.workCont}}</p>
           </li>
         </ul>
       </div>
@@ -37,43 +37,49 @@
         <ul>
           <li>
             <span>主材</span>
-            <p>{{pushInfo.material}}</p>
+            <!-- <p>{{worksOffer.materialCost | Commas}}</p> -->
+            <p>{{worksOffer.materialCost}}</p> 
           </li>
           <li>
             <span>设备</span>
-            <p>{{pushInfo.device}}</p>
+            <p>{{worksOffer.deviceCost | Commas}}</p>
           </li>
           <li>
             <span>人工费</span>
-            <p>{{pushInfo.rgf}}</p>
+            <p>{{worksOffer.laborCost | Commas}}</p>
           </li>
           <li>
           <span>交通差旅</span>
-            <p>{{pushInfo.jtcl}}</p>
+            <p>{{worksOffer.travelCost | Commas}}</p>
           </li>
           <li>
             <span>其他</span>
-            <p>{{pushInfo.qt}}</p>
+            <p>{{worksOffer.other | Commas}}</p>
           </li>
           <li>
             <span>利润与税收</span>
-            <p>{{pushInfo.lryss}}</p>
+            <p>{{worksOffer.profitsTax | Commas}}</p>
           </li>
           <li>
             <span>报价总金额</span>
-            <p>{{pushInfo.bjzje}}</p>
+            <p>{{worksOffer.amount | Commas}}</p>
           </li>
           <li>
             <span>优惠总金额</span>
-            <p>{{pushInfo.yhzje}}</p>
+            <p>{{worksOffer.discountAmount | Commas}}</p>
           </li>
           <li style="border-bottom: none">
             <span>附件上传</span>
-            <img :src="pushInfo.fj" mode="width"/>
+            <div class="imgs" v-if="worksOffer.attach">
+              <div v-for="(item,index) in imgUrls" :key="index">
+                <img :src="item" @click="toPhoto"/>
+              </div>
+            </div>
+            <!-- <img :src="worksOffer.fj" mode="width"/> -->
           </li>
           <li>
             <span>备注</span>
-            <p>{{pushInfo.bz}}</p>
+            <p>{{worksOffer.rmks}}</p>
           </li>
         </ul>
       </div>
@@ -92,26 +98,10 @@
       return{
         fjsc,
         info:{
-          pubTm:'2021-03-20',
-          finishTm:'2021-03-20',
-          pro:'宾利',
-          cNm:'南宁宾利',
-          time:'2021-03-20',
-          type:'安装',
-          content:'整体安装-有立柱（包括勘测）',
         },
-        pushInfo:{
-          material:'¥120,000.00',
-          device:'¥10,000.00',
-          rgf:'¥2,000.00',
-          jtcl:'¥1,000.00',
-          qt:'¥6,000.00',
-          lryss:'¥1,000.00',
-          bjzje:'¥1,000.00',
-          yhzje:'¥120,000.00',
-          fj:fj,
-          bz:'此报价在完工日之前都有效。'
-        }
+        worksOffer:{
+        },
+        imgUrls:[]
       }
     },
     methods:{
@@ -119,7 +109,34 @@
         if(url){
           this.util.aHref(url)
         }
-      },
+      }
+    },
+    filters:{
+      Commas(nStr){
+        if(!nStr) return '¥' + '0'
+        // console.log(nStr);
+        nStr += '';
+        let x = nStr.split('.');
+        let x1 = x[0];
+        let x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+          x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        console.log('¥' + x1 + x2);
+        return '¥' + x1 + x2;
+      }
+    },
+    async onLoad(item){
+      // this.info = null
+      // this.worksOffer = null
+      // this.imgUrls = []
+      let id = item.id
+      //发送请求获取报单详情
+      const res = await this.api.infoOffer({orderId:id})
+      this.info = res.data
+      this.worksOffer = res.data.worksOffer
+      this.imgUrls = this.worksOffer.attach.split(',')
     },
     components:{
       bottomBase,
@@ -170,6 +187,17 @@
             img{
               width: 140rpx;
               height: 140rpx;
+            }
+            .imgs{
+              flex: 1;
+              >div{
+                display: inline-block;
+                img{
+                  width: 140rpx;
+                  height: 140rpx;
+                  margin-right: 20rpx;
+                }
+              }
             }
           }
         }

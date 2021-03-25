@@ -12,7 +12,7 @@
       <div class="centerBox">
         <span>上传图片:</span>
         <div class="imageList">
-          <div v-for="(item,index) in imageList">
+          <div v-for="(item,index) in imageList" :key="index">
             <img :src="item" @click="toPhoto"/>
           </div>
         </div>

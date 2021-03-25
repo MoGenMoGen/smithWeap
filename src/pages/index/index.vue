@@ -57,9 +57,13 @@
             </li>
           </ul>
           <div>
-            <p style="color:#FFFFFF;background-color: #E51937" @click="toPage('/pages/quotation/apply/main?id='+item.id)">
+            <p v-if="item.worksOfferStatusVo.state ==1" style="color:#FFFFFF;background-color: #E51937" @click="toPage('/pages/quotation/apply/main?id='+item.id)">
               <img :src="tbj"/>
               去报价
+            </p>
+            <p v-if="item.worksOfferStatusVo.state ==2" style="color:#FFFFFF;background-color: #909090" @click="toPage('/pages/quotation/detail/main?id='+item.id)">
+              <img :src="tbj"/>
+              已报价
             </p>
           </div>
         </div>
@@ -204,6 +208,7 @@
         })
         this.list.push(...data.data.records)
         this.list2.push(...data2.data.records)
+        // console.log(data2.data);
       },
     },
     components:{
