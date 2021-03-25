@@ -127,18 +127,23 @@
       },
       bindPickerChange(e) {
         this.index = e.mp.detail.value
-        this.postInfo.types = this.index+1
+        switch(this.index){
+          case '0':
+            this.postInfo.types = 1
+            break
+          case '1':
+            this.postInfo.types = 2
+            break
+        }
       },
       toClock(){
         this.postInfo.imgUrl = this.imageList.join()
         this.api.newClock(this.postInfo).then(res=>{
-          this.setTimeout(()=>{
-            if(res.code == 200){
-              this.toBack();
-            }else{
-              this.toBack();
-            }
-          },1000)
+          if(res.code == 200){
+            this.toBack();
+          }else{
+            this.toBack();
+          }
         })
       },
       async toPhoto(){

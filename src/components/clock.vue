@@ -172,6 +172,7 @@
               >img{
                 margin-right: 10rpx;
                 height: 170rpx;
+                width: 170rpx;
               }
             }
           }
