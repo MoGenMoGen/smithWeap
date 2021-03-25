@@ -23,6 +23,10 @@
       showButton:{
         type:Boolean,
         default: true,
+      },
+      id:{
+        type:String,
+        default: ''
       }
     },
     data(){
@@ -43,7 +47,14 @@
         ],
       }
     },
+    mounted(){
+      this.getList();
+    },
     methods:{
+      async getList(){
+        let data = await this.api.getExceptionList(this.id)
+        this.list = data.data
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)

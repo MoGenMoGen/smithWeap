@@ -469,6 +469,39 @@ class api {
       })
     })
   }
+  //交底报告详情
+  getConfession(id){
+    return new Promise(resolve => {
+      get("/blade-works/worksdisclosure/info?orderId="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //交底报告保存
+  saveConfession(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksdisclosure/keep",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //交底报告提交
+  addConfession(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksdisclosure/refer",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //异常报告列表接口
+  getExceptionList(id){
+    return new Promise(resolve =>{
+      get("/blade-works/worksexception/listByOrder?orderId="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+
 }
 
 export { api };
