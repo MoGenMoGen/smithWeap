@@ -36,11 +36,7 @@
         btb,
         list:[
           {
-            content:'异常现象描述内容，异常现象描述内容，异常现象描述内容异常现象描述内容异常现象描述内容。',
-            time:'2021-02-24',
-            imgUrl:cs,
-          },{
-            content:'异常现象描述内容，异常现象描述内容，异常现象描述内容异常现象描述内容异常现象描述内容。',
+            content:'无',
             time:'2021-02-24',
             imgUrl:cs,
           }
@@ -53,7 +49,7 @@
     methods:{
       async getList(){
         let data = await this.api.getExceptionList(this.id)
-        this.list = data.data
+        this.list =  data.data
       },
       toPage(url){
         if(url){
