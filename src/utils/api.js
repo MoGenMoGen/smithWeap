@@ -533,7 +533,30 @@ class api {
       })
     })
   }
-
+  //货物清点-详情
+  getInventoryDtl(id){
+    return new Promise(resolve =>{
+      get("/blade-works/worksgoodsbill/info?orderId="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //完工确认单(安装)-详情
+  getInstallDtl(id){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/infoComplete?orderId="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //完工确认单(维修)-详情
+  getServiceDtl(id){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/infoComplete2?orderId="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api };
