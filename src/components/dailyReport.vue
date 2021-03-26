@@ -54,7 +54,6 @@
     components: {DailyTemPlate},
     props:{
       id:{
-        // default:false,
         type:String,
       }
     },

@@ -3,14 +3,18 @@
     <div class="main">
       <div class="centerBox">
         <p>异常现象描述：</p>
-        <textarea v-model="info.content" placeholder="请输入异常现象..."></textarea>
+        <textarea v-model="info.descr" placeholder="请输入异常现象..."></textarea>
         <div class="imageList">
           <img :src="tpsctb" @click="toPhoto"/>
           <div v-for="(item,index) in imageList" :key="index">
             <img :src="item"/>
-            <img :src="del" class="del"/>
+            <img :src="del" class="del" @click="deleteImg(index)"/>
           </div>
         </div>
+      </div>
+      <div class="submitBox">
+        <p @click="toBack">取消</p>
+        <p @click="toSubmit(type)">{{type ==1?'确认':'修改'}}</p>
       </div>
     </div>
     <bottomBase></bottomBase>
@@ -29,17 +33,24 @@
         tpsctb,
         cs,
         del,
-        orderId:'',
+        id:'',
         imageList:[],
         info:{
-          content:'',
-        }
+          descr:'',
+        },
+        itemId:'',
+        type:1,//1为新增 2为修改
       }
     },
     async onLoad(e){
-      this.orderId = e.id
+      this.id = e.id
+      this.type = e.type
+      this.itemId = e.itemId
     },
     async onShow(){
+      if(this.type == 2){
+        this.getData(this.itemId)
+      }
     },
     onUnload(){
     },
@@ -51,13 +62,48 @@
           this.util.aHref(url)
         }
       },
+      async getData(id){
+        let data = await this.api.getExceptionDtl(id)
+        this.info.descr = data.data.descr
+        this.imageList = data.data.imgUrl.split(',')
+      },
       async toPhoto(){
         let imgUrl = await this.api.chooseImages()
         let data = await this.api.upLoad(imgUrl[0])
         this.imageList.push(data.link)
       },
+      deleteImg(index){
+        this.imgList.splice(index,1)
+      },
       toBack(){
         this.util.back(1)
+      },
+      toSubmit(val){
+        if(val == 1){
+          const param ={
+            orderId:this.id,
+            descr:this.info.descr,
+            imgUrl:this.imageList.join(),
+          }
+          this.api.addException(param).then(res=>{
+            if(res.code == 200){
+              this.toBack()
+            }
+          })
+        }else{
+          const param ={
+            id:this.itemId,
+            orderId:this.id,
+            descr:this.info.descr,
+            imgUrl:this.imageList.join(),
+          }
+          this.api.editException(param).then(res=>{
+            if(res.code == 200){
+              this.toBack()
+            }
+          })
+        }
+
       }
     },
     components:{
@@ -108,7 +154,37 @@
               position: absolute;
               width: 32rpx;
               height: 32rpx;
+              right: 7rpx;
+              margin: 0;
+              top: -16rpx;
+
             }
+          }
+        }
+      }
+      .submitBox{
+        width: 710rpx;
+        height: 88rpx;
+        display: flex;
+        border-radius: 12rpx;
+        border: 1rpx solid #E51937;
+        position: fixed;
+        bottom: 80rpx;
+        z-index:50;
+        p{
+          font-size: 28rpx;
+          width: 50%;
+          background-color: #FFFFFF;
+          color: #E51937;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:first-of-type{
+            border-radius: 12rpx 0 0 12rpx;
+          }
+          &:last-of-type{
+            color: #FFFFFF;
+            background-color: #E51937;
           }
         }
       }

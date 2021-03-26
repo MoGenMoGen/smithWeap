@@ -40,7 +40,7 @@
           <div>
             <!--阶段性进度条-->
             <Steps :status="item.processStatus"></Steps>
-            <p style="border: 1rpx solid #909090;color: #909090;" @click="toDetail(currentIndex,item.id)">
+            <p style="border: 1rpx solid #909090;color: #909090;" @click="toDetail(currentIndex,item.id,item.workType)">
               查看
             </p>
           </div>
@@ -149,13 +149,13 @@
         }
       },
       //跳转详情页
-      toDetail(val,id){
+      toDetail(val,id,type){
          switch (val){
            case 0:
              this.toPage('/pages/report/index/main?id='+id)
              break
            case 1:
-             this.toPage()
+             this.toPage('/pages/report/confirmOrder/main?id='+id +'&type='+type)
              break
          }
       },

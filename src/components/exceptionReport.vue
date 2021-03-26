@@ -4,12 +4,12 @@
     <ul>
       <li><img :src="yctb"/>异常现象描述</li>
       <li v-for="(item,index) in list" :key="index">
-        <p>{{item.content}}</p>
+        <p>{{item.descr}}</p>
         <img :src="item.imgUrl"/>
-        <p><span>提交日期：{{item.time}}</span><img :src="btb" v-if="showButton"/></p>
+        <p><span>提交日期：{{item.createTime}}</span><img :src="btb" @click="toPage('/pages/report/newException/main?itemId='+item.id+'&type='+ 2)"/></p>
       </li>
     </ul>
-    <p class="submit" v-if="showButton">
+    <p class="submit" @click="toPage('/pages/report/newException/main?id='+id+'&type='+ 1)">
      新增
     </p>
   </div>
@@ -43,6 +43,9 @@
         ],
       }
     },
+    onShow(){
+      this.getList();
+    },
     mounted(){
       this.getList();
     },
@@ -50,6 +53,9 @@
       async getList(){
         let data = await this.api.getExceptionList(this.id)
         this.list =  data.data
+        this.list.forEach(item=>{
+          item.createTime = item.createTime.slice(0,10)
+        })
       },
       toPage(url){
         if(url){

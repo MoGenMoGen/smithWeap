@@ -75,6 +75,12 @@
   import InfoTemPlate from "./infoTemPlate";
   export default {
     components: {InfoTemPlate},
+    props:{
+      id:{
+        default:'',
+        type:String
+      }
+    },
     data(){
       return{
         logo,
@@ -154,7 +160,17 @@
         array: ['个', '十', '百', '千'],
       }
     },
+    onShow(){
+      this.getData()
+    },
+    mounted(){
+      this.getData()
+    },
     methods:{
+      async getData(){
+        let data = await this.api.getInventoryDtl(this.id)
+        console.log(data);
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)

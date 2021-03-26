@@ -4,7 +4,7 @@
     <ul>
       <li><img :src="yctb"/>现场交底情况说明</li>
       <li v-if="info && info.state !=2"><textarea placeholder="请输入交底情况" v-model="info.descr"></textarea></li>
-      <li v-else><p v-html="info.descr"></p></li>
+      <li v-else><p>{{info.descr}}</p></li>
     </ul>
     <div class="photoBox">
       <ul>
@@ -50,6 +50,9 @@
         info:{},
         imageList:[],
       }
+    },
+    onShow(){
+      this.getData();
     },
     mounted(){
       this.getData();
