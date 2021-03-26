@@ -179,6 +179,9 @@
         type:1,
       }
     },
+    async onLoad(e){
+      this.type = e.type
+    },
     async onShow(){
     },
     methods:{
