@@ -43,9 +43,9 @@
     components: {DailyTemPlate},
     props:{
       showButton:{
-        default:false,
+        default:true,
         type:Boolean,
-      }
+      },
     },
     data(){
       return{

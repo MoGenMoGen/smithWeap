@@ -75,6 +75,12 @@
   import InfoTemPlate from "./infoTemPlate";
   export default {
     components: {InfoTemPlate},
+    props:{
+      id:{
+        default:'',
+        type:String
+      }
+    },
     data(){
       return{
         logo,

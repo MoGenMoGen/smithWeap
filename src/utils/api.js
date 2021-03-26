@@ -509,6 +509,30 @@ class api {
       })
     })
   }
+  //异常报告新增
+  addException(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksexception/add",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //异常报告详情
+  getExceptionDtl(id){
+    return new Promise(resolve =>{
+      get("/blade-works/worksexception/info?id="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //异常报告修改
+  editException(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksexception/alter",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
 
 }
 
