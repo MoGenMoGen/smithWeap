@@ -72,7 +72,6 @@
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
   import Reports from "@/components/reports";
-
   import gzdk from "@/components/img/工作打卡.png"
   import gzdk2 from "@/components/img/工作打卡2.png"
   import hwqd from "@/components/img/清点货物.png"
@@ -136,6 +135,7 @@
       this.orderId = e.id
     },
     async onShow(){
+      this.currentIndex = 0
       this.getDetail(this.orderId);
     },
     methods:{

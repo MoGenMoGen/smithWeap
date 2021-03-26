@@ -1,13 +1,13 @@
 <template>
   <div class="dailyTemplate">
     <ul>
-      <li><span>工作时间</span><p>{{info.time}}</p></li>
+      <li><span>工作时间</span><p>{{info.reportDt}}</p></li>
       <li><span>工作地址</span><p>{{info.addr}}</p></li>
-      <li><span>缺货数量</span><p>{{info.content}}</p></li>
+      <li><span>工作内容</span><p>{{info.jobCont}}</p></li>
       <li><span>现场照片</span><p>
-        <img v-for="(item,index) in info.imgList" :src="item.imgUrl" :key="index"/>
+        <img v-for="(item,index) in info.imgList " :src="item" :key="index"/>
       </p></li>
-      <li><span>备注</span><p>{{info.remark}}</p><img @click="edit" :src="btb" v-if="showButton"/></li>
+      <li><span>备注</span><p>{{info.rmks}}</p><img @click="edit" :src="btb" v-if="showButton"/></li>
     </ul>
   </div>
 </template>
@@ -30,11 +30,11 @@
       }
     },
     mounted(){
-
+    
     },
     methods:{
       edit(){
-        this.$emit('showMask',1)
+        this.$emit('showMask',2,this.info)
       }
     }
   }

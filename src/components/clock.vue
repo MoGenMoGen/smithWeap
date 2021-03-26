@@ -30,7 +30,7 @@
               行程记录
             </span>
             <p class="imgUrl">
-              <img :src="z?z:tx" v-for="(z,x) in item.imgUrl" mode="width"/>
+              <img :src="z?z:tx" v-for="(z,x) in item.imgUrl" :key="x" mode="width"/>
             </p>
           </li>
         </ul>

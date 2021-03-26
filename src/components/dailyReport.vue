@@ -16,11 +16,21 @@
         安装指导为3个工作日，至现场后，指导人员根据现场的设备工具、人员、安装条件、货物情况制定安装计划：
       </p>
       <ul>
-        <li><span>工作时间</span><input v-model="info.time" placeholder="请输入工作时间"/><img :src="rltb"/></li>
+        <li><span>工作时间</span><input v-model="info.reportDt" placeholder="请输入工作时间"/><img :src="rltb"/></li>
         <li><span>工作地址</span><input v-model="info.addr" placeholder="请输入工作地址"/><img :src="dwhs"/></li>
-        <li><span>工作内容</span><textarea v-model="info.content" placeholder="请输入工作内容"></textarea></li>
-        <li><span>现场照片</span><img :src="tj"/></li>
-        <li><span>备注</span><input v-model="info.remark" placeholder="请输入备注内容"/></li>
+        <li><span>工作内容</span><textarea v-model="info.jobCont" placeholder="请输入工作内容"></textarea></li>
+        <li><span>现场照片</span>
+          <div class="wrap">
+            <div class="box">
+              <img :src="tj"  @click="toPhoto" />
+              <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
+                <img :src="item" mode="heightFix"/>
+                <img :src="del" class="del" @click="delimg(index)" />
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><span>备注</span><input v-model="info.rmks" placeholder="请输入备注内容"/></li>
       </ul>
       <div class="modalFooter">
         <div class="btnCancel" @tap="tapCancel">取消</div>
@@ -38,13 +48,14 @@
   import cs from '@/components/img/测试.png'
   import btb from '@/components/img/笔图标.png'
   import tj from '@/components/img/图片上传图标.png'
+  import del from "@/components/img/删除图标.png"
   import DailyTemPlate from "./dailyTemPlate";
   export default {
     components: {DailyTemPlate},
     props:{
-      showButton:{
-        default:false,
-        type:Boolean,
+      id:{
+        // default:false,
+        type:String,
       }
     },
     data(){
@@ -55,41 +66,26 @@
         xlhs,
         tj,
         btb,
+        del,
+        //详情数据
         info:{
-          time:'2021-03-20',
-          addr:'宁波镇海329创业社区',
-          content:'安装门头 B段',
-          imgList:[
-            {imgUrl:cs},{imgUrl:cs}
-          ],
-          remark:'无',
+          reportDt:'',//工作时间
+          addr:'',//地点
+          jobCont:'',//工作内容
+          lng:'',
+          lat:'',
+          imgUrl:'',//图片
+          rmks:'',//备注
         },
+        //每日汇报列表
         list:[
-          {
-            time:'2021-03-20',
-            addr:'宁波镇海329创业社区',
-            content:'安装门头 B段',
-            imgList:[
-              {imgUrl:cs},{imgUrl:cs}
-            ],
-            remark:'无',
-          },{
-            time:'2021-03-20',
-            addr:'宁波镇海329创业社区',
-            content:'安装门头 B段',
-            imgList:[
-              {imgUrl:cs},{imgUrl:cs}
-            ],
-            remark:'无',
-          }
         ],
         isModel:false,
         changeModel:false,
-        submitInfo:{
-          nm:'',
-        },
         index:0,
-        array: ['个', '十', '百', '千'],
+        showButton:true,//编辑按钮开关
+        imgList:[],//图片数组库
+        type:1,//操作 1是新增 2是修改
       }
     },
     methods:{
@@ -102,21 +98,119 @@
         console.log('picker发送选择改变，携带值为', e.mp.detail.value)
         this.index = e.mp.detail.value
       },
+      //清除详细表单信息
+      clearinfo(){
+        this.info={
+          reportDt:'',//工作时间
+          addr:'',//地点
+          jobCont:'',//工作内容
+          lng:'',
+          lat:'',
+          imgUrl:'',//图片
+          rmks:'',//备注
+        };
+        this.imgList = []
+      },
       //  弹框取消
       tapCancel() {
+        this.clearinfo()
         this.changeModel = !this.changeModel;
         this.isModel = !this.isModel;
       },
       //  确认
       confirmSend() {
+        // console.log(this.info);
+        //新增
+        if(this.type ==1){
+          let param = this.info
+          param.orderId = this.id
+          this.api.addReport(param)
+        }else if(this.type ==2){
+          let param = this.info
+          this.api.alterReport(param)
+        }
+        //基本操作
         this.changeModel = !this.changeModel;
         this.isModel = !this.isModel;
-
+        this.clearinfo()//初始化数据
+        this.getlist()//重新获取列表
       },
-      showModel(val) {
+      showModel(val,info) {
+        if(val ==1){
+          this.clearinfo()
+          this.getLocation();
+          this.type = 1;
+        }
+        else if(val ==2){
+          // console.log(info);
+          this.type = 2;
+          this.info={
+            id:info.id,//id
+            orderId:info.orderId,//orderId
+            reportDt:info.reportDt,//工作时间
+            addr:info.addr,//地点
+            jobCont:info.jobCont,//工作内容
+            lng:info.lng,
+            lat:info.lat,
+            imgUrl:info.imgUrl,//图片
+            rmks:info.rmks,//备注
+          };
+          if(this.info.imgUrl){
+            this.imgList = this.info.imgUrl.split(',')
+          }else{
+            this.imgList = []
+          }
+        }
         this.changeModel = !this.changeModel;
-        this.isModel = !this.isModel;
+        this.isModel = !this.isModel; 
+      },
+      //获取经纬度
+      getLocation(){
+        console.log('获取经纬度');
+        let _this = this
+        wx.getLocation({
+          type: 'wgs84',
+          success (res) {
+          //  console.log(res);
+          _this.info.lng = res.longitude
+          _this.info.lat = res.latitude
+          }
+        })
+      },
+      //上传图片
+      async toPhoto(){
+        let imgUrl = await this.api.chooseImages()
+        let data = await this.api.upLoad(imgUrl[0])
+        this.imgList.push(data.link)
+        this.info.imgUrl = this.imgList.join(',');
+        // console.log(this.info);
+        // console.log(this.imgList);
+      },
+      //删除图片
+      delimg(index){
+        this.imgList.splice(index,1)
+        this.info.imgUrl = this.imgList.join(',');
+      },
+      //获取列表数据
+      async getlist(){
+        var res = await this.api.getlistByOrder(this.id)
+        // console.log(res);
+        this.list = res.data
+        console.log(this.list);
+        this.list.forEach(item => {
+          item.imgList = item.imgUrl.split(',')
+        });
       }
+    },
+    mounted(){
+      this.getlist()
+    },
+    onShow(){
+      //获取列表
+      this.getlist()
+      // const res = this.api.getlistByOrder(this.id)
+      // console.log(res);
+      // this.list = res.data
     }
   }
 </script>
@@ -187,7 +281,7 @@
         }
       }
       ul{
-        padding: 38rpx 50rpx 120rpx;
+        padding: 38rpx 50rpx 20rpx;
         box-sizing: border-box;
         li{
           display: flex;
@@ -199,9 +293,35 @@
             border-top: 1rpx solid rgba(0, 0, 0, 0.1);
           }
           &:nth-of-type(4){
-            img{
-              width: 160rpx;
+            .wrap{
+              flex: 1;
+              overflow-x: auto;
               height: 160rpx;
+              padding: 20rpx;
+              img{
+                width: 160rpx;
+                height: 160rpx;
+                margin-right: 20rpx;
+              }
+              .box{
+                float: left;
+                display: flex;
+                height: 160rpx;
+                .imgs{
+                  position: relative;
+                  // width: 160rpx;
+                  height: 160rpx;
+                  display: inline-block;
+                  .del{
+                    position: absolute;
+                    width: 32rpx;
+                    height: 32rpx;
+                    top: -16rpx;
+                    right: -16rpx;
+                  } 
+                }
+                
+              }
             }
           }
           span{

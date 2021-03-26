@@ -509,7 +509,38 @@ class api {
       })
     })
   }
-
+  //每日汇报-列表接口
+  getlistByOrder(id){
+    return new Promise(resolve =>{
+      get("/blade-works/worksreport/listByOrder?orderId="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //每日汇报-详情接口
+  getReportinfo(id){
+    return new Promise(resolve =>{
+      get("/blade-works/worksreport/info?id="+id).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //每日汇报-新增接口
+  addReport(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksreport/add",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //每日汇报-修改接口
+  alterReport(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksreport/alter",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api };
