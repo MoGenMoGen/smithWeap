@@ -55,7 +55,7 @@
   import xgmm from "@/components/img/修改密码.png"
   import tj from "@/components/img/统计.png"
   import xg from "@/components/img/修改.png"
-  import tx from "@/components/img/头像一.jpg"
+  import tx from "@/components/img/测试.png"
   export default {
     data(){
       return{

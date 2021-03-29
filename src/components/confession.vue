@@ -61,10 +61,7 @@
       async getData(){
         let data = await this.api.getConfession(this.id)
         this.info = data.data
-        console.log(data.data.imgUrl)
-        console.log(data.data.imgUrl.split(','))
         this.imageList = data.data.imgUrl.split(',')
-        console.log(this.imageList);
       },
       toSave(){
         const param = {

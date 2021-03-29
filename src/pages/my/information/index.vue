@@ -24,7 +24,7 @@
   import headerBase from "@/components/headerBase";
   import bottomBase from "@/components/bottomBase";
 
-  import tx from "@/components/img/头像一.jpg"
+  import tx from "@/components/img/测试.png"
   export default {
     data(){
       return{

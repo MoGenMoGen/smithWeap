@@ -1,0 +1,79 @@
+<import src="/components/bottomBase.vue.wxml" /><template name="0eb850ca">
+  <view class="_div data-v-3564d0b4 app">
+    <view class="_div data-v-3564d0b4 main">
+      <view class="_div data-v-3564d0b4 infoBox">
+        <view class="_ul data-v-3564d0b4">
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">发布日期</label>
+            <view class="_p data-v-3564d0b4">{{info.bidStart}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">接单日期</label>
+            <view class="_p data-v-3564d0b4">{{info.orderTm}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">项目人员</label>
+            <view class="_p data-v-3564d0b4">{{info.userName}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">工单编号</label>
+            <view class="_p data-v-3564d0b4">{{info.cd}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">项目</label>
+            <view class="_p data-v-3564d0b4">{{info.projNm}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">经销商名称</label>
+            <view class="_p data-v-3564d0b4">{{info.custNm}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">要求到场时间</label>
+            <view class="_p data-v-3564d0b4">{{info.arrivalDt}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">工作类型</label>
+            <view class="_p data-v-3564d0b4">{{info.workTypeNm}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">工作内容</label>
+            <view class="_p data-v-3564d0b4">{{info.workCont}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">客户联系人</label>
+            <view class="_p data-v-3564d0b4">{{info.custContact}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">客户联系电话</label>
+            <view class="_p data-v-3564d0b4">{{info.custMob}}</view>
+          </view>
+          <view class="_li data-v-3564d0b4"><label class="_span data-v-3564d0b4">客户联系地址</label>
+            <view class="_p data-v-3564d0b4">{{info.custAddr}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="_div data-v-3564d0b4 navBox">
+        <view class="_ul data-v-3564d0b4">
+          <view wx:key="index" key="{{index}}" bindtap="handleProxy" data-eventid="{{'0_'+index}}" data-comkey="{{$k}}" wx:for="{{centerList}}" wx:for-index="index" wx:for-item="item" class="_li data-v-3564d0b4">
+            <image src="{{item.imgUrl}}" mode="aspectFit" class="_img data-v-3564d0b4 img"></image>
+            <view class="_p data-v-3564d0b4" style=" {{('color:' + '#303030' + ';')}}">{{item.nm}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="_div data-v-3564d0b4 repairbefore">
+        <view class="_div data-v-3564d0b4 title">维修前照片</view>
+        <view class="_div data-v-3564d0b4 br"></view>
+        <view class="_div data-v-3564d0b4 picture">
+          <view class="_div data-v-3564d0b4 imgbox">
+            <view class="_div data-v-3564d0b4 imgs" wx:key="index" key="{{index}}" wx:for="{{imglist1}}" wx:for-index="index" wx:for-item="item">
+              <image src="{{item}}" mode="heightFix" class="_img data-v-3564d0b4"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="_div data-v-3564d0b4 repairbefore">
+        <view class="_div data-v-3564d0b4 title">维修后照片</view>
+        <view class="_div data-v-3564d0b4 br "></view>
+        <view class="_div data-v-3564d0b4 picture">
+          <view class="_div data-v-3564d0b4 imgbox">
+            <view class="_div data-v-3564d0b4 imgs" wx:key="index" key="{{index}}" wx:for="{{imglist2}}" wx:for-index="index" wx:for-item="item">
+              <image src="{{item}}" mode="heightFix" class="_img data-v-3564d0b4"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="_div data-v-3564d0b4 work bottom">
+        <view class="_div data-v-3564d0b4 title">工作完成情况：(填写工作内容)</view>
+        <view class="_div data-v-3564d0b4 br br1"></view>
+        <view class="_div data-v-3564d0b4 textarea"><textarea value="{{pushInfo.completionDesc}}" bindinput="handleProxy" bindblur="bindTextAreaBlur" auto-height disabled data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_textarea data-v-3564d0b4" /></view> <view class="_div data-v-3564d0b4 time"><label class="_span data-v-3564d0b4">完成日期</label> <input value="{{pushInfo.completionTm}}" bindinput="handleProxy" type="text" disabled data-eventid="{{'2'}}" data-comkey="{{$k}}" class="_input data-v-3564d0b4" /></view></view> <view class="_div data-v-3564d0b4 question"><view class="_div data-v-3564d0b4 title">问题反馈：(描述并附带现场照片)</view> <view class="_div data-v-3564d0b4 br br1"></view> <view class="_div data-v-3564d0b4 feedback">
+        {{pushInfo.feedback}}
+      </view> <view class="_div data-v-3564d0b4 picture" style="padding-top: 80rpx"><view class="_div data-v-3564d0b4 imgbox"><view class="_div data-v-3564d0b4 imgs" wx:key="index" key="{{index}}" wx:for="{{imglist3}}" wx:for-index="index" wx:for-item="item"><image src="{{item}}" mode="heightFix" class="_img data-v-3564d0b4"></image></view></view></view></view></view> <view class="_div data-v-3564d0b4 wait"><image src="{{dshtb}}" alt class="_img data-v-3564d0b4"></image> <label class="_span data-v-3564d0b4">待售后审核</label></view> <template data="{{...$root[$kk+'0'], $root}}" is="eb4913e8"></template></view></template>

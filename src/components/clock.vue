@@ -78,6 +78,9 @@
 
       }
     },
+    onShow(){
+      this.getList(this.id)
+    },
     async mounted(){
       this.getList(this.id)
     },

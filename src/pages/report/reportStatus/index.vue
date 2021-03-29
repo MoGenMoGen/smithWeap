@@ -160,13 +160,12 @@
              break
            case 1:
              if(type ==1 || type ==3){
-               this.toPage('/pages/report/confirmOrder/main?id='+id +'&type='+type)
+               this.toPage('/pages/report/confirm/main?id='+id +'&type='+type)
              }else if(type ==2){
                this.toPage('/pages/report/AfterSaleOrder/main?id='+id)
              }
-             
+
              break
-           
          }
       },
       toPage(url){

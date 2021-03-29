@@ -5,51 +5,114 @@
         <ul>
           <li>
             <span>发布日期</span>
-            <p>{{info.pubTm}}</p>
+            <p>{{info.bidStart}}</p>
           </li>
           <li>
             <span>截止日期</span>
-            <p>{{info.finishTm}}</p>
+            <p>{{info.bidEnd}}</p>
           </li>
           <li>
             <span>项目人员</span>
-            <p>{{info.proP}}</p>
+            <p>{{info.userName}}</p>
           </li>
           <li>
             <span>工单编号</span>
-            <p>{{info.proId}}</p>
+            <p>{{info.cd}}</p>
           </li>
           <li>
             <span>项目</span>
-            <p>{{info.pro}}</p>
+            <p>{{info.projNm}}</p>
           </li>
           <li>
             <span>经销商名称</span>
-            <p>{{info.cNm}}</p>
+            <p>{{info.custNm}}</p>
           </li>
           <li>
             <span>要求到场时间</span>
-            <p>{{info.time}}</p>
+            <p>{{info.arrivalDt}}</p>
           </li>
           <li>
             <span>工作类型</span>
-            <p>{{info.type}}</p>
+            <p>{{info.workTypeNm}}</p>
           </li>
           <li>
             <span>工作内容</span>
-            <p>{{info.content}}</p>
+            <p>{{info.workCont}}</p>
           </li>
           <li>
             <span>客户联系人</span>
-            <p>{{info.kh}}</p>
+            <p>{{info.custContact}}</p>
           </li>
           <li>
             <span>客户联系电话</span>
-            <p>{{info.khTel}}</p>
+            <p>{{info.custMob}}</p>
           </li>
           <li>
             <span>客户联系地址</span>
-            <p>{{info.khAddr}}</p>
+            <p>{{info.custAddr}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="imgBox box">
+        <ul>
+          <li>完工照片(白天照片)</li>
+          <li><img v-for="(item,index) in dayList" :key="index" :src="item" mode="width"/></li>
+        </ul>
+      </div>
+      <div class="imgBox">
+        <ul>
+          <li>完工照片(晚上照片)</li>
+          <li><img v-for="(item,index) in nightList" :key="index" :src="item" mode="width"/></li>
+        </ul>
+      </div>
+      <div class="navBox">
+        <ul>
+          <li v-for="(item,index) in centerList" :key="index" @click="toPage(item.path)">
+            <img :src="item.imgUrl" mode="aspectFit" class="img"/>
+            <p style="color:#303030">{{item.nm}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="infoBox review">
+        <ul>
+          <li>
+            <span>工作人员</span>
+            <p>{{info.constructionManagerNm}}</p>
+          </li>
+          <li>
+            <span>提交时间</span>
+            <p>{{info.worksCompletion.createTime}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="infoBox review">
+        <ul>
+          <li>
+            <span>售后审核</span>
+            <p>{{info.userName}}</p>
+          </li>
+          <li>
+            <span>审核状态</span>
+            <p>{{info.worksCompletion.custContact}}</p>
+          </li>
+          <li>
+            <span>审核时间</span>
+            <p>{{info.worksCompletion.auditTm}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="infoBox review">
+        <ul>
+          <li>
+            <span>确认二维码</span>
+            <img />
+          </li>
+        </ul>
+      </div>
+      <div class="infoBox review">
+        <ul>
+          <li>
+            <p><img class="icon" :src="jg" mode="width"/>{{info.worksCompletion.audit}}</p>
           </li>
         </ul>
       </div>
@@ -73,10 +136,12 @@
   import jdbg from "@/components/img/交底报告.png"
   import jdbg2 from "@/components/img/交底报告2.png"
   import jt from "@/components/img/箭头.png"
+  import jg from "@/components/img/无打卡图标.png"
   export default {
     data(){
       return{
         jt,
+        jg,
         info:{
           pubTm:'2021-03-20',
           finishTm:'2021-03-20',
@@ -118,11 +183,29 @@
         isModel:false,
         changeModel:false,
         type:1,
+        orderId:'',
+        dayList:[],
+        nightList:[],
       }
     },
+    async onLoad(e){
+      this.type = e.type
+      this.orderId = e.id
+    },
     async onShow(){
+      this.getData();
     },
     methods:{
+      async getData(){
+        let data = await this.api.getInstallDtl(this.orderId)
+        data.data.bidStart = data.data.bidStart.slice(0,10)
+        data.data.bidEnd = data.data.bidEnd.slice(0,10)
+        data.data.worksCompletion.createTime = data.data.worksCompletion.createTime.slice(0,10)
+        data.data.worksCompletion.auditTm = data.data.worksCompletion.auditTm.slice(0,10)
+        this.info = data.data
+        this.dayList = data.data.worksCompletion.imgDay.split(',')
+        this.nightList = data.data.worksCompletion.imgNight.split(',')
+      },
       showMask(type){
         switch(type){
           case 1:
@@ -160,7 +243,6 @@
 
 </style>
 <style scoped lang="less">
-@import url("../../../css/common.less");
   .app{
     width: 100%;
     height: 100%;
@@ -204,8 +286,80 @@
           }
         }
       }
+      .imgBox{
+        ul{
+          display: flex;
+          flex-direction: column;
+          padding: 20rpx 28rpx;
+          box-sizing: border-box;
+          background-color: #FFFFFF;
+          border-radius: 12rpx;
+          margin-bottom: 20rpx;
+          li{
+            display: flex;
+            align-items: center;
+            border-bottom: 1rpx solid #D0CED8;
+            padding: 20rpx 6rpx;
+            box-sizing: border-box;
+            img{
+              width: 240rpx;
+              height: 160rpx;
+            }
+            &:last-of-type{
+              border-bottom: none;
+            }
+          }
+        }
+      }
       .box{
         margin-top: 24rpx;
+      }
+      .navBox{
+        margin-top: 40rpx;
+        ul{
+          width: 100%;
+          display: flex;
+          display: -webkit-flex;
+          align-items: center;
+          overflow: hidden;
+          li{
+            flex: 1;
+            padding-top: 20rpx;
+            padding-bottom: 20rpx;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative;
+            margin-bottom: 50rpx;
+            &:not(:last-of-type){
+              border-right: 1px solid #EBECEC;
+            }
+            .img{
+              width: 100rpx;
+              height: 100rpx;
+              margin-bottom: 10rpx;
+            }
+            .img2{
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
+              bottom: -50rpx;
+              width: 50rpx;
+            }
+            p{
+              color: #000;
+              font-size: 24rpx;
+            }
+          }
+        }
+      }
+      .review{
+        ul{
+          margin-bottom: 20rpx;
+          .icon{
+            width: 32rpx;
+            height: 32rpx;
+          }
+        }
       }
     }
   }

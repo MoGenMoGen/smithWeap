@@ -49,7 +49,7 @@
 <script>
   import bottomBase from "@/components/bottomBase";
 
-  import tx from "@/components/img/头像一.jpg"
+  import tx from "@/components/img/测试.png"
   import zb from "@/components/img/中标.png"
   import wzb from "@/components/img/未中标.png"
   export default {

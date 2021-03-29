@@ -218,7 +218,6 @@
 
 </style>
 <style scoped lang="less">
-@import url("../../../css/common.less");
   .app{
     width: 100%;
     height: 100%;
