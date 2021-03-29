@@ -597,42 +597,26 @@ class api {
       })
     })
   }
-  //获取个人信息
-  getUser(data){
-    return new Promise(resolve => {
-      get('/blade-user/infoUser',data).then(res=>{
-        resolve(res)
-      })
-    })
-  }
-  //修改密码
-  changePassword(data){
-    return new Promise(resolve => {
-      post('/blade-user/updatePassword'+data).then(res=>{
-        resolve(res)
-      })
-    })
-  }
-  //获取消息列表
-  getMessageList(data){
-    return new Promise(resolve => {
-      get('/blade-msg/msgrecords/msglist',data).then(res=>{
-        resolve(res)
-      })
-    })
-  }
-  //获取消息详情
-  getMessageDetail(data){
-    return new Promise(resolve => {
-      get("/blade-msg/msgrecords/readMymsg",data).then(res=>{
-        resolve(res)
-      })
-    })
-  }
-  //获取金额统计列表
-  getPorecordsList(data){
+  //获取广告轮播图
+  listAdsByPos(data){
     return new Promise(resolve =>{
-      get("/blade-po/porecords/listStatistical",data).then(res=>{
+      get("/open/advertinfo/listAdsByPos",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //获取施工汇报-所有列表
+  getlistAll(data){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/listAll",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //报价单列表-个人中心
+  listOfferToMy(data){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/listOfferToMy",data).then(res=>{
         resolve(res)
       })
     })
