@@ -35,7 +35,7 @@
               <img :src="item.worksOfferStatusVo.state == 3? zb:wzb"/>
               {{item.worksOfferStatusVo.stateNm}}
             </span>
-            <p style="border: 1rpx solid #909090;color: #909090;">
+            <p style="border: 1rpx solid #909090;color: #909090;" @click="toPage('/pages/quotation/detail/main?id='+item.id)">
               查看
             </p>
           </div>
@@ -61,7 +61,6 @@
         current:1,
         size:10,
         total:0,
-
       }
     },
     mounted(){
@@ -109,7 +108,7 @@
           item.worksOffer.amount = this.addCommas(item.worksOffer.amount )
         })
         this.list.push(...data.data.records)
-        console.log(this.list);
+        // console.log(this.list);
 
         this.total = data.data.total
       },
