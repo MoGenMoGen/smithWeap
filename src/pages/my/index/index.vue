@@ -3,16 +3,16 @@
     <div class="headBack">
       <div class="infoBox" @click="toPage('/pages/my/information/main')">
         <div class="userImgBox" >
-          <img :src="info.avatar?info.avatar:tx"/>
+          <img :src="info.imgUrl?info.imgUrl:tx"/>
           <img :src="xg" class="xg"/>
         </div>
         <div class="nmBox">
           <p>
-            <span>{{info.name}}</span>
-            {{info.phone}}
+            <span>{{info.nm}}</span>
+            {{info.tel}}
           </p>
           <p>
-            {{info.deptName}}
+            {{info.company}}
           </p>
         </div>
       </div>
@@ -55,6 +55,7 @@
   import xgmm from "@/components/img/修改密码.png"
   import tj from "@/components/img/统计.png"
   import xg from "@/components/img/修改.png"
+  import tx from "@/components/img/头像一.jpg"
   export default {
     data(){
       return{
@@ -65,11 +66,12 @@
         xgmm,
         tj,
         xg,
+        tx,
         info:{
-          avatar:'',
-          name:'雨新斯',
-          phone:'13590001234',
-          deptName:'广州史密斯广告制作有限公司',
+          imgUrl:'',
+          nm:'雨新斯',
+          tel:'13590001234',
+          company:'广州史密斯广告制作有限公司',
         },
         navList:[
           {
@@ -87,7 +89,7 @@
           {
             nm:'我的工单',
             imgUrl:gd,
-            path:'',
+            path:'/pages/report/reportStatus/main',
           },{
             nm:'我的报价',
             imgUrl:bj,
@@ -108,19 +110,11 @@
         ],
       }
     },
-    async onShow(){
-      this.getUser();
-    },
     methods:{
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
-      },
-      async getUser(){
-        let data = await this.api.getUser();
-        this.info = data.data
-        console.log(data);
       },
     },
     components:{
