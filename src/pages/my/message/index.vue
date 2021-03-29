@@ -3,10 +3,10 @@
   <div class="app">
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in list" :key="index" @click="toPage('/pages/my/msgDetail/main')">
+        <div class="box" v-for="(item,index) in list" :key="index" @click="toPage('/pages/my/msgDetail/main?id='+item.id)">
           <p>{{item.nm}}</p>
-          <p>{{item.content}}</p>
-          <p>{{item.time}}</p>
+          <p>{{item.cont}}</p>
+          <p>{{item.sendTm}}</p>
         </div>
       </div>
     </div>
@@ -16,44 +16,47 @@
 
 <script>
   import bottomBase from "@/components/bottomBase";
-
-  import tx from "@/components/img/测试.png"
-  import zb from "@/components/img/中标.png"
-  import wzb from "@/components/img/未中标.png"
   export default {
     data(){
       return{
-        tx,
-        zb,
-        wzb,
-        list:[
-          {
-            nm:'南宁宾利投标',
-            content:'2021-04-11至2021-04-22南宁宾利公开投标。',
-            time:'2021-04-10'
-          },{
-            nm:'南宁宾利投标',
-            content:'2021-04-11至2021-04-22南宁宾利公开投标。',
-            time:'2020-12-05',
-          },{
-            nm:'南宁宾利投标',
-            content:'2021-04-11至2021-04-22南宁宾利公开投标。',
-            time:'2021-04-10'
-          },{
-            nm:'南宁宾利投标',
-            content:'2021-04-11至2021-04-22南宁宾利公开投标。',
-            time:'2020-12-05',
-          }
-        ],
+        list:[],
+        current: 1,
+        size: 10,
+        total:0,
       }
     },
-    mounted(){
+    onReachBottom(){
+      if(this.list.length>=this.total){
+        return
+      }
+      if(this.list.length<this.total){
+        this.current++
+        this.getList()
+      }
+    },
+    async onShow(){
+      this.current = 1
+      this.list = []
+      this.getList()
     },
     methods:{
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
+      },
+      async getList(){
+        const param={
+          current:this.current,
+          size:this.size,
+        }
+        let data = await this.api.getMessageList(param)
+        data.data.records.forEach(record=>{
+          record.sendTm = record.sendTm.slice(0,10)
+        })
+        this.list.push(...data.data.records)
+        console.log(this.list);
+        this.total = data.data.total
       },
     },
     components:{
@@ -65,7 +68,6 @@
 
 </style>
 <style scoped lang="less">
-@import url("../../../css/common.less");
   .app{
     width: 100%;
     height: 100%;

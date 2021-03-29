@@ -77,31 +77,31 @@
         <ul>
           <li>
             <span>工作人员</span>
-            <p>{{info.constructionManagerNm}}</p>
+            <p>{{info.constructionManagerNm? info.constructionManagerNm:'暂无'}}</p>
           </li>
           <li>
             <span>提交时间</span>
-            <p>{{info.worksCompletion.createTime}}</p>
+            <p>{{info.worksCompletion.createTime? info.worksCompletion.createTime:'暂无'}}</p>
           </li>
         </ul>
       </div>
-      <div class="infoBox review">
+      <div class="infoBox review" v-if="info.worksCompletion.audit==2">
         <ul>
           <li>
             <span>售后审核</span>
-            <p>{{info.userName}}</p>
+            <p>{{info.userName? info.userName:'暂无'}}</p>
           </li>
           <li>
             <span>审核状态</span>
-            <p>{{info.worksCompletion.custContact}}</p>
+            <p>{{info.worksCompletion.custContact? info.worksCompletion.custContact:'暂无'}}</p>
           </li>
           <li>
             <span>审核时间</span>
-            <p>{{info.worksCompletion.auditTm}}</p>
+            <p>{{info.worksCompletion.auditTm? info.worksCompletion.auditTm:'暂无'}}</p>
           </li>
         </ul>
       </div>
-      <div class="infoBox review">
+      <div class="infoBox review" v-if="info.worksCompletion.audit==2">
         <ul>
           <li>
             <span>确认二维码</span>
@@ -111,8 +111,11 @@
       </div>
       <div class="infoBox review">
         <ul>
-          <li>
-            <p><img class="icon" :src="jg" mode="width"/>{{info.worksCompletion.audit}}</p>
+          <li class="icon">
+            <p>
+              <img  :src="jg" mode="width"/>
+              {{info.worksCompletion.audit==1?'待售后审核':info.worksCompletion.audit==2?'待客户审核':'审核已驳回'}}
+            </p>
           </li>
         </ul>
       </div>
@@ -356,8 +359,16 @@
         ul{
           margin-bottom: 20rpx;
           .icon{
-            width: 32rpx;
-            height: 32rpx;
+            >p{
+              color: #E51937;
+              display: flex;
+              align-items: center;
+              >img{
+                width: 32rpx;
+                height: 32rpx;
+                margin-right: 10rpx;
+              }
+            }
           }
         }
       }

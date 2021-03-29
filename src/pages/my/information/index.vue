@@ -3,14 +3,26 @@
     <div class="main">
       <div class="mainBox">
         <div class="txBox">
-          <img :src="tx" class="tx"/>
+          <img :src="info.avatar" class="tx"/>
         </div>
         <!--个人中心列表-->
         <div class="core">
           <ul>
-            <li v-for="(item,index) in infoList" :key="index">
-              <span>{{item.span}}</span>
-              <p>{{item.nm}}</p>
+            <li>
+              <span>真实姓名</span>
+              <p>{{info.name}}</p>
+            </li>
+            <li>
+              <span>联系电话</span>
+              <p>{{info.phone}}</p>
+            </li>
+            <li>
+              <span>公司名称</span>
+              <p>{{info.deptName}}</p>
+            </li>
+            <li>
+              <span>公司地址</span>
+              <p>{{info.deptAddr?info.deptAddr:'暂无'}}</p>
             </li>
           </ul>
         </div>
@@ -24,33 +36,24 @@
   import headerBase from "@/components/headerBase";
   import bottomBase from "@/components/bottomBase";
 
-  import tx from "@/components/img/测试.png"
   export default {
     data(){
       return{
-        tx,
-        infoList:[
-          {
-            span:'真实姓名',
-            nm:'雨新斯',
-          },{
-            span:'联系电话',
-            nm:'13900110000',
-          },{
-            span:'公司名称',
-            nm:'广州史密斯广告制作有限公司',
-          },{
-            span:'公司地址',
-            nm:'广州市富裕路688号',
-          }
-        ],
+        info:{},
       }
+    },
+    async onShow(){
+      this.getUser();
     },
     methods:{
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
+      },
+      async getUser(){
+        let data = await this.api.getUser();
+        this.info = data.data
       },
     },
     components:{

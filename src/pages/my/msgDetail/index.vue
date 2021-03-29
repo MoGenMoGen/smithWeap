@@ -4,11 +4,11 @@
     <div class="main">
       <h1>{{info.nm}}</h1>
       <p>
-        {{info.time}}
+        {{info.sendTm}}
       </p>
-      <img :src="info.imgUrl" mode="width"/>
+      <img :src="banner" mode="width"/>
       <p>
-        {{info.content}}
+        {{info.cont}}
       </p>
     </div>
   </div>
@@ -19,15 +19,21 @@
   export default {
     data(){
       return{
+        banner,
         info:{
           nm:'南宁宾利投标',
           time:'2021-04-10',
           imgUrl:banner,
           content:'2021-04-11至2021-04-22南宁宾利公开投标。 宾利门头安装'
-        }
+        },
+        id:'',
       }
     },
-    mounted(){
+    async onLoad(e){
+      this.id = e.id
+    },
+    async onShow(){
+      this.getDetail()
     },
     methods:{
       toPage(url){
@@ -35,6 +41,14 @@
           this.util.aHref(url)
         }
       },
+      async getDetail(){
+        const param = {
+          id:this.id
+        }
+        let data = await this.api.getMessageDetail(param)
+        data.data.sendTm = data.data.sendTm.slice(0,10)
+        this.info = data.data
+      }
     },
     components:{
     }

@@ -3,16 +3,16 @@
     <div class="headBack">
       <div class="infoBox" @click="toPage('/pages/my/information/main')">
         <div class="userImgBox" >
-          <img :src="info.imgUrl?info.imgUrl:tx"/>
+          <img :src="info.avatar?info.avatar:tx"/>
           <img :src="xg" class="xg"/>
         </div>
         <div class="nmBox">
           <p>
-            <span>{{info.nm}}</span>
-            {{info.tel}}
+            <span>{{info.name}}</span>
+            {{info.phone}}
           </p>
           <p>
-            {{info.company}}
+            {{info.deptName}}
           </p>
         </div>
       </div>
@@ -55,7 +55,6 @@
   import xgmm from "@/components/img/修改密码.png"
   import tj from "@/components/img/统计.png"
   import xg from "@/components/img/修改.png"
-  import tx from "@/components/img/测试.png"
   export default {
     data(){
       return{
@@ -66,12 +65,11 @@
         xgmm,
         tj,
         xg,
-        tx,
         info:{
-          imgUrl:'',
-          nm:'雨新斯',
-          tel:'13590001234',
-          company:'广州史密斯广告制作有限公司',
+          avatar:'',
+          name:'雨新斯',
+          phone:'13590001234',
+          deptName:'广州史密斯广告制作有限公司',
         },
         navList:[
           {
@@ -110,11 +108,19 @@
         ],
       }
     },
+    async onShow(){
+      this.getUser();
+    },
     methods:{
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
+      },
+      async getUser(){
+        let data = await this.api.getUser();
+        this.info = data.data
+        console.log(data);
       },
     },
     components:{

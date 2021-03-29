@@ -5,18 +5,18 @@
      <ul>
        <li>
          <img :src="mm"/>
-         <input placeholder="请输入原始密码"/>
+         <input placeholder="请输入原始密码" v-model="info.password"/>
        </li>
        <li>
          <img :src="mm"/>
-         <input placeholder="请输入新密码"/>
+         <input placeholder="请输入新密码" v-model="info.newPassword"/>
        </li>
        <li>
          <img :src="mm"/>
-         <input placeholder="请输入新密码"/>
+         <input placeholder="请输入新密码" v-model="info.newPassword1"/>
        </li>
      </ul>
-     <p>确定</p>
+     <p @click="toChangePassword(info)">确定</p>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -33,7 +33,7 @@
         info:{
           password:'',
           newPassword:'',
-          newPassword2:'',
+          newPassword1:'',
         }
       }
     },
@@ -45,6 +45,32 @@
           this.util.aHref(url)
         }
       },
+      async toChangePassword(info){
+        if(!info.password || !info.newPassword ||info.newPassword1){
+          wx.showToast({
+            title:'必填项不得为空'
+          })
+        }else if(info.password == !info.newPassword){
+          wx.showToast({
+            title:'不得使用旧密码'
+          })
+        }else if(info.newPassword == info.newPassword1){
+          wx.showToast({
+            title:'两次新密码不相同！'
+          })
+        }else{
+          await this.api.changePassword(info).then(res=>{
+            if(res.code ==200){
+              wx.showToast({
+                title:'修改成功！'
+              })
+              setTimeout(()=>{
+                this.toPage('/pages/login/main')
+              },1500)
+            }
+          })
+        }
+      }
     },
     components:{
       bottomBase

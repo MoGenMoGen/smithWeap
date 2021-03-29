@@ -13,12 +13,12 @@
             <th>未开PO</th>
           </tr>
           <tr v-for="(item,index) in list" :key="index">
-            <td>{{item.id}}</td>
-            <td>{{item.po}}</td>
-            <td>{{item.price}}</td>
-            <td>{{item.endPrice}}</td>
-            <td>{{item.poPrice}}</td>
-            <td>{{item.noPo}}</td>
+            <td>{{item.orderCd}}</td>
+            <td>{{item.cd}}</td>
+            <td>{{item.quotedPrice}}</td>
+            <td>{{item.settlePrice}}</td>
+            <td>{{item.poTotal}}</td>
+            <td>{{item.noTotal}}</td>
           </tr>
         </table>
       </div>
@@ -33,68 +33,11 @@
   export default {
     data(){
       return{
-        list:[
-          {
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },{
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },{
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },{
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },{
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },{
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },{
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },{
-            id:'A2011036',
-            po:'C201100215',
-            price:'40000',
-            endPrice:'31500',
-            poPrice:'31500',
-            noPo:'0',
-          },
-        ],
+        list:[],
       }
     },
-    mounted(){
+    async onShow(){
+      this.getData();
     },
     methods:{
       toPage(url){
@@ -102,6 +45,10 @@
           this.util.aHref(url)
         }
       },
+      async getData(){
+        let data = await this.api.getPorecordsList()
+        this.list = data.data
+      }
     },
     components:{
       bottomBase
@@ -109,7 +56,6 @@
   }
 </script>
 <style scoped lang="less">
-@import url("../../../css/common.less");
   .app{
     width: 100%;
     height: 100%;

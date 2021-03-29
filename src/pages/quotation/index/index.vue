@@ -138,14 +138,13 @@
           size:this.size,
           endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
           workType:this.workType,
-        }
+      }
         let data =await this.api.listOffer(param)
         data.data.records.forEach(item=>{
           item.bidStart = item.bidStart.slice(0,10)
           item.bidEnd = item.bidEnd.slice(0,10)
         })
         this.list.push(...data.data.records)
-        // console.log(this.list);
         this.total = data.data.total
       },
       //获取工作类型
