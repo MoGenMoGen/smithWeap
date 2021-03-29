@@ -132,9 +132,7 @@
   import modelMask from "@/components/modelMask";
   import Reports from "@/components/reports";
   import gzdk from "@/components/img/工作打卡.png"
-  import gzdk2 from "@/components/img/工作打卡2.png"
   import ycbg from "@/components/img/报告异常.png"
-  import ycbg2 from "@/components/img/检测报告2.png"
   import tpsc from '@/components/img/图片上传图标.png'
   import del from "@/components/img/删除图标.png"
   import jt from "@/components/img/箭头.png"
@@ -149,22 +147,14 @@
         },
         //需提交的数据
         pushInfo:{
-          // rmks:'',
-          // imgBefore:'',
-          // imgAfter:'',
-          // completionDesc:'',//完成描述
-          // completionTm:'',//完成时间
-          // feedback:'',//问题反馈
         },
         centerList:[
           {
             nm:'工作打卡',
             imgUrl:gzdk,
-            imgUrlActive:gzdk2,
           },{
             nm:'异常报告',
             imgUrl:ycbg,
-            imgUrlActive:ycbg2,
           }
         ],
         currentIndex:0,
@@ -210,7 +200,11 @@
         }
       },
       changeTab(item,index){
-        this.currentIndex=index
+        if(index == 0){
+          this.toPage('/pages/report/clockIn/main?id='+this.id)
+        }else{
+          this.toPage('/pages/report/newException/main?id='+this.id)
+        }
       },
       //获取工单详情列表
       async getlist(){
