@@ -105,13 +105,11 @@
             this.type = 1
             this.changeModel = !this.changeModel;
             this.isModel = !this.isModel;
-            this.toPage('/pages/construction/index/main')
             break
           case 2:
             this.type = 2
             this.changeModel = !this.changeModel;
             this.isModel = !this.isModel;
-            this.toPage('/pages/construction/index/main')
             break
         }
       },
@@ -131,6 +129,7 @@
             }
             this.api.orderRefused(param)
           }
+          this.toPage('/pages/construction/index/main')
         }
         this.changeModel = item.changeModel
         this.isModel = item.isModel
