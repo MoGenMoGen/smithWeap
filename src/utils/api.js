@@ -637,6 +637,14 @@ class api {
       })
     })
   }
+  //获取统计数量
+  getCountNum(data){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/countNum",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api };

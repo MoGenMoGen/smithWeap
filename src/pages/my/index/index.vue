@@ -3,8 +3,8 @@
     <div class="headBack">
       <div class="infoBox" @click="toPage('/pages/my/information/main')">
         <div class="userImgBox" >
-          <img :src="info.avatar?info.avatar:tx"/>
-          <img :src="xg" class="xg"/>
+          <img :src="info.avatar"/>
+          <img :src="xg" class="xg" @click.stop="changeAvatar"/>
         </div>
         <div class="nmBox">
           <p>
@@ -87,7 +87,7 @@
           {
             nm:'我的工单',
             imgUrl:gd,
-            path:'',
+            path:'/pages/report/reportStatus/main',
           },{
             nm:'我的报价',
             imgUrl:bj,
@@ -119,8 +119,14 @@
       },
       async getUser(){
         let data = await this.api.getUser();
+        let data2 = await this.api.getCountNum();
+        this.navList[0].num = data2.data.offer
+        this.navList[1].num = data2.data.order
+        this.navList[2].num = data2.data.orderFinish
         this.info = data.data
-        console.log(data);
+      },
+      changeAvatar(){
+
       },
     },
     components:{
