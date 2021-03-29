@@ -6,7 +6,8 @@
       <swiper class="valueSwiper" id="swiper" :style="swiperStyle" indicator-dots="true" indicator-color="white" indicator-active-color="rgba(229, 25, 55, 1)">
         <block v-for="(item,index) in swiperList" :key="index" >
           <swiper-item>
-            <img :src="item" mode="aspectFill" @load="imgH">
+            <!-- <img :src="item" mode="aspectFill" @load="imgH"> -->
+            <img :src="item" mode="aspectFill" >
           </swiper-item>
         </block>
       </swiper>
@@ -122,8 +123,6 @@
 <script>
   import headerBase from "../../components/headerBase";
   import bottomBase from "../../components/bottomBase";
-
-  import swiperImg from "@/components/img/banner.png"
   import bj from "@/components/img/接单报价图标.png"
   import sg from "@/components/img/接单施工图标.png"
   import hb from "@/components/img/施工汇报图标.png"
@@ -147,7 +146,6 @@
         tbj,
         right,
         swiperList:[
-          swiperImg
         ],
         current:1,
         size:2,
@@ -213,6 +211,17 @@
         this.list.push(...data.data.records)
         this.list2.push(...data2.data.records)
         // console.log(data2.data);
+        let paramimg = {
+          posCd:'ADPOS_001',
+        }
+        //获取广告轮播图
+        let dataimgs = await this.api.listAdsByPos(paramimg)
+        this.swiperList = []
+        dataimgs.data.forEach(item => {
+          this.swiperList.push(...(item.imgUrl).split(','))
+        });
+        // this.swiperList = dataimgs.data
+        // console.log(dataimgs.data);
       },
     },
     components:{
@@ -235,8 +244,10 @@
       padding: 20rpx;
       box-sizing: border-box;
       #swiper{
+        height: 400rpx;
         img{
           width: 100%;
+          height: 100%;
           border-radius: 12rpx;
         }
       }

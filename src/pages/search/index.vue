@@ -16,32 +16,32 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in info.list" :key="index">
+        <div class="box" v-for="(item,index) in list" :key="index">
           <ul>
             <li>
               <img :src="gd"/>
               <span>工单编号</span>
-              <p>{{item.id}}</p>
+              <p>{{item.cd}}</p>
             </li>
             <li>
               <img :src="jx"/>
               <span>经销商名称</span>
-              <p>{{item.nm}}</p>
+              <p>{{item.custNm}}</p>
             </li>
             <li>
               <img :src="type"/>
               <span>工作类型</span>
-              <p>{{item.type}}</p>
+              <p>{{item.workTypeNm}}</p>
             </li>
             <li>
               <img :src="fb"/>
               <span>发布日期</span>
-              <p>{{item.startTm}}</p>
+              <p>{{item.bidStart}}</p>
             </li>
             <li>
               <img :src="jz"/>
               <span>截止日期</span>
-              <p>{{item.finishTm}}</p>
+              <p>{{item.bidEnd}}</p>
             </li>
           </ul>
           <div>
@@ -86,30 +86,26 @@
         startTime:'开始时间',
         endTime:'结束时间',
         searchData:'',
-        info:{
-          nm:'接单报价',
-          list:[
-            {
-              id:'A2011036',
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05'
-            },{
-              id:'A2011036',
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05'
-            },{
-              id:'A2011036',
-              nm:'南宁宾利',
-              type:'安装',
-              startTm:'2020-12-05',
-              finishTm:'2020-12-05'
-            }
-          ],
-        },
+        list:[],
+        current:1,
+        size:10,
+        total:0,
+        startTm:'',//开始时间
+        endTm:'',//结束时间
+      }
+    },
+    async onShow(){
+      this.searchData = ''
+      this.list = []
+      this.getList();
+    },
+    onReachBottom(){
+      if(this.list.length>=this.total){
+        return
+      }
+      if(this.list.length<this.total){
+        this.current++
+        this.getList()
       }
     },
     methods:{
@@ -121,6 +117,22 @@
       toSearch(){
         console.log('搜索')
       },
+      //获取数据
+      async getList(){
+        const param={
+          current:this.current,
+          size:this.size,
+          // endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+          nm:this.searchData,
+        }
+        let data =await this.api.getlistAll(param)
+        data.data.records.forEach(item=>{
+          item.bidStart = item.bidStart.slice(0,10)
+          item.bidEnd = item.bidEnd.slice(0,10)
+        })
+        this.list.push(...data.data.records)
+        this.total = data.data.total
+      }
     },
     components:{
       bottomBase,dateRange

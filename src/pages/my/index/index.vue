@@ -87,7 +87,7 @@
           {
             nm:'我的工单',
             imgUrl:gd,
-            path:'/pages/report/reportStatus/main',
+            path:'',
           },{
             nm:'我的报价',
             imgUrl:bj,
