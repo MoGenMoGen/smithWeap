@@ -65,11 +65,9 @@
         <div class="title">维修前照片</div>
         <div class="br"></div>
         <div class="picture">
-          <img :src="tpsc" alt="" @click="toPhoto(1)" class="top">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist1" :key="index"  >
               <img :src="item" mode="heightFix"/>
-              <img :src="del" class="del" @click="delimg(index,1)" />
             </div>
           </div>
         </div>
@@ -78,11 +76,9 @@
         <div class="title">维修后照片</div>
         <div class="br "></div>
         <div class="picture">
-          <img :src="tpsc" alt="" @click="toPhoto(2)" class="top">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist2" :key="index"  >
               <img :src="item" mode="heightFix"/>
-              <img :src="del" class="del" @click="delimg(index,2)" />
             </div>
           </div>
           
@@ -92,37 +88,37 @@
         <div class="title">工作完成情况：(填写工作内容)</div>
         <div class="br br1"></div>
         <div class="textarea">
-          <textarea v-model="pushInfo.completionDesc" bindblur="bindTextAreaBlur" auto-height placeholder="请输入描述..." />
+          <textarea v-model="pushInfo.completionDesc" bindblur="bindTextAreaBlur" auto-height disabled />
         </div>
         <div class="time">
           <span>完成日期</span>
-          <!-- <p>2021-03-20</p> -->
-          <dateRange :value="pushInfo.completionTm" @getStart="getDate"></dateRange>
-          <!-- <input v-model="pushInfo.completionTm" type="text" placeholder="请输入时间"> -->
+          <!-- <dateRange :value="pushInfo.completionTm" @getStart="getDate"></dateRange> -->
+          <input v-model="pushInfo.completionTm" type="text" disabled >
         </div>
       </div>
       <div class="question">
         <div class="title">问题反馈：(描述并附带现场照片)</div>
         <div class="br br1"></div>
-        <div class="textarea">
-          <textarea v-model="pushInfo.feedback" bindblur="bindTextAreaBlur" auto-height placeholder="请输入描述..." />
+        <div class="feedback">
+          {{pushInfo.feedback}}
         </div>
+        <!-- <div class="textarea">
+          <textarea v-model="pushInfo.feedback" bindblur="bindTextAreaBlur" auto-height disabled />
+        </div> -->
         <div class="picture" style="padding-top: 80rpx">
-          <img :src="tpsc" alt="" @click="toPhoto(3)" class="top">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist3" :key="index"  >
               <img :src="item" mode="heightFix"/>
-              <img :src="del" class="del" @click="delimg(index,3)" />
             </div>
           </div>
         </div>
       </div>
     </div>
-    <bottomBase></bottomBase>
-    <div class="button">
-      <div class="btn1" @click="submit">取消</div>
-      <div class="btn2" @click="submit">确定</div>
+    <div class="wait">
+      <img :src="dshtb" alt="">
+      <span>待售后审核</span>
     </div>
+    <bottomBase></bottomBase>
   </div>
 </template>
 
@@ -138,23 +134,19 @@
   import tpsc from '@/components/img/图片上传图标.png'
   import del from "@/components/img/删除图标.png"
   import jt from "@/components/img/箭头.png"
+  import dshtb from "@/components/img/待审核图标.png"
   export default {
     data(){
       return{
         jt,
         tpsc,
         del,
+        dshtb,
         //初始数据
         info:{
         },
-        //需提交的数据
+        //详情数据
         pushInfo:{
-          // rmks:'',
-          // imgBefore:'',
-          // imgAfter:'',
-          // completionDesc:'',//完成描述
-          // completionTm:'',//完成时间
-          // feedback:'',//问题反馈
         },
         centerList:[
           {
@@ -185,25 +177,6 @@
     async onShow(){
     },
     methods:{
-      showMask(type){
-        switch(type){
-          case 1:
-            this.type = 1
-            this.changeModel = !this.changeModel;
-            this.isModel = !this.isModel;
-            break
-          case 2:
-            this.type = 2
-            this.changeModel = !this.changeModel;
-            this.isModel = !this.isModel;
-            break
-        }
-      },
-      //将子组件中变化的数据赋值于父组件
-      mask(e){
-        this.changeModel = e.changeModel
-        this.isModel = e.isModel
-      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -216,77 +189,14 @@
       async getlist(){
         const res= await this.api.getServiceDtl(this.id)
         this.info = res.data
-        let releDt = this.info.bidStart.substring(0,11)
-        let takeDt = this.info.orderTm.substring(0,11)
-        this.pushInfo = {
-          orderId:this.id,
-          releDt: releDt,
-          takeDt: takeDt,
-          custNm: this.info.custNm,
-          workType: this.info.workType,
-          custContact: this.info.custContact,
-          custMob: this.info.custMob,
-          custAddr: this.info.custAddr,
-          smithContact: this.info.userName,
-          smithMob: this.info.user.phone,
-          smithAddr: this.info.addr,
-          workCont: this.info.workCont,
-          arrivalDt: this.info.arrivalDt,
-          rmks: this.info.rmks,
-          imgBefore:'',
-          imgAfter:'',
-          completionDesc:'',//完成描述
-          completionTm:'请选择完成时间',//完成时间
-          feedback:'',//问题反馈
-        }
-        this.imglist1 = []
-        this.imglist2 = []
-        this.imglist3 = []
+        this.pushInfo = this.info.worksCompletion2
+        // console.log(this.pushInfo);
+        this.imglist1 = this.pushInfo.imgBefore.split(',')
+        this.imglist2 = this.pushInfo.imgAfter.split(',')
+        this.imglist3 = this.pushInfo.feedbackImg.split(',')
         // console.log(this.info);
       },
-      //上传图片
-      async toPhoto(value){
-        let imgUrl = await this.api.chooseImages()
-        let data = await this.api.upLoad(imgUrl[0])
-        if(value == 1){
-          this.imglist1.push(data.link)
-          this.pushInfo.imgBefore = this.imglist1.join(',');
-        }else if(value == 2){
-          this.imglist2.push(data.link)
-          this.pushInfo.imgAfter = this.imglist2.join(',');
-        }else if(value == 3){
-          this.imglist3.push(data.link)
-          this.pushInfo.feedbackImg = this.imglist3.join(',');
-        }
-      },
-      //删除图片
-      delimg(index,value){
-        if(value == 1){
-          this.imglist1.splice(index,1)
-          this.pushInfo.imgBefore = this.imglist1.join(',');
-        }else if(value == 2){
-          this.imglist2.splice(index,1)
-          this.pushInfo.imgAfter = this.imglist2.join(',');
-        }else if(value ==3){
-          this.imglist3.splice(index,1)
-          this.pushInfo.feedbackImg = this.imglist3.join(',');
-        }
-      },
-      //提交表单
-      submit(){
-        // console.log(this.pushInfo);
-        this.api.postaddCompletion2(this.pushInfo).then(res=>{
-          //跳转
-          this.toPage('/pages/report/AfterSaleOrder/main?id=' +this.id) 
-        })
-        
-      },
-      //时间选择回调函数
-      getDate(e){
-        // console.log(e);
-        let time = e + " 00:00:00"
-        this.pushInfo.completionTm = time
-      },
+      
     },
     onLoad(e){
       this.id = e.id
@@ -415,6 +325,15 @@
         .br1{
           margin: 18rpx 0 0 10rpx;
         }
+        .feedback{
+          padding: 58rpx 0  0 10rpx;
+          font-size: 28rpx;
+          font-family: PingFang SC;
+          font-weight: 400;
+          line-height: 40rpx;
+          color: #303030;
+          opacity: 1;
+        }
         .picture{
           padding-top: 58rpx;
           padding-bottom: 64rpx;
@@ -426,10 +345,10 @@
            display: flex;
            float: left;
            overflow-x: auto;
-           padding-top: 20rpx ;
+          //  padding-top: 20rpx ;
            .imgs{
               position: relative;
-              margin-left: 20rpx;
+              margin-right: 20rpx;
               height: 160rpx;
               // padding: 10rpx 0;
               // display: inline-block;
@@ -481,11 +400,11 @@
           //margin-bottom: 20rpx;
           textarea{
             //margin-top: 38rpx;
-            font-size: 24rpx;
+            font-size: 28rpx;
             font-family: PingFang SC;
             font-weight: 400;
-            line-height: 34rpx;
-            color: #D0CED8;
+            line-height: 40rpx;
+            color: #303030;
             opacity: 1;
             box-sizing: border-box;
             width: 100%;
@@ -497,37 +416,27 @@
         }
       }
     }
-    .button{
-      width: 100%;
-      padding: 0 20rpx 0 20rpx;
-      box-sizing: border-box;
+    .wait{
+      margin: 20rpx;
+      border-radius: 12rpx;
       display: flex;
-      // flex-wrap: wrap;
-      // justify-content: space-around;
-      // align-items: center;
-      .btn1,.btn2{
-        float: left;
-        width: 50%;
-        border: 1px solid #E51937;
-        height: 88rpx;
-        line-height: 88rpx;
-        text-align: center;
+      align-items: center;
+      background: #FFFFFF;
+      padding: 26rpx 0 22rpx 40rpx;
+      img{
+        width: 32rpx;
+        height: 32rpx;
+      }
+      span{
+        flex: 1;
+        padding-left: 12rpx;
         font-size: 28rpx;
         font-family: PingFang SC;
         font-weight: 400;
+        line-height: 40rpx;
+        color: #E51937;
         opacity: 1;
       }
-      .btn1{
-        background: #FFFFFF;
-        color: #E51937;
-        border-radius: 12rpx 0 0 12rpx;
-      }
-      .btn2{
-        background: #E51937;
-        color: #ffffff;
-        border-radius:0 12rpx 12rpx 0;
-      }
-
     }
   }
 </style>

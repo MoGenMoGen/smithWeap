@@ -5,51 +5,51 @@
         <ul>
           <li>
             <span>发布日期</span>
-            <p>{{info.pubTm}}</p>
+            <p>{{info.bidStart}}</p>
           </li>
           <li>
             <span>接单日期</span>
-            <p>{{info.finishTm}}</p>
+            <p>{{info.bidEnd}}</p>
           </li>
           <li>
             <span>项目人员</span>
-            <p>{{info.proP}}</p>
+            <p>{{info.userId}}</p>
           </li>
           <li>
             <span>工单编号</span>
-            <p>{{info.proId}}</p>
+            <p>{{info.cd}}</p>
           </li>
           <li>
             <span>项目</span>
-            <p>{{info.pro}}</p>
+            <p>{{info.projNm}}</p>
           </li>
           <li>
             <span>经销商名称</span>
-            <p>{{info.cNm}}</p>
+            <p>{{info.custNm}}</p>
           </li>
           <li>
             <span>要求到场时间</span>
-            <p>{{info.time}}</p>
+            <p>{{info.arrivalDt}}</p>
           </li>
           <li>
             <span>工作类型</span>
-            <p>{{info.type}}</p>
+            <p>{{info.workTypeNm}}</p>
           </li>
           <li>
             <span>工作内容</span>
-            <p>{{info.content}}</p>
+            <p>{{info.workCont}}</p>
           </li>
           <li>
             <span>客户联系人</span>
-            <p>{{info.kh}}</p>
+            <p>{{info.custContact}}</p>
           </li>
           <li>
             <span>客户联系电话</span>
-            <p>{{info.khTel}}</p>
+            <p>{{info.custMob}}</p>
           </li>
           <li>
             <span>客户联系地址</span>
-            <p>{{info.khAddr}}</p>
+            <p>{{info.custAddr}}</p>
           </li>
         </ul>
       </div>
@@ -134,18 +134,18 @@
         wdktb,
         cdCard,
         info:{
-          pubTm:'2021-03-20',
-          finishTm:'2021-03-20',
-          pro:'宾利',
-          proP:'项毅',
-          proId:'A2011036',
-          cNm:'南宁宾利',
-          time:'2021-03-20',
-          type:'安装',
-          content:'整体安装-有立柱（包括勘测）',
-          kh:'吴波',
-          khTel:'13806036880',
-          khAddr:'广西省南宁市江南区白沙大道100号',
+          // pubTm:'2021-03-20',
+          // finishTm:'2021-03-20',
+          // pro:'宾利',
+          // proP:'项毅',
+          // proId:'A2011036',
+          // cNm:'南宁宾利',
+          // time:'2021-03-20',
+          // type:'安装',
+          // content:'整体安装-有立柱（包括勘测）',
+          // kh:'吴波',
+          // khTel:'13806036880',
+          // khAddr:'广西省南宁市江南区白沙大道100号',
         },
         centerList:[
           {
@@ -177,12 +177,18 @@
         ],
         currentIndex:0,
         type:1,
+        id:null,
       }
     },
     async onLoad(e){
       this.type = e.type
+      this.id = e.id
+    },
+    mounted(){
+      this.getlist()
     },
     async onShow(){
+
     },
     methods:{
       toPage(url){
@@ -190,6 +196,18 @@
           this.util.aHref(url)
         }
       },
+      async getlist(){
+        if(this.type == 1){
+          const res = await this.api.getInstallDtl(this.id)
+          // console.log(res.data);
+          this.info = res.data.worksCompletion
+        }else if(this.type == 2 || this.type == 3){
+          const res = await this.api.getServiceDtl(this.id)
+          // console.log(res.data);
+          this.info = res.data.worksCompletion2
+        }
+
+      }
     },
     components:{
       bottomBase,modelMask

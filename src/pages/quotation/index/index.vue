@@ -50,9 +50,9 @@
             </li>
           </ul>
           <div>
-            <p :style="{backgroundColor:item.worksOfferStatusVo.state == 1? '#E51937':'#909090' }" @click="toDetail(item.worksOfferStatusVo.status,item.id)">
+            <p :style="{backgroundColor:item.worksOfferStatusVo.state == 1? '#E51937':'#909090' }" @click="toDetail(item.worksOfferStatusVo.state,item.id)">
               <img :src="tbj"/>
-              {{item.worksOfferStatusVo.state == 1 ? '去报价':'已报价'}}
+              {{item.worksOfferStatusVo.stateNm}}
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@
       }
     },
     async onShow(){
-      this.current = 1
+      // this.current = 1
       this.list = []
       this.getList();
       this.getDictionary();
@@ -145,7 +145,7 @@
           item.bidEnd = item.bidEnd.slice(0,10)
         })
         this.list.push(...data.data.records)
-        console.log(this.list);
+        // console.log(this.list);
         this.total = data.data.total
       },
       //获取工作类型
@@ -162,6 +162,9 @@
               this.toPage('/pages/quotation/apply/main?id='+id)
             break
           case 2:
+              this.toPage('/pages/quotation/detail/main?id='+id)
+            break
+          case 3:
               this.toPage('/pages/quotation/detail/main?id='+id)
             break
         }

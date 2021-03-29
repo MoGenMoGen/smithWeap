@@ -73,9 +73,12 @@
         <ul>
           <li>
             <span>附件上传</span>
-            <div class="imgs" v-if="pushInfo.attach">
-              <div v-for="(item,index) in imgUrls" :key="index">
-                <img :src="item" @click="toPhoto" mode="heightFix"/>
+            <div class="picture" v-if="pushInfo.attach">
+              <div class="imgbox">
+                <div class="imgs" v-for="(item,index) in imgUrls" :key="index"  >
+                  <img :src="item" mode="heightFix" @click="toPhoto" />
+                  <img :src="del" class="del" @click="delimg(index)" />
+                </div>
               </div>
             </div>
             <div class="img" v-else @click="toPhoto">
@@ -106,12 +109,13 @@
 
 <script>
   import bottomBase from "@/components/bottomBase";
-
+  import del from "@/components/img/删除图标.png"
   import fjsc from "@/components/img/附件上传图标.png"
   export default {
     data(){
       return{
         fjsc,
+        del,
         info:{
         },
         pushInfo:{
@@ -175,11 +179,13 @@
       async toPhoto(){
         let imgUrl = await this.api.chooseImages()
         let data = await this.api.upLoad(imgUrl[0])
-        // console.log(imgUrl);
         this.imgUrls.push(data.link)
         this.pushInfo.attach = this.imgUrls.join(',');
-        console.log(data);
-        // this.imageList.push(data.link)
+      },
+       //删除图片
+      delimg(index){
+        this.imgUrls.splice(index,1)
+        this.pushInfo.attach = this.imgUrls.join(',');
       },
     },
     async onLoad(item){
@@ -188,6 +194,19 @@
       //发送请求获取报单详情
       const res = await this.api.infoOffer({orderId:id})
       this.info = res.data
+      this.pushInfo ={
+        materialCost:'',
+        deviceCost:'',
+        laborCost:'',
+        travelCost:'',
+        other:'',
+        profitsTax:'',
+        amount:'',
+        discountAmount:'',
+        attach:'',
+        rmks:''
+      }
+      this.imgUrls = []
       // console.log(this.info)
     },
     async onShow(){
@@ -207,23 +226,13 @@
             newVal.other,
             newVal.profitsTax
           ]
-          // let data1 = [
-          //   oldVal.materialCost,
-          //   oldVal.deviceCost,
-          //   oldVal.laborCost,
-          //   oldVal.travelCost,
-          //   oldVal.other,
-          //   oldVal.profitsTax
-          // ]
-          // console.log(data);
-          // console.log(data1);
           var flag = false
           if(this.Money ==[]){
             flag = true
             this.Money = data
           }else{
             for(var i in data){
-              if(data[i] != this.Money[i]){
+              if(data[i] != this.Money[i] &&data[i] !=''){
                 flag = true
                 this.Money = data
                 break
@@ -322,16 +331,37 @@
                 margin-right: 20rpx;
               }
             }
-            .imgs{
+            .picture{
               flex: 1;
-              >div{
-                display: inline-block;
-                img{
-                  width: 140rpx;
-                  height: 140rpx;
-                  margin-right: 20rpx;
+              overflow-x: auto;
+              .imgbox{
+                flex: 1;
+                display: flex;
+                float: left;
+                // overflow-x: auto;
+                padding-top: 20rpx ;
+                .imgs{
+                  position: relative;
+                  margin-left: 10rpx;
+                  height: 160rpx;
+                  // padding: 10rpx 0;
+                  // display: inline-block;
+                  .del{
+                    position: absolute;
+                    width: 32rpx;
+                    height: 32rpx;
+                    top: -16rpx;
+                    right: -16rpx;
+                    // z-index: 9999;
+                  } 
                 }
               }
+              img{
+                width: 140rpx;
+                height: 140rpx;
+                margin-right: 20rpx;
+              }
+              
               
             }
             

@@ -28,7 +28,8 @@
     "pages/report/tabDetail/dailyReport/main",
     "pages/report/tabDetail/exceptionReport/main",
     "pages/report/tabDetail/inventory/main",
-    "pages/report/AfterSale/main"
+    "pages/report/AfterSale/main",
+    "pages/report/AfterSaleOrder/main"
 
   ],
   "permission": {

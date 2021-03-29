@@ -105,11 +105,13 @@
             this.type = 1
             this.changeModel = !this.changeModel;
             this.isModel = !this.isModel;
+            this.toPage('/pages/construction/index/main')
             break
           case 2:
             this.type = 2
             this.changeModel = !this.changeModel;
             this.isModel = !this.isModel;
+            this.toPage('/pages/construction/index/main')
             break
         }
       },

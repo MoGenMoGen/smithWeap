@@ -152,11 +152,21 @@
       toDetail(val,id,type){
          switch (val){
            case 0:
-             this.toPage('/pages/report/index/main?id='+id)
+             if(type ==1 || type ==3){
+               this.toPage('/pages/report/index/main?id='+id)
+             }else if(type ==2){
+               this.toPage('/pages/report/AfterSale/main?id='+id)
+             }
              break
            case 1:
-             this.toPage('/pages/report/confirmOrder/main?id='+id +'&type='+type)
+             if(type ==1 || type ==3){
+               this.toPage('/pages/report/confirmOrder/main?id='+id +'&type='+type)
+             }else if(type ==2){
+               this.toPage('/pages/report/AfterSaleOrder/main?id='+id)
+             }
+             
              break
+           
          }
       },
       toPage(url){

@@ -195,7 +195,7 @@
         var res = await this.api.getlistByOrder(this.id)
         // console.log(res);
         this.list = res.data
-        console.log(this.list);
+        // console.log(this.list);
         this.list.forEach(item => {
           item.imgList = item.imgUrl.split(',')
         });

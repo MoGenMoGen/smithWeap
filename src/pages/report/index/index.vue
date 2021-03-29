@@ -135,8 +135,11 @@
       this.orderId = e.id
     },
     async onShow(){
-      this.currentIndex = 0
+      // this.currentIndex = 0
       this.getDetail(this.orderId);
+    },
+    onUnload(){
+      this.currentIndex = 0
     },
     methods:{
       async getDetail(id){
