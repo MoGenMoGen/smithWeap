@@ -13,7 +13,7 @@
           </li>
           <li>
             <span>项目人员</span>
-            <p>{{info.userId}}</p>
+            <p>{{info.userName}}</p>
           </li>
           <li>
             <span>工单编号</span>
