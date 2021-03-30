@@ -132,8 +132,8 @@
         }
         let data =await this.api.listToComplete(param)
         data.data.records.forEach(item=>{
-          item.bidStart = item.bidStart.slice(0,10)
-          item.bidEnd = item.bidEnd.slice(0,10)
+          item.orderTm = item.orderTm.slice(0,10)
+          item.actualEnd = item.actualEnd.slice(0,10)
         })
         this.list.push(...data.data.records)
         this.total = data.data.total
