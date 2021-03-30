@@ -8,7 +8,7 @@
       <div class="inputbox">
         <img style="width:22rpx;margin-right:38rpx" mode="widthFix" :src="dl"/>
         <!-- <img :src="mm" alt=""> -->
-        <input v-model="username" maxlength="11" placeholder="请输入手机号码"/>
+        <input v-model="username" maxlength="11" placeholder="请输入账号"/>
       </div>
       <div class="inputbox">
         <img style="width:22rpx;margin-right:38rpx" mode="widthFix" :src="mm"/>
@@ -57,8 +57,8 @@
         wx.login({
           success(res) {
             const param={
-              account:'test武',
-              password:'202cb962ac59075b964b07152d234b70',
+              account:that.username,
+              password:that.password,
               tenantId:'000000',
               code:res.code,
             }
@@ -133,8 +133,9 @@
       font-family: PingFang SC;
       font-weight: 300;
       line-height: 18rpx;
-      color: #909090;
+      color: #121214;
       opacity: 1;
+      flex: 1;
     }
   }
   .submit{

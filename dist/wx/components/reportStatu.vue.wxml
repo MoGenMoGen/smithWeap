@@ -1,0 +1,42 @@
+<import src="/components/steps.vue.wxml" /><template name="0bbdf50d">
+  <view id="report" class="_div data-v-6418e488">
+    <view class="_div data-v-6418e488 nav">
+      <view class="_ul data-v-6418e488">
+        <view wx:key="index" key="{{index}}" bindtap="handleProxy" data-eventid="{{'0_'+index}}" data-comkey="{{$k}}" wx:for="{{navList}}" wx:for-index="index" wx:for-item="item" class="_li data-v-6418e488 {{[currentIndex == index ? 'active' : '']}}">
+          {{item.nm}}
+        </view>
+      </view>
+    </view>
+    <view class="_div data-v-6418e488 main">
+      <view class="_div data-v-6418e488 listBox">
+        <view class="_div data-v-6418e488 box" wx:key="index" key="{{index}}" wx:for="{{list}}" wx:for-index="index" wx:for-item="item">
+          <view class="_ul data-v-6418e488">
+            <view class="_li data-v-6418e488">
+              <image src="{{gd}}" class="_img data-v-6418e488"></image> <label class="_span data-v-6418e488">工单编号</label>
+              <view class="_p data-v-6418e488">{{item.cd}}</view>
+            </view>
+            <view class="_li data-v-6418e488">
+              <image src="{{jx}}" class="_img data-v-6418e488"></image> <label class="_span data-v-6418e488">经销商名称</label>
+              <view class="_p data-v-6418e488">{{item.custNm}}</view>
+            </view>
+            <view class="_li data-v-6418e488">
+              <image src="{{type}}" class="_img data-v-6418e488"></image> <label class="_span data-v-6418e488">工作类型</label>
+              <view class="_p data-v-6418e488">{{item.workTypeNm}}</view>
+            </view>
+            <view class="_li data-v-6418e488">
+              <image src="{{fb}}" class="_img data-v-6418e488"></image> <label class="_span data-v-6418e488">发布日期</label>
+              <view class="_p data-v-6418e488">{{item.bidStart}}</view>
+            </view>
+            <view class="_li data-v-6418e488">
+              <image src="{{jz}}" class="_img data-v-6418e488"></image> <label class="_span data-v-6418e488">截止日期</label>
+              <view class="_p data-v-6418e488">{{item.bidEnd}}</view>
+            </view>
+          </view>
+          <view class="_div data-v-6418e488"><template data="{{...$root[$kk+'0_'+index], $root}}" is="1544e967"></template>
+            <view style="border: 1rpx solid #909090;color: #909090;" bindtap="handleProxy" data-eventid="{{'1_'+index}}" data-comkey="{{$k}}" class="_p data-v-6418e488"> 查看 </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

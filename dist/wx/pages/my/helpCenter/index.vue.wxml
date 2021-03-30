@@ -1,0 +1,11 @@
+<import src="/components/bottomBase.vue.wxml" /><template name="168f606e">
+  <view class="_div data-v-24835cf9 app">
+    <view class="_div data-v-24835cf9 main">
+      <view class="_div data-v-24835cf9 mainBox">
+        <view class="_div data-v-24835cf9 core">
+          <rich-text nodes="{{info.content}}" class="_p data-v-24835cf9"></rich-text>
+        </view>
+      </view>
+    </view> <template data="{{...$root[$kk+'0'], $root}}" is="eb4913e8"></template>
+  </view>
+</template>

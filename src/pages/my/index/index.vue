@@ -55,6 +55,7 @@
   import xgmm from "@/components/img/修改密码.png"
   import tj from "@/components/img/统计.png"
   import xg from "@/components/img/修改.png"
+  import bzzx from "@/components/img/帮助中心.png"
   export default {
     data(){
       return{
@@ -63,6 +64,7 @@
         bj,
         xx,
         xgmm,
+        bzzx,
         tj,
         xg,
         info:{
@@ -87,7 +89,7 @@
           {
             nm:'我的工单',
             imgUrl:gd,
-            path:'',
+            path:'/pages/report/reportStatus/main',
           },{
             nm:'我的报价',
             imgUrl:bj,
@@ -108,6 +110,57 @@
         ],
       }
     },
+    async onLoad(){
+      this.loginType = wx.getStorageSync('loginType')
+      switch(this.loginType){
+        case 1:
+          this.coreList = [
+            {
+              nm:'我的工单',
+              imgUrl:gd,
+              path:'/pages/report/reportStatus/main',
+            },{
+              nm:'我的报价',
+              imgUrl:bj,
+              path:'/pages/my/apply/main',
+            },{
+              nm:'我的消息',
+              imgUrl:xx,
+              path:'/pages/my/message/main',
+            },{
+              nm:'修改密码',
+              imgUrl:xgmm,
+              path:'/pages/my/changePassword/main',
+            },{
+              nm:'金额统计',
+              imgUrl:tj,
+              path:'/pages/my/amount/main',
+            }
+          ]
+          break
+        case 2:
+          this.coreList= [
+            {
+              nm:'我的消息',
+              imgUrl:xx,
+              path:'/pages/my/message/main',
+            },{
+              nm:'帮助中心',
+              imgUrl:bzzx,
+              path:'/pages/my/helpCenter/main',
+            },{
+              nm:'修改密码',
+              imgUrl:xgmm,
+              path:'/pages/my/changePassword/main',
+            },{
+              nm:'金额统计',
+              imgUrl:tj,
+              path:'/pages/my/amount/main',
+            }
+          ]
+          break
+      }
+    },
     async onShow(){
       this.getUser();
     },
@@ -125,8 +178,18 @@
         this.navList[2].num = data2.data.orderFinish
         this.info = data.data
       },
-      changeAvatar(){
-
+      async changeAvatar(){
+        let imgUrl = await this.api.chooseImages()
+        let data = await this.api.upLoad(imgUrl[0])
+        let param = {
+          id:this.info.id,
+          avatar:data.link
+        }
+        await this.api.changeAvatar(param).then(res=>{
+          if(res.code == 200){
+            this.getUser();
+          }
+        })
       },
     },
     components:{

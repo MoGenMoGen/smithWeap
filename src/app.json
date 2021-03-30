@@ -10,6 +10,7 @@
     "pages/my/msgDetail/main",
     "pages/my/changePassword/main",
     "pages/my/amount/main",
+    "pages/my/helpCenter/main",
     "pages/quotation/index/main",
     "pages/quotation/apply/main",
     "pages/quotation/detail/main",
@@ -29,7 +30,8 @@
     "pages/report/tabDetail/exceptionReport/main",
     "pages/report/tabDetail/inventory/main",
     "pages/report/AfterSale/main",
-    "pages/report/AfterSaleOrder/main"
+    "pages/report/AfterSaleOrder/main",
+    "pages/platform/order/main"
 
   ],
   "permission": {

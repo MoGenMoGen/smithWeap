@@ -623,48 +623,80 @@ class api {
   }
   //获取个人信息
   getUser(data){
-      return new Promise(resolve => {
-        get('/blade-user/infoUser',data).then(res=>{
-          resolve(res)
-        })
+    return new Promise(resolve => {
+      get('/blade-user/infoUser',data).then(res=>{
+        resolve(res)
       })
-    }
-    //修改密码
-    changePassword(data){
-      return new Promise(resolve => {
-        post('/blade-user/updatePassword'+data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //修改密码
+  changePassword(data){
+    return new Promise(resolve => {
+      post('/blade-user/updatePassword'+data).then(res=>{
+        resolve(res)
       })
-    }
-    //获取消息列表
-    getMessageList(data){
-      return new Promise(resolve => {
-        get('/blade-msg/msgrecords/msglist',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取消息列表
+  getMessageList(data){
+    return new Promise(resolve => {
+      get('/blade-msg/msgrecords/msglist',data).then(res=>{
+        resolve(res)
       })
-    }
-    //获取消息详情
-    getMessageDetail(data){
-      return new Promise(resolve => {
-        get("/blade-msg/msgrecords/readMymsg",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取消息详情
+  getMessageDetail(data){
+    return new Promise(resolve => {
+      get("/blade-msg/msgrecords/readMymsg",data).then(res=>{
+        resolve(res)
       })
-    }
-    //获取金额统计列表
-    getPorecordsList(data){
-      return new Promise(resolve =>{
-        get("/blade-po/porecords/listStatistical",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取金额统计列表
+  getPorecordsList(data){
+    return new Promise(resolve =>{
+      get("/blade-po/porecords/listStatistical",data).then(res=>{
+        resolve(res)
       })
-    }
+    })
+  }
   //获取统计数量
   getCountNum(data){
     return new Promise(resolve =>{
       get("/blade-works/worksorder/countNum",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //更换头像
+  changeAvatar(data){
+    return new Promise(resolve => {
+      post("/blade-user/updatePhoto",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //平台方 - 进行工单/施工确认工单
+  getWorkOrder(data){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/listOngoing",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //平台方 - 完成工单
+  getCompleteOrder(data){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/listFinish",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //平台方 - 帮助中心详情
+  getHelpCenter(data){
+    return new Promise(resolve => {
+      get("/blade-desk/notice/info?id=1355434981060444162",data).then(res=>{
         resolve(res)
       })
     })

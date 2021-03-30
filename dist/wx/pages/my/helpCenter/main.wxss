@@ -1,0 +1,48 @@
+@import "../../../common/vendor.wxss";
+
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1286275_myh0y2yqzmd.eot');
+  src: url('//at.alicdn.com/t/font_1286275_myh0y2yqzmd.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_1286275_myh0y2yqzmd.woff2') format('woff2'), url('//at.alicdn.com/t/font_1286275_myh0y2yqzmd.woff') format('woff'), url('//at.alicdn.com/t/font_1286275_myh0y2yqzmd.ttf') format('truetype'), url('//at.alicdn.com/t/font_1286275_myh0y2yqzmd.svg#iconfont') format('svg');
+}
+.iconfont.data-v-24835cf9 {
+  font-family: "iconfont" !important;
+  font-size: 32rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.4rpx;
+  -moz-osx-font-smoothing: grayscale;
+}
+.app.data-v-24835cf9 {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+}
+.app .main.data-v-24835cf9 {
+  padding: 20rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.app .main .mainBox.data-v-24835cf9 {
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  padding-bottom: 290rpx;
+}
+.app .main .mainBox .txBox.data-v-24835cf9 {
+  width: 100%;
+  height: 304rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app .main .mainBox .txBox .tx.data-v-24835cf9 {
+  width: 134rpx;
+  height: 134rpx;
+  object-fit: cover;
+  border-radius: 50%;
+}

@@ -11,8 +11,9 @@
           </swiper-item>
         </block>
       </swiper>
+      <!--loginType == 1-->
       <!--分类-->
-      <div class="nav">
+      <div v-if="loginType == 1" class="nav">
         <ul>
           <li v-for="(item,index) in navList" :key="index" @click="toPage(item.path)">
             <img :src="item.imgUrl"/>
@@ -23,7 +24,7 @@
         </ul>
       </div>
       <!--接单报价-->
-      <div class="listBox">
+      <div v-if="loginType == 1" class="listBox">
         <div class="title">
           <p>
             <img :src="logo2"/>
@@ -74,7 +75,7 @@
         </div>
       </div>
       <!--接单施工-->
-      <div class="listBox">
+      <div v-if="loginType == 1" class="listBox">
         <div class="title">
           <p>
             <img :src="logo2"/>
@@ -115,14 +116,81 @@
           </div>
         </div>
       </div>
+
+      <!--loginType == 2-->
+      <div v-if="loginType == 2" class="nav2">
+        <ul>
+          <li v-for="(item,index) in navList2" :key="index" @click="toPage(item.path)">
+            <img :src="item.imgUrl"/>
+            <p>
+              {{item.nm}}
+            </p>
+          </li>
+        </ul>
+      </div>
+      <!--施工确认-->
+      <div v-if="loginType == 2" class="listBox">
+        <div class="title">
+          <p>
+            <img :src="logo2"/>
+            施工确认
+          </p>
+          <p @click="toPage('/pages/platform/order/main?type=1')">
+            查看更多
+            <img class="right" :src="right"/>
+          </p>
+        </div>
+        <div class="box" v-for="(item,index) in list3" :key="index">
+          <ul>
+            <li>
+              <img :src="gdbh"/>
+              <span>工单编号</span>
+              <p>{{item.cd}}</p>
+            </li>
+            <li>
+              <img :src="jx"/>
+              <span>供应商名称</span>
+              <p>{{item.orgNm}}</p>
+            </li>
+            <li>
+              <img :src="jx"/>
+              <span>经销商名称</span>
+              <p>{{item.custNm}}</p>
+            </li>
+            <li>
+              <img :src="type"/>
+              <span>工作类型</span>
+              <p>{{item.workTypeNm}}</p>
+            </li>
+            <li>
+              <img :src="fb"/>
+              <span>发布日期</span>
+              <p>{{item.bidStart}}</p>
+            </li>
+            <li>
+              <img :src="hbrq"/>
+              <span>汇报日期</span>
+              <p>{{item.bidEnd}}</p>
+            </li>
+          </ul>
+          <div>
+            <Steps :status="item.processStatus"></Steps>
+            <p style="border: 1rpx solid #909090;color: #909090;">查看</p>
+          </div>
+        </div>
+      </div>
+      <!--loginType == 3-->
+      <reportStatu v-if="loginType == 3"></reportStatu>
     </div>
     <bottomBase></bottomBase>
   </div>
 </template>
 
 <script>
-  import headerBase from "../../components/headerBase";
-  import bottomBase from "../../components/bottomBase";
+  import headerBase from "@/components/headerBase";
+  import bottomBase from "@/components/bottomBase";
+  import reportStatu from "@/components/reportStatu";
+  import Steps from "@/components/steps";
   import bj from "@/components/img/接单报价图标.png"
   import sg from "@/components/img/接单施工图标.png"
   import hb from "@/components/img/施工汇报图标.png"
@@ -134,6 +202,10 @@
   import jz from "@/components/img/截止日期图标.png"
   import tbj from "@/components/img/去报价图标.png"
   import right from "@/components/img/arrow-right.png"
+  import jxgdtb from "@/components/img/进行工单图标.png"
+  import wcgdtb from "@/components/img/完成工单图标.png"
+  import gdbh from "@/components/img/工单编号.png"
+  import hbrq from "@/components/img/汇报日期.png"
   export default {
     data(){
       return{
@@ -145,6 +217,8 @@
         jz,
         tbj,
         right,
+        gdbh,
+        hbrq,
         swiperList:[
         ],
         current:1,
@@ -165,17 +239,44 @@
             path:'/pages/report/reportStatus/main',
           }
         ],
+        navList2:[
+          {
+            nm:'进行工单',
+            imgUrl:jxgdtb,
+            path:'/pages/platform/order/main?type=1'
+          },{
+            nm:'完成工单',
+            imgUrl:wcgdtb,
+            path:'/pages/platform/order/main?type=2',
+          }
+        ],
         infoNm:'接单报价',
         info2Nm:'接单施工',
         list:[],
         list2:[],
+        list3:[],//施工确认列表
+        loginType:2,//1:供应商 2：平台方 3：供应商指派
       }
     },
+    async onLoad(){
+      this.loginType = wx.getStorageSync('loginType')
+    },
     async onShow(){
-      this.current = 1;
+      this.current = 1
       this.list = []
       this.list2 = []
-      this.getList();
+      this.list3 = []
+      this.getAdvertising();
+      switch(this.loginType){
+        case 1:
+          this.getList();
+          break
+        case 2:
+          this.getList2();
+          break
+        case 3:
+          break
+      }
     },
     methods:{
       toPage(url){
@@ -210,7 +311,21 @@
         })
         this.list.push(...data.data.records)
         this.list2.push(...data2.data.records)
-        // console.log(data2.data);
+      },
+      //获取首页接单报价列表和接单施工列表
+      async getList2(){
+        const param={
+          current:this.current,
+          size:3
+        }
+        let data =await this.api.getWorkOrder(param)
+        data.data.records.forEach(item=>{
+          item.bidStart = item.bidStart.slice(0,10)
+          item.bidEnd = item.bidEnd.slice(0,10)
+        })
+        this.list3.push(...data.data.records)
+      },
+      async getAdvertising(){
         let paramimg = {
           posCd:'ADPOS_001',
         }
@@ -220,13 +335,13 @@
         dataimgs.data.forEach(item => {
           this.swiperList.push(...(item.imgUrl).split(','))
         });
-        // this.swiperList = dataimgs.data
-        // console.log(dataimgs.data);
       },
     },
     components:{
       headerBase,
-      bottomBase
+      bottomBase,
+      reportStatu,
+      Steps
     }
   }
 </script>
@@ -234,7 +349,6 @@
 
 </style>
 <style scoped lang="less">
-@import url("../../css/common.less");
   .app{
     width: 100%;
     height: 100%;
@@ -344,9 +458,9 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            padding-left: 30rpx;
+            box-sizing: border-box;
             p{
-              /*background-color: #E51937;*/
-              /*color: #FFFFFF;*/
               width: 160rpx;
               height: 60rpx;
               display: flex;
@@ -362,7 +476,38 @@
             }
           }
         }
+        .steps{
+          .stepsDown{
+            padding-right: 25rpx;
+          }
+        }
       }
+      .nav2{
+        width: 100%;
+        height: 200rpx;
+        background-color: #FFFFFF;
+        margin-top: 20rpx;
+        border-radius: 12rpx;
+        ul{
+          width: 100%;
+          height: 100%;
+          display: inline-grid;
+          grid-template-columns: repeat(2, 50%);
+          li{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            img{
+              width:88rpx;
+              height: 88rpx;
+              margin-bottom: 10rpx;
+            }
+          }
+        }
+      }
+
     }
   }
 </style>

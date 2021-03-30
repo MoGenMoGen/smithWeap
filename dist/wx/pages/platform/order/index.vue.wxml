@@ -1,0 +1,49 @@
+<import src="/components/dateRange.vue.wxml" />
+<import src="/components/steps.vue.wxml" />
+<import src="/components/bottomBase.vue.wxml" /><template name="6c7f040e">
+  <view class="_div data-v-97172bf0 app">
+    <view class="_div data-v-97172bf0 nav">
+      <view class="_div data-v-97172bf0 searchBox">
+        <view class="_div data-v-97172bf0 dateBox"><template bindgetStart="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'0'], $root}}" is="30c0746f"></template> ~ <template bindgetStart="handleProxy" data-eventid="{{'1'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'1'], $root}}" is="30c0746f"></template>
+          <image src="{{dateIcon}}" class="_img data-v-97172bf0 icon"></image>
+        </view> <input value="{{nm}}" bindinput="handleProxy" placeholder="请输入经销商名称或工单编号" data-eventid="{{'2'}}" data-comkey="{{$k}}" class="_input data-v-97172bf0" />
+      </view>
+      <view bindtap="handleProxy" data-eventid="{{'3'}}" data-comkey="{{$k}}" class="_p data-v-97172bf0"> 搜索 </view>
+    </view>
+    <view class="_div data-v-97172bf0 main">
+      <view class="_div data-v-97172bf0 listBox">
+        <view class="_div data-v-97172bf0 box" wx:key="index" key="{{index}}" bindtap="handleProxy" data-eventid="{{'4_'+index}}" data-comkey="{{$k}}" wx:for="{{list}}" wx:for-index="index" wx:for-item="item">
+          <view class="_ul data-v-97172bf0">
+            <view class="_li data-v-97172bf0">
+              <image src="{{gdbh}}" class="_img data-v-97172bf0"></image> <label class="_span data-v-97172bf0">工单编号</label>
+              <view class="_p data-v-97172bf0">{{item.cd}}</view>
+            </view>
+            <view class="_li data-v-97172bf0">
+              <image src="{{jx}}" class="_img data-v-97172bf0"></image> <label class="_span data-v-97172bf0">供应商名称</label>
+              <view class="_p data-v-97172bf0">{{item.orgNm}}</view>
+            </view>
+            <view class="_li data-v-97172bf0">
+              <image src="{{jx}}" class="_img data-v-97172bf0"></image> <label class="_span data-v-97172bf0">经销商名称</label>
+              <view class="_p data-v-97172bf0">{{item.custNm}}</view>
+            </view>
+            <view class="_li data-v-97172bf0">
+              <image src="{{type}}" class="_img data-v-97172bf0"></image> <label class="_span data-v-97172bf0">工作类型</label>
+              <view class="_p data-v-97172bf0">{{item.workTypeNm}}</view>
+            </view>
+            <view class="_li data-v-97172bf0">
+              <image src="{{fb}}" class="_img data-v-97172bf0"></image> <label class="_span data-v-97172bf0">发布日期</label>
+              <view class="_p data-v-97172bf0">{{item.bidStart}}</view>
+            </view>
+            <view class="_li data-v-97172bf0">
+              <image src="{{hbrq}}" class="_img data-v-97172bf0"></image> <label class="_span data-v-97172bf0">汇报日期</label>
+              <view class="_p data-v-97172bf0">{{item.bidEnd}}</view>
+            </view>
+          </view>
+          <view class="_div data-v-97172bf0"><template wx:if="{{orderType == 1}}" data="{{...$root[$kk+'2_'+index], $root}}" is="1544e967"></template>
+            <view class="_p data-v-97172bf0"> 查看 </view>
+          </view>
+        </view>
+      </view>
+    </view> <template data="{{...$root[$kk+'3'], $root}}" is="eb4913e8"></template>
+  </view>
+</template>

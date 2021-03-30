@@ -3,12 +3,12 @@
     <div class="nav">
       <div class="searchBox">
         <div class="dateBox">
-          <dateRange :value="startTime"></dateRange>
+          <dateRange :value="startTime" @getStart="getDate"></dateRange>
           ~
-          <date-range :value="endTime"></date-range>
+          <date-range :value="endTime" @getStart="getDate2"></date-range>
           <img :src="dateIcon" class="icon"/>
         </div>
-        <input v-model="searchData" placeholder="请输入经销商名称或工单编号"/>
+        <input v-model="nm" placeholder="请输入经销商名称或工单编号"/>
       </div>
       <p @click="toSearch">
         搜索
@@ -16,12 +16,17 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in list" :key="index">
+        <div class="box" v-for="(item,index) in list" :key="index" @click="toPage('/pages/report/confirmOrder/main')">
           <ul>
             <li>
-              <img :src="gd"/>
+              <img :src="gdbh"/>
               <span>工单编号</span>
               <p>{{item.cd}}</p>
+            </li>
+            <li>
+              <img :src="jx"/>
+              <span>供应商名称</span>
+              <p>{{item.orgNm}}</p>
             </li>
             <li>
               <img :src="jx"/>
@@ -39,13 +44,14 @@
               <p>{{item.bidStart}}</p>
             </li>
             <li>
-              <img :src="jz"/>
-              <span>截止日期</span>
+              <img :src="hbrq"/>
+              <span>汇报日期</span>
               <p>{{item.bidEnd}}</p>
             </li>
           </ul>
           <div>
-            <p style="border: 1rpx solid #909090;color: #909090;">
+            <steps :status="item.processStatus" v-if="orderType == 1"></steps>
+            <p>
               查看
             </p>
           </div>
@@ -57,8 +63,8 @@
 </template>
 
 <script>
-  import bottomBase from "../../components/bottomBase";
-  import dateRange from "../../components/dateRange";
+  import bottomBase from "@/components/bottomBase";
+  import dateRange from "@/components/dateRange";
 
   import logo2 from "@/components/img/logo2.png"
   import logo from "@/components/img/logo.png"
@@ -67,9 +73,13 @@
   import type from "@/components/img/工作类型图标.png"
   import fb from "@/components/img/发布日期图标.png"
   import jz from "@/components/img/截止日期图标.png"
-  import tbj from "@/components/img/去报价图标.png"
   import right from "@/components/img/arrow-right.png"
   import dateIcon from "@/components/img/日历图标.png"
+  import down from "@/components/img/向下.png"
+  import gdbh from "@/components/img/工单编号.png"
+  import hbrq from "@/components/img/汇报日期.png"
+  import Steps from "../../../components/steps";
+
   export default {
     data(){
       return{
@@ -80,25 +90,50 @@
         type,
         fb,
         jz,
-        tbj,
         right,
         dateIcon,
+        down,
+        gdbh,
+        hbrq,
         startTime:'开始时间',
         endTime:'结束时间',
-        searchData:'',
+        index: 0,
+        orderType:1,//1:进行工单  2：完成工单
         list:[],
         current:1,
         size:10,
         total:0,
+        array:[
+          {dictValue:'安装'}
+        ],
+        nm: '',
+        endDate:'',
         startTm:'',//开始时间
         endTm:'',//结束时间
       }
     },
+    async onLoad(e){
+      console.log(e)
+      this.orderType = e.type
+      switch(this.orderType){
+        case '1':
+          wx.setNavigationBarTitle({
+            title: '进行工单'
+          })
+          break
+        case '2':
+          wx.setNavigationBarTitle({
+            title: '完成工单'
+          })
+          break
+      }
+    },
     async onShow(){
-      this.searchData = ''
+      this.current = 1
       this.list = []
       this.getList();
     },
+    //上滑获取下一页
     onReachBottom(){
       if(this.list.length>=this.total){
         return
@@ -114,27 +149,50 @@
           this.util.aHref(url)
         }
       },
-      toSearch(){
-        console.log('搜索')
-      },
-      //获取数据
       async getList(){
         const param={
           current:this.current,
           size:this.size,
-          // endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
-          nm:this.searchData,
+          endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+          nm:this.nm,
         }
-        let data =await this.api.getlistAll(param)
-        data.data.records.forEach(item=>{
-          item.bidStart = item.bidStart.slice(0,10)
-          item.bidEnd = item.bidEnd.slice(0,10)
-        })
-        this.list.push(...data.data.records)
-        this.total = data.data.total
-      }
+        switch(this.orderType){
+          case '1':
+            let data =await this.api.getWorkOrder(param)
+            data.data.records.forEach(item=>{
+              item.bidStart = item.bidStart.slice(0,10)
+              item.bidEnd = item.bidEnd.slice(0,10)
+            })
+            this.list.push(...data.data.records)
+            this.total = data.data.total
+            break
+          case '2':
+            let data2 =await this.api.getCompleteOrder(param)
+            data2.data.records.forEach(item=>{
+              item.bidStart = item.bidStart.slice(0,10)
+              item.bidEnd = item.bidEnd.slice(0,10)
+            })
+            this.list.push(...data2.data.records)
+            this.total = data2.data.total
+            break
+        }
+
+
+      },
+      toSearch(){
+        this.getList();
+      },
+      getDate(e){
+        this.startTm = e
+        this.startTime = e
+      },
+      getDate2(e){
+        this.endTm = e
+        this.endTime = e
+      },
     },
     components:{
+      Steps,
       bottomBase,dateRange
     }
   }
@@ -143,7 +201,6 @@
 
 </style>
 <style scoped lang="less">
-@import url("../../css/common.less");
   .app{
     width: 100%;
     height: 100%;
@@ -237,9 +294,12 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            padding-left: 30rpx;
+            box-sizing: border-box;
             p{
-              /*background-color: #E51937;*/
-              /*color: #FFFFFF;*/
+              border: 1rpx solid #909090;
+              font-size: 24rpx;
+              color: #909090;
               width: 160rpx;
               height: 60rpx;
               display: flex;
@@ -247,10 +307,6 @@
               justify-content: center;
               border-radius: 100rpx;
               margin-right: 38rpx;
-            }
-            p img{
-              width: 20rpx;
-              height: 20rpx;
             }
           }
         }
