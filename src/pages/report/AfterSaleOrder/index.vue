@@ -81,7 +81,7 @@
               <img :src="item" mode="heightFix"/>
             </div>
           </div>
-          
+
         </div>
       </div>
       <div class="work bottom">
@@ -96,7 +96,7 @@
           <input v-model="pushInfo.completionTm" type="text" disabled >
         </div>
       </div>
-      <div class="question">
+      <div class="question" style="margin-bottom: 0;" >
         <div class="title">问题反馈：(描述并附带现场照片)</div>
         <div class="br br1"></div>
         <div class="feedback">
@@ -105,7 +105,7 @@
         <!-- <div class="textarea">
           <textarea v-model="pushInfo.feedback" bindblur="bindTextAreaBlur" auto-height disabled />
         </div> -->
-        <div class="picture" style="padding-top: 80rpx">
+        <div class="picture" style="padding-top: 80rpx;">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist3" :key="index"  >
               <img :src="item" mode="heightFix"/>
@@ -196,7 +196,7 @@
         this.imglist3 = this.pushInfo.feedbackImg.split(',')
         // console.log(this.info);
       },
-      
+
     },
     onLoad(e){
       this.id = e.id
@@ -359,7 +359,7 @@
                 top: -16rpx;
                 right: -16rpx;
                 // z-index: 9999;
-              } 
+              }
             }
           }
           .top{
@@ -417,7 +417,7 @@
       }
     }
     .wait{
-      margin: 20rpx;
+      margin: 0  20rpx 20rpx 20rpx;
       border-radius: 12rpx;
       display: flex;
       align-items: center;
