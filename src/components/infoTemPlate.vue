@@ -2,45 +2,71 @@
   <div class="infoTemplate">
     <ul v-if="!change">
       <li>{{info.nm}}</li>
-      <li><span>单位：{{info.unit}}</span><p>应到数量：{{info.expectNum}}</p></li>
-      <li><span>实际数量</span><p>{{info.num}}</p></li>
-      <li><span>缺货数量</span><p>{{info.outNum}}</p></li>
-      <li><span>是否到货</span><p>{{info.ifArrival?'是':'否'}}</p></li>
-      <li><span>外包装情况</span><p>{{info.ifComplete?'完好':'破损'}}</p></li>
-      <li><span>开箱/亮灯</span><p>{{info.ifOpen?'完好':'破损'}}</p></li>
-      <li><span>是否安装</span><p>{{info.ifInstall?'安装':'交底'}}</p></li>
-      <li><span>备注</span><p>{{info.remark}}</p></li>
+      <li><span>单位：{{info.unit}}</span><p>应到数量：{{info.num}}</p></li>
+      <li><span>实际数量</span><p>{{info.realNum}}</p></li>
+      <li><span>缺货数量</span><p >{{info.num-info.realNum}}</p></li>
+      <li><span>是否到货</span><p>{{info.aog ==1 ?'是':'否'}}</p></li>
+      <li><span>外包装情况</span><p>{{info.packing ==1 ?'完好':'破损'}}</p></li>
+      <li><span>开箱/亮灯</span><p>{{info.unpackCheck ==1 ?'完好':'破损'}}</p></li>
+      <li><span>是否安装</span><p>{{info.install ==1 ?'安装':'交底'}}</p></li>
+      <li><span>备注</span><p>{{info.rmks}}</p></li>
     </ul>
     <ul class="info-box" v-if="change">
       <li>{{info.nm}}</li>
-      <li><span>单位：{{info.unit}}</span><p>应到数量：<input v-model="info2.expectNum"/></p></li>
-      <li><span>实际数量</span><p><input v-model="info2.num"/></p></li>
-      <li><span>缺货数量</span><p><input v-model="info2.outNum"/></p></li>
+      <li><span>单位：{{info.unit}}</span><p>应到数量：<input v-model="info2.num"/></p></li>
+      <li><span>实际数量</span><p><input v-model="info2.realNum"/></p></li>
+      <li><span>缺货数量</span><p>{{info2.num - info2.realNum}}</p></li>
       <li>
         <span>是否到货</span>
-        <radios :list="items" @submit="chooseWhat"></radios>
+        <div class="check">
+          <span v-for="(item,index) in items1" :key="index" @click="choose(1,index)">
+            <img :src="xz" alt="" v-if="item.checked">
+            <img :src="wxz" alt="" v-else>
+            {{item.name}}
+          </span>
+        </div>
       </li>
       <li>
         <span>外包装情况</span>
-        <radios :list="items2" @submit="chooseWhat2"></radios>
+        <div class="check">
+          <span v-for="(item,index) in items2" :key="index" @click="choose(2,index)">
+            <img :src="xz" alt="" v-if="item.checked">
+            <img :src="wxz" alt="" v-else>
+            {{item.name}}
+          </span>
+        </div>
       </li>
       <li>
         <span>开箱/亮灯</span>
-        <radios :list="items3" @submit="chooseWhat3"></radios>
+        <div class="check">
+          <span v-for="(item,index) in items3" :key="index" @click="choose(3,index)">
+            <img :src="xz" alt="" v-if="item.checked">
+            <img :src="wxz" alt="" v-else>
+            {{item.name}}
+          </span>
+        </div>
       </li>
       <li>
         <span>是否安装</span>
-        <radios :list="items4" @submit="chooseWhat4"></radios>
+        <div class="check">
+          <span v-for="(item,index) in items4" :key="index" @click="choose(4,index)">
+            <img :src="xz" alt="" v-if="item.checked">
+            <img :src="wxz" alt="" v-else>
+            {{item.name}}
+          </span>
+        </div>
       </li>
       <li>
         <span>备注</span>
-        <input v-model="info2.remark" placeholder="请输入备注"/>
+        <input v-model="info2.rmks" placeholder="请输入备注"/>
       </li>
     </ul>
   </div>
 </template>
 <script>
   import Radios from "./radios";
+  import xz from '@/components/img/选中绿.png'
+  import wxz from '@/components/img/未选中.png'
   export default {
     components: {Radios},
     props:{
@@ -55,59 +81,66 @@
     },
     data(){
       return{
+        xz,
+        wxz,
         info2:{},
-        items: [
-          {value: 'true', name: '是', checked: false},
-          {value: 'false', name: '否', checked: true},
+        items1: [
+          {value:true, name: '是', checked: false},
+          {value:false, name: '否', checked: false},
         ],
         items2: [
-          {value: 'true', name: '完好', checked: false},
-          {value: 'false', name: '破损', checked: true},
+          {value: true, name: '完好', checked: false},
+          {value: false, name: '破损', checked: false},
         ],
         items3: [
-          {value: 'true', name: '完好', checked: false},
-          {value: 'false', name: '破损', checked: true},
+          {value: true, name: '完好', checked: false},
+          {value: false, name: '破损', checked: false},
         ],
         items4: [
-          {value: 'true', name: '安装', checked: false},
-          {value: 'false', name: '交底', checked: true},
+          {value: true, name: '安装', checked: false},
+          {value: false, name: '交底', checked: false},
         ]
       }
     },
     mounted(){
       if(this.change){
         this.info2 = this.info
+        this.items1[this.info.aog-1].checked = true
+        this.items2[this.info.packing-1].checked = true
+        this.items3[this.info.unpackCheck-1].checked = true
+        this.items4[this.info.install-1].checked = true
       }
     },
     methods:{
-      chooseWhat(data){
-        if(data[0].checked){
-          this.info2.ifArrival = true
-        }else{
-          this.info2.ifArrival = false
+      //选择
+      choose(item,index){
+        if(item ==1){
+          this.items1.forEach(item => {
+            item.checked = false
+          });
+          this.items1[index].checked = true
+          this.info2.aog = index + 1
+        }else if(item ==2){
+          this.items2.forEach(item => {
+            item.checked = false
+          });
+          this.items2[index].checked = true
+          this.info2.packing = index + 1
+        }else if(item ==3){
+          this.items3.forEach(item => {
+            item.checked = false
+          });
+          this.items3[index].checked = true
+          this.info2.unpackCheck = index + 1
+        }else if(item ==4){
+          this.items4.forEach(item => {
+            item.checked = false
+          });
+          this.items4[index].checked = true
+          this.info2.install = index + 1
         }
       },
-      chooseWhat2(data){
-        if(data[0].checked){
-          this.info2.ifComplete = true
-        }else{
-          this.info2.ifComplete = false
-        }
-      },
-      chooseWhat3(data){
-        if(data[0].checked){
-          this.info2.ifOpen = true
-        }else{
-          this.info2.ifOpen = false
-        }
-      },
-      chooseWhat4(data){
-        if(data[0].checked){
-          this.info2.ifInstall = true
-        }else{
-          this.info2.ifInstall = false
-        }
-      },
+      
     }
   }
 </script>
@@ -131,6 +164,7 @@
         span{
           width: 210rpx;
         }
+        
         p{
           flex: 1;
         }
@@ -147,6 +181,24 @@
     }
     .info-box{
       li{
+        span{
+          width: 210rpx;
+        }
+        .check{
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          span{
+            display: flex;
+            align-items: center;
+            img{
+              width: 32rpx;
+              height: 32rpx;
+              margin-right: 18rpx;
+            }
+          }
+          
+        }
         p{
           display: flex;
           align-items: center;
