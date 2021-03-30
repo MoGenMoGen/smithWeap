@@ -623,92 +623,124 @@ class api {
   }
   //获取个人信息
   getUser(data){
-    return new Promise(resolve => {
-      get('/blade-user/infoUser',data).then(res=>{
-        resolve(res)
+      return new Promise(resolve => {
+        get('/blade-user/infoUser',data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //修改密码
-  changePassword(data){
-    return new Promise(resolve => {
-      post('/blade-user/updatePassword'+data).then(res=>{
-        resolve(res)
+    }
+    //修改密码
+    changePassword(data){
+      return new Promise(resolve => {
+        post('/blade-user/updatePassword'+data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //获取消息列表
-  getMessageList(data){
-    return new Promise(resolve => {
-      get('/blade-msg/msgrecords/msglist',data).then(res=>{
-        resolve(res)
+    }
+    //获取消息列表
+    getMessageList(data){
+      return new Promise(resolve => {
+        get('/blade-msg/msgrecords/msglist',data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //获取消息详情
-  getMessageDetail(data){
-    return new Promise(resolve => {
-      get("/blade-msg/msgrecords/readMymsg",data).then(res=>{
-        resolve(res)
+    }
+    //获取消息详情
+    getMessageDetail(data){
+      return new Promise(resolve => {
+        get("/blade-msg/msgrecords/readMymsg",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //获取金额统计列表
-  getPorecordsList(data){
-    return new Promise(resolve =>{
-      get("/blade-po/porecords/listStatistical",data).then(res=>{
-        resolve(res)
+    }
+    //获取金额统计列表
+    getPorecordsList(data){
+      return new Promise(resolve =>{
+        get("/blade-po/porecords/listStatistical",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //获取统计数量
-  getCountNum(data){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/countNum",data).then(res=>{
-        resolve(res)
+    }
+    //获取统计数量
+    getCountNum(data){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/countNum",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //更换头像
-  changeAvatar(data){
-    return new Promise(resolve => {
-      post("/blade-user/updatePhoto",data).then(res=>{
-        resolve(res)
+    }
+    //更换头像
+    changeAvatar(data){
+      return new Promise(resolve => {
+        post("/blade-user/updatePhoto",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //平台方 - 进行工单/施工确认工单
-  getWorkOrder(data){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/listOngoing",data).then(res=>{
-        resolve(res)
+    }
+    //平台方 - 进行工单/施工确认工单
+    getWorkOrder(data){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/listOngoing",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //平台方 - 完成工单
-  getCompleteOrder(data){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/listFinish",data).then(res=>{
-        resolve(res)
+    }
+    //平台方 - 完成工单
+    getCompleteOrder(data){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/listFinish",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //平台方 - 帮助中心详情
-  getHelpCenter(data){
-    return new Promise(resolve => {
-      get("/blade-desk/notice/info?id=1355434981060444162",data).then(res=>{
-        resolve(res)
+    }
+    //平台方 - 帮助中心详情
+    getHelpCenter(data){
+      return new Promise(resolve => {
+        get("/blade-desk/notice/info?id=1355434981060444162",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
-  //平台方-获取统计数量
-  getCountNum2(data){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/countNumByPlatform",data).then(res=>{
-        resolve(res)
+    }
+    //平台方-获取统计数量
+    getCountNum2(data){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/countNumByPlatform",data).then(res=>{
+          resolve(res)
+        })
       })
-    })
-  }
+    }
+    //货物清点-增加产品单位列表接口
+    worksgoodstype(type){
+      return new Promise(resolve =>{
+        get("/blade-system/dict-biz/listByPcd?cd="+type).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //货物清点-增加产品接口
+    worksgoodsdetailadd(data){
+      return new Promise(resolve => {
+        post('/blade-works/worksgoodsdetail/add',data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //货物清点-保存按钮
+    keepBillADetail(data){
+      return new Promise(resolve => {
+        post('/blade-works/worksgoodsbill/keepBillADetail',data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //货物清点-提交按钮
+    addBillADetail(data){
+      return new Promise(resolve => {
+        post('/blade-works/worksgoodsbill/addBillADetail',data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
 }
 
 export { api };
