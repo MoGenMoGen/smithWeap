@@ -21,7 +21,7 @@
       <!--分类-->
       <div class="nav">
         <ul>
-          <li v-for="(item,index) in navList" :key="index">
+          <li v-for="(item,index) in navList" :key="index" @click="toPage(item.path)">
             <span>{{item.num}}</span>
             <p>
               {{item.nm}}
@@ -76,13 +76,16 @@
         navList:[
           {
             nm:'已报价',
-            num:58
+            num:58,
+            path:'/pages/my/apply/main'
           },{
             nm:'已接单',
-            num:58
+            num:58,
+            path:'/pages/report/reportStatus/main'
           },{
             nm:'已完工',
-            num:58
+            num:58,
+            path:'/pages/report/reportStatus/main'
           }
         ],
         coreList:[
@@ -137,6 +140,21 @@
               path:'/pages/my/amount/main',
             }
           ]
+          this.navList = [
+            {
+              nm:'已报价',
+              num:58,
+              path:'/pages/my/apply/main'
+            },{
+              nm:'已接单',
+              num:58,
+              path:'/pages/report/reportStatus/main'
+            },{
+              nm:'已完工',
+              num:58,
+              path:'/pages/report/reportStatus/main'
+            }
+          ]
           break
         case 2:
           this.coreList= [
@@ -158,6 +176,17 @@
               path:'/pages/my/amount/main',
             }
           ]
+          this.navList = [
+            {
+              nm:'进行工单',
+              num:58,
+              path:'/pages/platform/order/main?type=1',
+            },{
+              nm:'完成工单',
+              num:58,
+              path:'/pages/platform/order/main?type=2',
+            }
+          ]
           break
       }
     },
@@ -172,11 +201,21 @@
       },
       async getUser(){
         let data = await this.api.getUser();
-        let data2 = await this.api.getCountNum();
-        this.navList[0].num = data2.data.offer
-        this.navList[1].num = data2.data.order
-        this.navList[2].num = data2.data.orderFinish
         this.info = data.data
+        switch(this.loginType){
+          case 1:
+            let data2 = await this.api.getCountNum();
+            this.navList[0].num = data2.data.offer
+            this.navList[1].num = data2.data.order
+            this.navList[2].num = data2.data.orderFinish
+            break
+          case 2:
+            let data3 = await this.api.getCountNum2();
+            this.navList[0].num = data3.data.order
+            this.navList[1].num = data3.data.orderFinish
+            break
+        }
+
       },
       async changeAvatar(){
         let imgUrl = await this.api.chooseImages()
@@ -260,10 +299,10 @@
         ul{
           width: 100%;
           height: 100%;
-          display: inline-grid;
-          grid-template-columns: repeat(3, 33.33%);
+          display: flex;
           li{
             height: 100%;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;

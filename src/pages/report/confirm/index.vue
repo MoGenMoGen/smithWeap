@@ -81,11 +81,11 @@
           </li>
           <li>
             <span>提交时间</span>
-            <p>{{info.worksCompletion.createTime? info.worksCompletion.createTime:'暂无'}}</p>
+            <p>{{info.worksCompletionVO.createTime? info.worksCompletionVO.createTime:'暂无'}}</p>
           </li>
         </ul>
       </div>
-      <div class="infoBox review" v-if="info.worksCompletion.audit==2">
+      <div class="infoBox review" v-if="info.worksCompletionVO.audit==2">
         <ul>
           <li>
             <span>售后审核</span>
@@ -93,19 +93,19 @@
           </li>
           <li>
             <span>审核状态</span>
-            <p>{{info.worksCompletion.custContact? info.worksCompletion.custContact:'暂无'}}</p>
+            <p>{{info.worksCompletionVO.custContact? info.worksCompletionVO.custContact:'暂无'}}</p>
           </li>
           <li>
             <span>审核时间</span>
-            <p>{{info.worksCompletion.auditTm? info.worksCompletion.auditTm:'暂无'}}</p>
+            <p>{{info.worksCompletionVO.auditTm? info.worksCompletionVO.auditTm:'暂无'}}</p>
           </li>
         </ul>
       </div>
-      <div class="infoBox review" v-if="info.worksCompletion.audit==2">
+      <div class="infoBox review" v-if="info.worksCompletionVO.audit==2">
         <ul>
           <li>
             <span>确认二维码</span>
-            <img />
+            <canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas>
           </li>
         </ul>
       </div>
@@ -114,7 +114,7 @@
           <li class="icon">
             <p>
               <img  :src="jg" mode="width"/>
-              {{info.worksCompletion.audit==1?'待售后审核':info.worksCompletion.audit==2?'待客户审核':'审核已驳回'}}
+              {{info.worksCompletionVO.audit==1?'待售后审核':info.worksCompletionVO.audit==2?'待客户审核':'审核已驳回'}}
             </p>
           </li>
         </ul>
@@ -127,6 +127,7 @@
 <script>
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
+  import drawQrcode from 'weapp-qrcode'
 
   import gzdk from "@/components/img/工作打卡.png"
   import gzdk2 from "@/components/img/工作打卡2.png"
@@ -197,17 +198,24 @@
     },
     async onShow(){
       this.getData();
+      drawQrcode({
+        width: 66.66,
+        height: 66.66,
+        canvasId: 'myQrcode',
+        text: '/pages/index/main'
+      })
+
     },
     methods:{
       async getData(){
         let data = await this.api.getInstallDtl(this.orderId)
         data.data.bidStart = data.data.bidStart.slice(0,10)
         data.data.bidEnd = data.data.bidEnd.slice(0,10)
-        data.data.worksCompletion.createTime = data.data.worksCompletion.createTime.slice(0,10)
-        data.data.worksCompletion.auditTm = data.data.worksCompletion.auditTm.slice(0,10)
+        data.data.worksCompletionVO.createTime = data.data.worksCompletionVO.createTime.slice(0,10)
+        data.data.worksCompletionVO.auditTm = data.data.worksCompletionVO.auditTm.slice(0,10)
         this.info = data.data
-        this.dayList = data.data.worksCompletion.imgDay.split(',')
-        this.nightList = data.data.worksCompletion.imgNight.split(',')
+        this.dayList = data.data.worksCompletionVO.imgDay.split(',')
+        this.nightList = data.data.worksCompletionVO.imgNight.split(',')
       },
       showMask(type){
         switch(type){

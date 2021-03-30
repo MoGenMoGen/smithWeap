@@ -701,6 +701,14 @@ class api {
       })
     })
   }
+  //平台方-获取统计数量
+  getCountNum2(data){
+    return new Promise(resolve =>{
+      get("/blade-works/worksorder/countNumByPlatform",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api };

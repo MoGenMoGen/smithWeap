@@ -27,7 +27,8 @@
     "mpvue": "^2.0.0",
     "mpvue-wxparse": "^0.6.5",
     "qs": "^6.10.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "weapp-qrcode": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",

@@ -4,18 +4,18 @@
       <div class="searchBox">
         <div>
           <div class="section">
-            <picker @change="bindPickerChange" :value="index" :range="array">
+            <picker @change="bindPickerChange" :value="index" :range="array"  range-key="dictValue">
               <div class="picker">
-                {{array[index]}}
-                <img :src="down"/>
+                {{array[index].dictValue}}
+                <img :src="down" v-if="index != 2"/>
               </div>
             </picker>
           </div>
         </div>
         <div class="dateBox">
-          <dateRange :value="startTime"></dateRange>
+          <dateRange :value="startTime" @getStart="getDate"></dateRange>
           ~
-          <date-range :value="endTime"></date-range>
+          <date-range :value="endTime" @getStart="getDate2"></date-range>
           <img :src="dateIcon" class="icon"/>
         </div>
       </div>
@@ -98,12 +98,14 @@
         list:[],
         array: ['安装', '安装', '施工', '施工'],
         index: 0,
+        size:10,
       }
     },
     async onShow(){
       this.current = 1
       this.list = []
       this.getList()
+      this.getDictionary()
     },
     //上滑获取下一页
     onReachBottom(){
@@ -124,7 +126,9 @@
       async getList(){
         const param={
           current:this.current,
-          size:this.size
+          size:this.size,
+          endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+          workType:this.workType,
         }
         let data =await this.api.listToComplete(param)
         data.data.records.forEach(item=>{
@@ -135,10 +139,27 @@
         this.total = data.data.total
       },
       toSearch(){
-        console.log('搜索')
+        this.getList();
+      },
+      //获取工作类型
+      async getDictionary(){
+        const param = {
+          cd:'workType'
+        }
+        let data =await this.api.getDictionary(param)
+        this.array = data.data
       },
       bindPickerChange(e) {
-          this.index = e.mp.detail.value
+        this.index = e.mp.detail.value;
+        this.workType = this.array[this.index].dictKey
+      },
+      getDate(e){
+        this.startTm = e
+        this.startTime = e
+      },
+      getDate2(e){
+        this.endTm = e
+        this.endTime = e
       },
     },
     components:{
