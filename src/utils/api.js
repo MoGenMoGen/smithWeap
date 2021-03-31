@@ -741,6 +741,14 @@ class api {
         })
       })
     }
+    //调查问卷-已填写查询
+    survbillinfo(id){
+      return new Promise(resolve =>{
+        get("/blade-surv/survbill/info?id="+id).then(res=>{
+          resolve(res)
+        })
+      })
+    }
 }
 
 export { api };
