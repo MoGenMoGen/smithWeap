@@ -194,6 +194,8 @@
       //发送请求获取报单详情
       const res = await this.api.infoOffer({orderId:id})
       this.info = res.data
+      this.info.bidStart = this.info.bidStart.substring(0,10)
+      this.info.bidEnd = this.info.bidEnd.substring(0,10)
       this.pushInfo ={
         materialCost:'',
         deviceCost:'',
