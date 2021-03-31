@@ -24,6 +24,7 @@
     "pages/report/completed/main",
     "pages/report/confirmOrder/main",
     "pages/report/satisfactionSurvey/main",
+    "pages/report/satisfaction/main",
     "pages/report/tabDetail/clock/main",
     "pages/report/tabDetail/confession/main",
     "pages/report/tabDetail/dailyReport/main",
