@@ -13,7 +13,7 @@
           </li>
           <li>
             <span>项目人员</span>
-            <p>{{info.userId}}</p>
+            <p>{{info.userName}}</p>
           </li>
           <li>
             <span>工单编号</span>
@@ -56,13 +56,13 @@
       <div class="imgBox">
         <ul>
           <li>完工照片(白天照片)</li>
-          <li></li>
+          <li><img v-for="(item,index) in dayList" :key="index" :src="item" mode="width"/></li>
         </ul>
       </div>
       <div class="imgBox">
         <ul>
           <li>完工照片(晚上照片)</li>
-          <li></li>
+          <li><img v-for="(item,index) in nightList" :key="index" :src="item" mode="width"/></li>
         </ul>
       </div>
       <div class="navBox">
@@ -76,31 +76,30 @@
       <!--完工步骤-->
       <div class="stepBox">
         <ul>
-          <li><span>工作人员</span><p>项毅</p></li>
-          <li><span>提交时间</span><p>2021-04-08</p></li>
+          <li><span>工作人员</span><p>{{info.constructionManagerNm? info.constructionManagerNm:'暂无'}}</p></li>
+          <li><span>提交时间</span><p>{{info.worksCompletionVO.createTime? info.worksCompletionVO.createTime:'暂无'}}</p></li>
         </ul>
         <ul>
-          <li><span>售后审核</span><p>张三</p></li>
-          <li><span>审核状态</span><p>审核通过</p></li>
-          <li><span>审核时间</span><p>2021-04-10</p></li>
+          <li><span>售后审核</span><p>{{info.userName? info.userName:'暂无'}}</p></li>
+          <li><span>审核状态</span><p>{{info.worksCompletionVO.custContact? info.worksCompletionVO.custContact:'暂无'}}</p></li>
+          <li><span>审核时间</span><p>{{info.worksCompletionVO.auditTm? info.worksCompletionVO.auditTm:'暂无'}}</p></li>
         </ul>
         <ul>
-          <li><span>确认二维码</span><img style="width:133rpx;height: 133rpx;" :src="cdCard"/></li>
-          <li><span>客户确认</span><img :src="jx"/></li>
-          <li><span>确认时间</span><p>2021-04-14</p></li>
-          <li><span>满意度调查</span><p style="color: #5E97F4">已填写</p><span class="blueButton" @click="toPage('/pages/report/satisfactionSurvey/main')">满意度调查表</span></li>
-          <li><span>填写时间</span><p>2021-04-14</p></li>
+          <li><span>确认二维码</span><canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas></li>
+          <li><span>客户确认</span><img :src="info.worksCompletionVO.custSign"/></li>
+          <li><span>确认时间</span><p>{{info.worksCompletionVO.signTm}}</p></li>
+          <li><span>满意度调查</span><p style="color: #5E97F4">{{info.survBill?'已填写':'未填写'}}</p><span class="blueButton" @click="toPage('/pages/report/satisfactionSurvey/main')">满意度调查表</span></li>
+          <li><span>填写时间</span><p>{{info.actualEnd}}</p></li>
         </ul>
         <ul>
-          <li><span>售后经理</span><p>李四</p></li>
-          <li><span>确认状态</span><p>已确认</p></li>
-          <li><span>确认时间</span><p>2021-04-14</p></li>
+          <li><span>售后经理</span><p>{{info.managerUserNm}}</p></li>
+          <li><span>确认状态</span><p>{{info.confirmStatus ==1?'未确认':'已确认'}}</p></li>
+          <li><span>确认时间</span><p>{{info.confirmTm}}</p></li>
         </ul>
         <ul>
-          <li><span>项目状态</span><p>已完结</p></li>
-          <li><span>完结时间</span><p>2021-04-14</p></li>
+          <li><span>项目状态</span><p>{{info.processStatusNm}}</p></li>
+          <li><span>完结时间</span><p>{{info.actualEnd}}</p></li>
         </ul>
-        <p class="initPBox"><img :src="wdktb"/>待售后审核</p>
       </div>
     </div>
     <bottomBase></bottomBase>
@@ -110,6 +109,7 @@
 <script>
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
+  import drawQrcode from 'weapp-qrcode'
 
   import gzdk from "@/components/img/工作打卡.png"
   import gzdk2 from "@/components/img/工作打卡2.png"
@@ -123,7 +123,6 @@
   import jdbg2 from "@/components/img/交底报告2.png"
   import jt from "@/components/img/箭头.png"
   import wdktb from "@/components/img/无打卡图标.png"
-  import cdCard from "@/components/img/二维码.png"
   import jx from "@/components/img/矩形.png"
 
   export default {
@@ -132,21 +131,7 @@
         jt,
         jx,
         wdktb,
-        cdCard,
-        info:{
-          // pubTm:'2021-03-20',
-          // finishTm:'2021-03-20',
-          // pro:'宾利',
-          // proP:'项毅',
-          // proId:'A2011036',
-          // cNm:'南宁宾利',
-          // time:'2021-03-20',
-          // type:'安装',
-          // content:'整体安装-有立柱（包括勘测）',
-          // kh:'吴波',
-          // khTel:'13806036880',
-          // khAddr:'广西省南宁市江南区白沙大道100号',
-        },
+        info:{},
         centerList:[
           {
             nm:'工作打卡',
@@ -175,17 +160,25 @@
             path:'/pages/report/tabDetail/confession/main'
           },
         ],
+        dayList:[],
+        nightList:[],
         currentIndex:0,
         type:1,
-        id:null,
+        id:'',
       }
     },
     async onLoad(e){
-      this.type = e.type
       this.id = e.id
+      drawQrcode({
+        width: 66.66,
+        height: 66.66,
+        canvasId: 'myQrcode',
+        text: '/pages/index/main'
+      })
     },
     mounted(){
-      this.getlist()
+      this.getData();
+      // this.getlist()
     },
     async onShow(){
 
@@ -196,17 +189,28 @@
           this.util.aHref(url)
         }
       },
+      async getData(){
+        let data = await this.api.getInstallDtl(this.id)
+        data.data.bidStart = data.data.bidStart.slice(0,10)
+        data.data.bidEnd = data.data.bidEnd.slice(0,10)
+        data.data.worksCompletionVO.createTime = data.data.worksCompletionVO.createTime.slice(0,10)
+        data.data.worksCompletionVO.auditTm = data.data.worksCompletionVO.auditTm.slice(0,10)
+        data.data.worksCompletionVO.signTm = data.data.worksCompletionVO.signTm.slice(0,10)
+        this.info = data.data
+        this.dayList = data.data.worksCompletionVO.imgDay.split(',')
+        this.nightList = data.data.worksCompletionVO.imgNight.split(',')
+        console.log(data.data);
+      },
       async getlist(){
-        if(this.type == 1){
-          const res = await this.api.getInstallDtl(this.id)
-          // console.log(res.data);
-          this.info = res.data.worksCompletion
-        }else if(this.type == 2 || this.type == 3){
-          const res = await this.api.getServiceDtl(this.id)
-          // console.log(res.data);
-          this.info = res.data.worksCompletion2
-        }
-
+        // if(this.type == 1){
+        //   const res = await this.api.getInstallDtl(this.id)
+        //   // console.log(res.data);
+        //   this.info = res.data.worksCompletion
+        // }else if(this.type == 2 || this.type == 3){
+        //   const res = await this.api.getServiceDtl(this.id)
+        //   // console.log(res.data);
+        //   this.info = res.data.worksCompletion2
+        // }
       }
     },
     components:{
@@ -278,6 +282,10 @@
             border-bottom: 1rpx solid #D0CED8;
             padding: 20rpx 6rpx;
             box-sizing: border-box;
+            img{
+              width: 240rpx;
+              height: 160rpx;
+            }
             &:last-of-type{
               border-bottom: none;
             }
