@@ -150,30 +150,26 @@
       },
       submit(){
         //判断金额是否为空
-        var flag = false
-        const data = Object.values(this.pushInfo)
-        for( var item in data){
-          if(data[item] == ''){
-            flag = true
-            break
-          }
-        }
-        if(flag){
+        // var flag = false
+        // const data = Object.values(this.pushInfo)
+        // for( var item in data){
+        //   if(data[item] == ''){
+        //     flag = true
+        //     break
+        //   }
+        // }
+        if(this.pushInfo.amount == '' || this.pushInfo.discountAmount == ''){
           return wx.showToast({
               icon: "none",
-              title: '请检查报价内容，报价内容不能为空',
+              title: '报价和优惠总金额不能为空',
               duration: 2000
             });
         }
-        // console.log(this.pushInfo);
         let param = this.pushInfo
         param.orderId = this.info.id
-        // console.log(param);
         this.api.addOffer(param).then(res=>{
           this.toPage('/pages/quotation/detail/main?id='+this.info.id)
         })
-        // console.log('我还会触发');
-        // console.log(this.pushInfo)
       },
       //上传图片
       async toPhoto(){
