@@ -167,7 +167,7 @@ export default {
       });
     }
   },
-  onload(e){
+  onLoad(e){
     this.id = e.id
   },
   async onShow(){
