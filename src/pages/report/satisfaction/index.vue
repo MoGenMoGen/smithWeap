@@ -36,34 +36,15 @@
 
 <script>
 import bottomBase from "@/components/bottomBase";
-import choose1 from "@/components/img/选中.png"
-import choose2 from "@/components/img/未选中.png"
-import jt from "@/components/img/箭头.png"
-import xltb from "@/components/img/下拉图标.png"
-import tpsctb from "@/components/img/图片上传图标.png"
-import cs from "@/components/img/测试.png"
-import dwls from "@/components/img/定位蓝色.png"
-import bg from "@/components/img/打卡按钮.png"
 export default {
   data(){
     return{
-      jt,
-      xltb,
-      tpsctb,
-      cs,
-      dwls,
-      bg:bg,
-      choose1,
-      choose2,
-      index:0,
       //调查表单
       list:{},
       //传过来的id
       id:'',
       //选择题答案
       chooselist:{},
-      //选择表单
-      Answeruer:[],
     }
   },
   watch:{
@@ -75,15 +56,12 @@ export default {
       }
     },
     async getlist() {
+      // console.log(this.id);
       const res = await this.api.survbillinfo(this.id)
       this.list = res.data
-      // let cont = eval("("+this.list.cont+")")
-      // console.log(cont);
-      // console.log(JSON.parse(this.list.cont));
       this.list.cont = JSON.parse(this.list.cont)
       const data = await this.api.getlistByPcd()
       this.chooselist = data
-      // console.log(this.chooselist);
       this.list.cont.forEach(item => {
         this.chooselist.forEach(element => {
           if(item.quesAnswer == element.dictKey){
@@ -94,8 +72,8 @@ export default {
 
     },
   },
-  onload(e){
-    console.log(e.id);
+  onLoad(e){
+    // console.log(e);
     this.id = e.id
   },
   async onShow(){
