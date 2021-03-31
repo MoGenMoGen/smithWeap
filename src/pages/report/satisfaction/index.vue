@@ -10,42 +10,31 @@
       <div class="choosebox">
         <div class="subTitle1">{{list.subTitle1}}</div>
         <div class="questionList" >
-          <div v-for="(item,index) in list.questionList" :key="index">
-            <div class="title">{{item.title}}</div>
-            <div class="check" v-for="(choose,key) in chooselist" :key="key" @click="ChooseCheck(index,key)" >
-              <image style="width:32rpx;height:32rpx;" :src="choose1" v-if="Answeruer[index].quesAnswer == choose.dictKey"></image>
-              <image style="width:32rpx;height:32rpx;" :src="choose2" v-else></image>
-              <span>{{choose.dictValue}}</span>
-            </div>
+          <div v-for="(item,index) in list.cont" :key="index">
+            <div class="title">{{item.quesNm}}</div>
+            <div class="cont"><p>{{item.quesAnswer}}</p></div>
           </div>
         </div>
         <div class="subTitle2">{{list.subTitle2}}</div>
         <div class="suggest">
-          <textarea v-model="suggest" bindblur="bindTextAreaBlur" auto-height placeholder="请输入建议..." />
+          <p>{{list.suggest}}</p>
         </div>
-        <div class="tail1">{{list.tail1}}</div>
-        <div class="tail2">{{list.tail2}}</div>
       </div>
       <div class="other">
         <p>客户负责人签字</p>
-        <signature @success='getsign'></signature>
+        <img :src="list.sign" alt="">
         <div class="br"></div>
         <div class="phone">
           <span>联系电话</span>
-          <input v-model="phone" placeholder="请输入联系电话">
+          <p>{{list.phone}}</p>
         </div>
       </div>
     </div>
     <bottomBase></bottomBase>
-    <div class="button">
-      <div class="btn1">取消</div>
-      <div class="btn2" @click="submit">确定</div>
-    </div>
   </div>
 </template>
 
 <script>
-import signature from "@/components/signature";
 import bottomBase from "@/components/bottomBase";
 import choose1 from "@/components/img/选中.png"
 import choose2 from "@/components/img/未选中.png"
@@ -67,34 +56,17 @@ export default {
       choose1,
       choose2,
       index:0,
-      array: ['出发打卡','到达打卡'],
-      imageList:[
-        {
-          imgUrl: tpsctb,
-        },{
-          imgUrl: cs,
-        }
-      ],
       //调查表单
       list:{},
+      //传过来的id
+      id:'',
       //选择题答案
       chooselist:{},
       //选择表单
       Answeruer:[],
-      //建议
-      suggest:'',
-      //手机号码
-      phone:'',
-      //签名
-      sign:'',
-      //传过来的id
-      id:'',
     }
   },
   watch:{
-    index(e){
-      console.log(1,e);
-    }
   },
   methods:{
     toPage(url){
@@ -103,71 +75,27 @@ export default {
       }
     },
     async getlist() {
-      console.log('请求发送了');
-      const res = await this.api.getsurvconfig()
-      this.list = res
+      const res = await this.api.survbillinfo(this.id)
+      this.list = res.data
+      // let cont = eval("("+this.list.cont+")")
+      // console.log(cont);
+      // console.log(JSON.parse(this.list.cont));
+      this.list.cont = JSON.parse(this.list.cont)
       const data = await this.api.getlistByPcd()
       this.chooselist = data
-      this.list.questionList.forEach(item => {
-        let param = {
-          quesNm:item.title,
-          quesAnswer:10,
-        }
-        this.Answeruer.push(param)
-      });
-    },
-    //选择按钮
-    ChooseCheck(index,key){
-      this.Answeruer[index].quesAnswer = this.chooselist[key].dictKey
-    },
-    //确定按钮
-    submit(){
-      if(this.phone ==''){
-        return wx.showToast({
-          icon: "none",
-          title: '请输入手机账号',
-          duration: 2000
+      // console.log(this.chooselist);
+      this.list.cont.forEach(item => {
+        this.chooselist.forEach(element => {
+          if(item.quesAnswer == element.dictKey){
+            item.quesAnswer = element.dictValue
+          }
         });
-      }
-      if(this.sign == ''){
-        return wx.showToast({
-          icon: "none",
-          title: '请签名并且保存',
-          duration: 2000
-        });
-      }
-      let param = {
-        orderId:this.id,//需补充
-        title:this.list.title,
-        salutation:this.list.salutation,
-        intro:this.list.intro,
-        instructions:this.list.instructions,
-        subTitle1:this.list.subTitle1,
-        subTitle2:this.list.subTitle2,
-        suggest:this.suggest,
-        tail1:this.list.tail1,
-        tail2:this.list.tail2,
-        sign:this.sign,
-        phone:this.phone,
-        list:this.Answeruer
-      }
-      this.api.AddSurvbill(param)
-      this.toPage('/pages/report/satisfaction/main?id='+this.id)
-      // console.log('提交');
-      // console.log(param);
-    },
-    //获取签名
-    getsign(value){
-      // console.log(value);
-      this.sign = value
-      wx.showToast({
-        icon: "none",
-        title: '保存成功',
-        duration: 2000
       });
-    }
+
+    },
   },
   onload(e){
+    console.log(e.id);
     this.id = e.id
   },
   async onShow(){
@@ -175,7 +103,6 @@ export default {
   },
   components:{
     bottomBase,
-    signature
   }
 }
 </script>
@@ -245,25 +172,16 @@ export default {
         line-height: 40rpx;
         color: #1D1D2E;
         .title{
-          margin-bottom: 20rpx;
+          margin-top: 20rpx;
         }
-        .check{
-          // height: 80rpx;
-          padding-left: 38rpx;
-          padding-bottom: 36rpx;
-          box-sizing: border-box;
-          // line-height: 80rpx;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          span{
+        .cont{
+          padding: 0rpx 0 20rpx 48rpx;
+          p{
             font-size: 28rpx;
-            margin-left: 20rpx;
             font-family: PingFang SC;
             font-weight: 400;
             line-height: 40rpx;
-            color: #1D1D2E;
-            // letter-spacing: 59px;
+            color: #E51937;
             opacity: 1;
           }
         }
@@ -278,43 +196,15 @@ export default {
         opacity: 1;
       }
       .suggest{
-        margin-left: 20rpx;
-        margin-bottom: 20rpx;
-        textarea{
-          margin-top: 38rpx;
+        padding: 40rpx 0 64rpx 30rpx;
+        p{
           font-size: 28rpx;
           font-family: PingFang SC;
           font-weight: 400;
           line-height: 40rpx;
-          color: #D0CED8;
+          color: #303030;
           opacity: 1;
-          box-sizing: border-box;
-          width: 100%;
-          padding: 20rpx;
-          border: 1px solid #909090;
-          min-height: 200rpx;
         }
-      }
-      .tail1{
-        font-size: 28rpx;
-        margin-left: 20rpx;
-        margin-right: 32rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
-        line-height: 40rpx;
-        color: #303030;
-        opacity: 1;
-      }
-      .tail2{
-        margin-left: 20rpx;
-        margin-top: 40rpx;
-        padding-bottom: 58rpx;
-        font-size: 28rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
-        line-height: 40rpx;
-        color: #303030;
-        opacity: 1;
       }
     }
     .other{
@@ -335,6 +225,11 @@ export default {
         font-size: 28rpx;
         font-family: PingFang SC;
         font-weight: 400;
+      }
+      img{
+        width: 306rpx;
+        height: 172rpx;
+        padding: 10rpx 0 0 68rpx;
       }
       .br{
         margin: 32rpx 14rpx 0 12rpx;
