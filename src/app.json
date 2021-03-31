@@ -20,6 +20,7 @@
     "pages/report/clockIn/main",
     "pages/report/newException/main",
     "pages/report/confirm/main",
+    "pages/report/confirmSubmit/main",
     "pages/report/reportStatus/main",
     "pages/report/completed/main",
     "pages/report/confirmOrder/main",
