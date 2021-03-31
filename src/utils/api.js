@@ -590,6 +590,14 @@ class api {
     })
   }
   //完工确认单(维修)-提交接口
+  postaddCompletion(data){
+    return new Promise(resolve => {
+      post("/blade-works/workscompletion/addCompletion",data).then(res=>{
+        resolve(res)
+      })
+    })
+  }
+  //完工确认单(维修)-提交接口
   postaddCompletion2(data){
     return new Promise(resolve => {
       post("/blade-works/workscompletion2/addCompletion2",data).then(res=>{
@@ -749,6 +757,7 @@ class api {
         })
       })
     }
+
 }
 
 export { api };
