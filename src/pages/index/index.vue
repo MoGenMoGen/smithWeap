@@ -219,8 +219,7 @@
         right,
         gdbh,
         hbrq,
-        swiperList:[
-        ],
+        swiperList:[],
         current:1,
         size:2,
         swiperStyle:'',
