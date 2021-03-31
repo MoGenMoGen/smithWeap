@@ -254,7 +254,7 @@
   min-height: 200rpx;
 }
 .app .wait.data-v-3564d0b4 {
-  margin: 20rpx;
+  margin: 0  20rpx 20rpx 20rpx;
   border-radius: 12rpx;
   display: flex;
   align-items: center;

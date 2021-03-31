@@ -1,7 +1,7 @@
 <template>
   <div class="headerBase"  :style="{height:custom.height+'px',paddingTop:custom.top+'px',paddingRight:custom.width+20+'px'}">
     <p class="logo2Box">
-      <img :src="msg" @click="toPage('/pages/index/message/main')">
+      <img :src="msg" @click="toPage('/pages/my/message/main')">
     </p>
     <div class="logoBox">
       <img :src="logo" mode="widthFix" />
