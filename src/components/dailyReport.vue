@@ -4,7 +4,7 @@
     <daily-tem-plate v-for="(item,index) in list" :key="index" :info="item" @showMask="showModel" :showButton="showButton"></daily-tem-plate>
     <div class="submitBox" v-if="showButton">
       <p @click="showModel(1)">工作汇报</p>
-      <p>确认完工</p>
+      <p @click="toPage('/pages/report/confirmSubmit/main?id='+id)">确认完工</p>
     </div>
     <!--弹窗-->
     <div class="modalMask" v-if="isModel"></div>
@@ -16,7 +16,12 @@
         安装指导为3个工作日，至现场后，指导人员根据现场的设备工具、人员、安装条件、货物情况制定安装计划：
       </p>
       <ul>
-        <li><span>工作时间</span><input v-model="info.reportDt" placeholder="请输入工作时间"/><img :src="rltb"/></li>
+        <li><span>工作时间</span>
+<!--          <input v-model="info.reportDt" placeholder="请输入工作时间"/>-->
+          <div style="flex:1" ><dateRange :value="reltime" @getStart="getDate"></dateRange></div>
+
+          <img :src="rltb"/>
+        </li>
         <li><span>工作地址</span><input v-model="info.addr" placeholder="请输入工作地址"/><img :src="dwhs"/></li>
         <li><span>工作内容</span><textarea v-model="info.jobCont" placeholder="请输入工作内容"></textarea></li>
         <li><span>现场照片</span>
@@ -41,6 +46,7 @@
   </div>
 </template>
 <script>
+  import dateRange from "@/components/dateRange";
   import logo from '@/components/img/logo2.png'
   import rltb from '@/components/img/日历图标.png'
   import dwhs from '@/components/img/定位黑色.png'
@@ -51,7 +57,7 @@
   import del from "@/components/img/删除图标.png"
   import DailyTemPlate from "./dailyTemPlate";
   export default {
-    components: {DailyTemPlate},
+    components: {DailyTemPlate,dateRange},
     props:{
       id:{
         type:String,
@@ -85,6 +91,7 @@
         showButton:true,//编辑按钮开关
         imgList:[],//图片数组库
         type:1,//操作 1是新增 2是修改
+        reltime:'请选择时间'
       }
     },
     methods:{
@@ -139,6 +146,7 @@
           this.clearinfo()
           this.getLocation();
           this.type = 1;
+          this.reltime = '请选择时间'
         }
         else if(val ==2){
           // console.log(info);
@@ -154,6 +162,7 @@
             imgUrl:info.imgUrl,//图片
             rmks:info.rmks,//备注
           };
+          this.reltime = info.reportDt
           if(this.info.imgUrl){
             this.imgList = this.info.imgUrl.split(',')
           }else{
@@ -161,7 +170,7 @@
           }
         }
         this.changeModel = !this.changeModel;
-        this.isModel = !this.isModel; 
+        this.isModel = !this.isModel;
       },
       //获取经纬度
       getLocation(){
@@ -175,6 +184,11 @@
           _this.info.lat = res.latitude
           }
         })
+      },
+      //日期选择回调函数
+      getDate(e){
+        this.reltime = e
+        this.info.reportDt = e
       },
       //上传图片
       async toPhoto(){
@@ -317,9 +331,9 @@
                     height: 32rpx;
                     top: -16rpx;
                     right: -16rpx;
-                  } 
+                  }
                 }
-                
+
               }
             }
           }
