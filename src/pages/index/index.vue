@@ -63,11 +63,7 @@
               <img :src="tbj"/>
               {{item.worksOfferStatusVo.stateNm}}
             </p>
-            <p v-if="item.worksOfferStatusVo.state ==2" style="color:#FFFFFF;background-color: #909090" @click="toPage('/pages/quotation/detail/main?id='+item.id)">
-              <img :src="tbj"/>
-              {{item.worksOfferStatusVo.stateNm}}
-            </p>
-            <p v-if="item.worksOfferStatusVo.state ==3" style="color:#FFFFFF;background-color: #909090" @click="toPage('/pages/quotation/detail/main?id='+item.id)">
+            <p v-if="item.worksOfferStatusVo.state !=1" style="color:#FFFFFF;background-color: #909090" @click="toPage('/pages/quotation/detail/main?id='+item.id)">
               <img :src="tbj"/>
               {{item.worksOfferStatusVo.stateNm}}
             </p>
