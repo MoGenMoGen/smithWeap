@@ -202,7 +202,8 @@
         }
       },
       changeTab(item,index){
-        this.currentIndex=index
+        // this.currentIndex=index
+        this.toPage('/pages/report/tabDetail/clock/main?id='+this.id +'&type=0')
       },
       //获取工单详情列表
       async getlist(){
@@ -210,7 +211,7 @@
         this.info = res.data
         this.info.bidStart = this.info.bidStart.slice(0,10)
         this.info.bidEnd = this.info.bidEnd.slice(0,10)
-        this.pushInfo = this.info.worksCompletion2
+        this.pushInfo = this.info.worksCompletion2VO
         this.pushInfo.completionTm = this.pushInfo.completionTm.slice(0,10)
         // console.log(this.pushInfo);
         this.imglist1 = this.pushInfo.imgBefore.split(',')
