@@ -81,30 +81,25 @@
               <img :src="item" mode="heightFix"/>
             </div>
           </div>
-
         </div>
       </div>
       <div class="work bottom">
-        <div class="title">工作完成情况：(填写工作内容)</div>
+        <div class="title">工作完成情况</div>
         <div class="br br1"></div>
         <div class="textarea">
           <textarea v-model="pushInfo.completionDesc" bindblur="bindTextAreaBlur" auto-height disabled />
         </div>
         <div class="time">
           <span>完成日期</span>
-          <!-- <dateRange :value="pushInfo.completionTm" @getStart="getDate"></dateRange> -->
           <input v-model="pushInfo.completionTm" type="text" disabled >
         </div>
       </div>
       <div class="question" style="margin-bottom: 0;" >
-        <div class="title">问题反馈：(描述并附带现场照片)</div>
+        <div class="title">问题反馈</div>
         <div class="br br1"></div>
         <div class="feedback">
           {{pushInfo.feedback}}
         </div>
-        <!-- <div class="textarea">
-          <textarea v-model="pushInfo.feedback" bindblur="bindTextAreaBlur" auto-height disabled />
-        </div> -->
         <div class="picture" style="padding-top: 80rpx;">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist3" :key="index"  >
@@ -112,12 +107,42 @@
             </div>
           </div>
         </div>
+        <div class="br br1"></div>
+        <div class="time">
+          <span>提交时间</span>
+          <input v-model="pushInfo.completionTm" type="text" disabled >
+        </div>
+      </div>
+      <!--完工步骤-->
+      <div class="stepBox">
+        <ul>
+          <li><span>工作人员</span><p>{{info.constructionManagerNm? info.constructionManagerNm:'暂无'}}</p></li>
+          <li><span>提交时间</span><p>{{info.worksCompletionVO.createTime? info.worksCompletionVO.createTime:'暂无'}}</p></li>
+        </ul>
+        <ul>
+          <li><span>售后审核</span><p>{{info.userName? info.userName:'暂无'}}</p></li>
+          <li><span>审核状态</span><p>{{info.worksCompletionVO.custContact? info.worksCompletionVO.custContact:'暂无'}}</p></li>
+          <li><span>审核时间</span><p>{{info.worksCompletionVO.auditTm? info.worksCompletionVO.auditTm:'暂无'}}</p></li>
+        </ul>
+        <ul>
+          <li><span>确认二维码</span><canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas></li>
+          <li><span>客户确认</span><img :src="info.worksCompletionVO.custSign"/></li>
+          <li><span>确认时间</span><p>{{info.worksCompletionVO.signTm}}</p></li>
+          <li><span>满意度调查</span><p style="color: #5E97F4">{{info.survBill?'已填写':'未填写'}}</p><span class="blueButton" @click="tosatisfactionSurvey(info)">满意度调查表</span></li>
+          <li><span>填写时间</span><p>{{info.actualEnd}}</p></li>
+        </ul>
+        <ul>
+          <li><span>售后经理</span><p>{{info.managerUserNm}}</p></li>
+          <li><span>确认状态</span><p>{{info.confirmStatus ==1?'未确认':'已确认'}}</p></li>
+          <li><span>确认时间</span><p>{{info.confirmTm}}</p></li>
+        </ul>
+        <ul>
+          <li><span>项目状态</span><p>{{info.processStatusNm}}</p></li>
+          <li><span>完结时间</span><p>{{info.actualEnd}}</p></li>
+        </ul>
       </div>
     </div>
-    <div class="wait">
-      <img :src="dshtb" alt="">
-      <span>待售后审核</span>
-    </div>
+
     <bottomBase></bottomBase>
   </div>
 </template>
@@ -129,8 +154,6 @@
   import Reports from "@/components/reports";
   import gzdk from "@/components/img/工作打卡.png"
   import gzdk2 from "@/components/img/工作打卡2.png"
-  import ycbg from "@/components/img/报告异常.png"
-  import ycbg2 from "@/components/img/检测报告2.png"
   import tpsc from '@/components/img/图片上传图标.png'
   import del from "@/components/img/删除图标.png"
   import jt from "@/components/img/箭头.png"
@@ -153,10 +176,6 @@
             nm:'工作打卡',
             imgUrl:gzdk,
             imgUrlActive:gzdk2,
-          },{
-            nm:'异常报告',
-            imgUrl:ycbg,
-            imgUrlActive:ycbg2,
           }
         ],
         currentIndex:0,
@@ -189,14 +208,24 @@
       async getlist(){
         const res= await this.api.getServiceDtl(this.id)
         this.info = res.data
+        this.info.bidStart = this.info.bidStart.slice(0,10)
+        this.info.bidEnd = this.info.bidEnd.slice(0,10)
         this.pushInfo = this.info.worksCompletion2
+        this.pushInfo.completionTm = this.pushInfo.completionTm.slice(0,10)
         // console.log(this.pushInfo);
         this.imglist1 = this.pushInfo.imgBefore.split(',')
         this.imglist2 = this.pushInfo.imgAfter.split(',')
         this.imglist3 = this.pushInfo.feedbackImg.split(',')
         // console.log(this.info);
       },
-
+      //跳转到满意调查详情
+      tosatisfactionSurvey(item){
+        if(item.survBill){
+          this.toPage('/pages/report/satisfaction/main?id='+item.survBill.id)
+        }else{
+          this.toPage('/pages/report/satisfactionSurvey/main?id='+item.id)
+        }
+      }
     },
     onLoad(e){
       this.id = e.id
@@ -373,12 +402,12 @@
         }
         .time{
           box-sizing: border-box;
-          padding: 20rpx 30rpx 40rpx 30rpx ;
+          padding: 20rpx 0 20rpx 10rpx;
           display: flex;
           align-items: center;
           span{
             font-size: 28rpx;
-            width: 190rpx;
+            width: 220rpx;
             font-family: PingFang SC;
             font-weight: 400;
             line-height: 28rpx;
@@ -416,27 +445,72 @@
         }
       }
     }
-    .wait{
-      margin: 0  20rpx 20rpx 20rpx;
-      border-radius: 12rpx;
-      display: flex;
-      align-items: center;
-      background: #FFFFFF;
-      padding: 26rpx 0 22rpx 40rpx;
-      img{
-        width: 32rpx;
-        height: 32rpx;
+    .stepBox{
+        margin-top: 20rpx;
+        ul{
+          display: flex;
+          flex-direction: column;
+          padding: 20rpx 28rpx;
+          box-sizing: border-box;
+          background-color: #FFFFFF;
+          border-radius: 12rpx;
+          margin-bottom: 20rpx;
+          li{
+            display: flex;
+            align-items: center;
+            border-bottom: 1rpx solid #D0CED8;
+            padding: 20rpx 6rpx;
+            box-sizing: border-box;
+            font-size: 28rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            line-height: 28rpx;
+            color: #303030;
+            opacity: 1;
+            &:last-of-type{
+              border-bottom: none;
+            }
+            span{
+              width: 220rpx;
+
+            }
+            p{
+              flex: 1;
+            }
+            img{
+              width: 188rpx;
+              height: 106rpx;
+            }
+            .blueButton{
+              width: 212rpx;
+              height: 56rpx;
+              border-radius: 12rpx;
+              background-color: #5E97F4;
+              color: #FFFFFF;
+              font-size: 24rpx;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          }
+        }
+        .initPBox{
+          height: 80rpx;
+          width: 100%;
+          padding: 22rpx 40rpx;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          color: #E51937;
+          font-size: 28rpx;
+          background-color: #FFFFFF;
+          border-radius: 12rpx;
+          >img{
+            margin-right: 10rpx;
+            width: 32rpx;
+            height: 32rpx;
+          }
+        }
       }
-      span{
-        flex: 1;
-        padding-left: 12rpx;
-        font-size: 28rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
-        line-height: 40rpx;
-        color: #E51937;
-        opacity: 1;
-      }
-    }
   }
 </style>
