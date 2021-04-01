@@ -37,6 +37,13 @@
          首页：reportStatus（注意)=>详情页：index
          打卡：clock
          已完工：completed=>工单详情：confirmOrder(不同步骤未分割   等对接口时修改)
+         工单详情说明:
+              AfterSale=>维修完工单提交
+              AfterSaleOrder=>维修完工单待审核
+              AfterSaleDetail=>维修完工单最终详情表
+              confirmSubmit=>安装完工单提交表
+              confirm=>安装完工单待审核
+              confirmOrder=>安装完工单最终详情表
          tabDetail文件夹{
               打卡记录：clock
               工单详情：inventory
