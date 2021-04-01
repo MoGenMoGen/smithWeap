@@ -37,35 +37,35 @@
         <ul>
           <li>
             <span>主材</span>
-            <input v-model="pushInfo.materialCost" placeholder="请输入主材报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.materialCost" placeholder="请输入主材报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>设备</span>
-            <input v-model="pushInfo.deviceCost" placeholder="请输入设备报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.deviceCost" placeholder="请输入设备报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>人工费</span>
-            <input v-model="pushInfo.laborCost" placeholder="请输入人工费报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.laborCost" placeholder="请输入人工费报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>交通差旅</span>
-            <input v-model="pushInfo.travelCost" placeholder="请输入交通差旅报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.travelCost" placeholder="请输入交通差旅报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>其他</span>
-            <input v-model="pushInfo.other" placeholder="请输入其他报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.other" placeholder="请输入其他报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>利润与税收</span>
-            <input v-model="pushInfo.profitsTax" placeholder="请输入利润与税收报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.profitsTax" placeholder="请输入利润与税收报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>报价总金额</span>
-            <input v-model="pushInfo.amount" placeholder="系统自动算出合计总金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.amount" placeholder="系统自动算出合计总金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>优惠总金额</span>
-            <input v-model="pushInfo.discountAmount" placeholder="请输入优惠后合计总金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <input type="number" v-model="pushInfo.discountAmount" placeholder="请输入优惠后合计总金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
         </ul>
       </div>
