@@ -189,6 +189,8 @@
       async getlist(){
         const res= await this.api.getServiceDtl(this.id)
         this.info = res.data
+        this.info.bidStart = this.info.bidStart.slice(0,10)
+        this.info.bidEnd = this.info.bidEnd.slice(0,10)
         this.pushInfo = this.info.worksCompletion2
         // console.log(this.pushInfo);
         this.imglist1 = this.pushInfo.imgBefore.split(',')
