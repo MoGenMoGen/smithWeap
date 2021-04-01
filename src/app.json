@@ -33,6 +33,7 @@
     "pages/report/tabDetail/inventory/main",
     "pages/report/AfterSale/main",
     "pages/report/AfterSaleOrder/main",
+    "pages/report/AfterSaleDetail/main",
     "pages/platform/order/main"
 
   ],
