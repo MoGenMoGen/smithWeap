@@ -54,7 +54,7 @@
             </li>
           </ul>
           <div>
-            <p>
+            <p @click="goDetail(item)">
               查看
             </p>
           </div>
@@ -121,6 +121,13 @@
       toPage(url){
         if(url){
           this.util.aHref(url)
+        }
+      },
+      goDetail(item){
+        if(item.workTypeNm ==1 || item.workTypeNm ==3){
+          this.toPage('/pages/report/confirmOrder/main?id='+item.id)
+        }else if(item.workTypeNm ==2){
+          this.toPage('/pages/report/AfterSaleDetail/main?id='+item.id)
         }
       },
       async getList(){
