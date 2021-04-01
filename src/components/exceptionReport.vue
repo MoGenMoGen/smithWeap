@@ -6,10 +6,10 @@
       <li v-for="(item,index) in list" :key="index">
         <p>{{item.descr}}</p>
         <img :src="item.imgUrl"/>
-        <p><span>提交日期：{{item.createTime}}</span><img :src="btb" @click="toPage('/pages/report/newException/main?itemId='+item.id+'&type='+ 2)"/></p>
+        <p><span>提交日期：{{item.createTime}}</span><img v-if="showButton" :src="btb" @click="toPage('/pages/report/newException/main?itemId='+item.id+'&type='+ 2)"/></p>
       </li>
     </ul>
-    <p class="submit" @click="toPage('/pages/report/newException/main?id='+id+'&type='+ 1)">
+    <p v-if="showButton" class="submit" @click="toPage('/pages/report/newException/main?id='+id+'&type='+ 1)">
      新增
     </p>
   </div>

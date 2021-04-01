@@ -12,9 +12,17 @@
       <div class="centerBox">
         <span>上传图片:</span>
         <div class="imageList">
-          <div >
-            <img :src="tpsctb" @click="toPhoto"/>
-            <img v-for="(item,index) in imageList" :key="index" :src="item"/>
+          <div class="box">
+            <div class="left">
+              <img :src="tpsctb" @click="toPhoto"/>
+            </div>
+            <div class="right">
+              <div class="imgs" v-for="(item,index) in imageList" :key="index">
+                <img :src="item"/>
+                <img :src="del" class="del" @click="delimg(index)" />
+              </div>
+            </div>
+            
           </div>
         </div>
         <div class="clockBox">
@@ -36,7 +44,7 @@
 
 <script>
   import bottomBase from "@/components/bottomBase";
-
+  import del from "@/components/img/删除图标.png"
   import jt from "@/components/img/箭头.png"
   import xltb from "@/components/img/下拉图标.png"
   import tpsctb from "@/components/img/图片上传图标.png"
@@ -51,6 +59,7 @@
         tpsctb,
         cs,
         dwls,
+        del,
         bg:bg,
         index:0,
         array: [{
@@ -68,7 +77,7 @@
           lng:'',
           lat:'',
           imgUrl:'',
-        }
+        },
       }
     },
     async onLoad(e){
@@ -127,6 +136,7 @@
       },
       bindPickerChange(e) {
         this.index = e.mp.detail.value
+        this.imageList = []
         switch(this.index){
           case '0':
             this.postInfo.types = 1
@@ -154,6 +164,11 @@
         //   let img = await this.api.upLoad(imgUrl[i])
         //   // this.image.push(img)
         // }
+      },
+      //删除图片
+      delimg(index){
+        this.imageList.splice(index,1)
+        // this.putinfo.imgDay = this.dayList.join(',');
       },
       toBack(){
         this.util.back(1)
@@ -217,8 +232,40 @@
           img{
             width: 160rpx;
             height: 160rpx;
-            margin-right: 20rpx;
           }
+          .box{
+            flex: 1;
+            width: 100%;
+            display: flex;
+            padding: 20rpx 0;
+            .left{
+              width: 160rpx;
+              height: 160rpx;
+              margin-left: 20rpx;
+              padding: 20rpx 0;
+            }
+            .right{
+              flex: 1;
+              overflow-x: auto;
+              display: flex;
+              padding: 20rpx 0;
+              .imgs{
+                width: 160rpx;
+                height: 160rpx;
+                margin-left: 20rpx;
+                position: relative;
+                .del{
+                  position: absolute;
+                  width: 32rpx !important;
+                  height: 32rpx !important;
+                  top: -16rpx;
+                  right: -16rpx;
+                  margin-left: 0;
+                }
+              }
+            }
+          }
+          
         }
       }
       .clockBox{

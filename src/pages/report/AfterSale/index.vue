@@ -97,7 +97,7 @@
         <div class="time">
           <span>完成日期</span>
           <!-- <p>2021-03-20</p> -->
-          <dateRange :value="pushInfo.completionTm" @getStart="getDate"></dateRange>
+          <dateRange :value="relTime" @getStart="getDate"></dateRange>
           <!-- <input v-model="pushInfo.completionTm" type="text" placeholder="请输入时间"> -->
         </div>
       </div>
@@ -169,7 +169,8 @@
         imglist2:[],
         //问题反馈图片
         imglist3:[],
-
+        //显示的地址
+        relTime:'',
       }
     },
     async onShow(){
@@ -199,17 +200,20 @@
           this.util.aHref(url)
         }
       },
+      //跳转地址
       changeTab(item,index){
         if(index == 0){
-          this.toPage('/pages/report/clockIn/main?id='+this.id)
+          this.toPage('/pages/report/tabDetail/clock/main?id='+this.id +'&type=1')
         }else{
-          this.toPage('/pages/report/newException/main?id='+this.id)
+          this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.id + '&type=1')
         }
       },
       //获取工单详情列表
       async getlist(){
         const res= await this.api.getServiceDtl(this.id)
         this.info = res.data
+        this.info.bidStart = this.info.bidStart.slice(0,10)
+        this.info.orderTm = this.info.orderTm.slice(0,10)
         let releDt = this.info.bidStart.substring(0,11)
         let takeDt = this.info.orderTm.substring(0,11)
         this.pushInfo = {
@@ -230,9 +234,10 @@
           imgBefore:'',
           imgAfter:'',
           completionDesc:'',//完成描述
-          completionTm:'请选择完成时间',//完成时间
+          completionTm:'',//完成时间
           feedback:'',//问题反馈
         }
+        this.relTime = '请选择完成时间'
         this.imglist1 = []
         this.imglist2 = []
         this.imglist3 = []
@@ -279,6 +284,7 @@
       getDate(e){
         // console.log(e);
         let time = e + " 00:00:00"
+        this.relTime = e
         this.pushInfo.completionTm = time
       },
     },
@@ -479,7 +485,7 @@
             font-family: PingFang SC;
             font-weight: 400;
             line-height: 34rpx;
-            color: #D0CED8;
+            // color: #D0CED8;
             opacity: 1;
             box-sizing: border-box;
             width: 100%;

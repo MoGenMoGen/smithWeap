@@ -146,6 +146,10 @@
     async onLoad(item){
       const res = await this.api.infoAfterWork({orderId:item.id})
       this.info = res.data
+      this.info.bidStart = this.info.bidStart.slice(0,10)
+      this.info.bidEnd = this.info.bidEnd.slice(0,10)
+      this.info.planedStart = this.info.planedStart.slice(0,10)
+      this.info.planedEnd = this.info.planedEnd.slice(0,10)
       // console.log(this.info);
     },
     onShow(){

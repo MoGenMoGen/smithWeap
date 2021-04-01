@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <exceptionReport :showButton="false"></exceptionReport>
+      <exceptionReport :showButton="showBtn" :id='id'></exceptionReport>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -13,7 +13,12 @@
 
   export default {
     data(){
-      return {}
+      return {
+        //传过来的id
+        id:'',
+        //是否显示增添按钮
+        showBtn:false,
+      }
     },
     watch:{
     },
@@ -23,6 +28,15 @@
           this.util.aHref(url)
         }
       },
+    },
+    onLoad(e){
+      this.id = e.id
+      if(e.type == 1){
+        this.showBtn = true
+      }else{
+        this.showBtn = false
+      }
+      // console.log(e);
     },
     components:{
       bottomBase,exceptionReport

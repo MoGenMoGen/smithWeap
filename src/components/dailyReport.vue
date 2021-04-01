@@ -37,7 +37,7 @@
         </li>
         <li><span>备注</span><input v-model="info.rmks" placeholder="请输入备注内容"/></li>
       </ul>
-      <div class="modalFooter">
+      <div class="modalFooter" v-if="showButton">
         <div class="btnCancel" @tap="tapCancel">取消</div>
         <div class="btnConfirm" @tap="confirmSend">确定</div>
       </div>
@@ -61,6 +61,10 @@
     props:{
       id:{
         type:String,
+      },
+      showButton:{
+        type:Boolean,
+        default:true,
       }
     },
     data(){
@@ -88,7 +92,7 @@
         isModel:false,
         changeModel:false,
         index:0,
-        showButton:true,//编辑按钮开关
+        // showButton:true,//编辑按钮开关
         imgList:[],//图片数组库
         type:1,//操作 1是新增 2是修改
         reltime:'请选择时间'
@@ -126,9 +130,10 @@
       //  确认
       confirmSend() {
         // console.log(this.info);
-        //新增
+        
         if(this.type ==1){
-          if(this.reportDt ==''){
+          //新增
+          if(this.info.reportDt ==''){
             return wx.showToast({
               icon: "none",
               title: '请选择时间',
@@ -139,6 +144,7 @@
           param.orderId = this.id
           this.api.addReport(param)
         }else if(this.type ==2){
+          //修改
           let param = this.info
           this.api.alterReport(param)
         }

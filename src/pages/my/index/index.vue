@@ -40,6 +40,7 @@
         </ul>
       </div>
     </div>
+    <p @click="toPage('/pages/login/main')">测试跳转登录页面</p>
     <bottomBase></bottomBase>
   </div>
 </template>
@@ -76,15 +77,15 @@
         navList:[
           {
             nm:'已报价',
-            num:58,
+            num:0,
             path:'/pages/my/apply/main'
           },{
             nm:'已接单',
-            num:58,
+            num:0,
             path:'/pages/report/reportStatus/main'
           },{
             nm:'已完工',
-            num:58,
+            num:0,
             path:'/pages/report/reportStatus/main'
           }
         ],

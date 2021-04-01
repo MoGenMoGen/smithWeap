@@ -183,6 +183,22 @@
         this.imgUrls.splice(index,1)
         this.pushInfo.attach = this.imgUrls.join(',');
       },
+      //清空
+      clearinfo(){
+        this.pushInfo ={
+          materialCost:'',
+          deviceCost:'',
+          laborCost:'',
+          travelCost:'',
+          other:'',
+          profitsTax:'',
+          amount:'',
+          discountAmount:'',
+          attach:'',
+          rmks:''
+        }
+        this.imgUrls = []
+      }
     },
     async onLoad(item){
       let id = item.id
@@ -192,19 +208,7 @@
       this.info = res.data
       this.info.bidStart = this.info.bidStart.substring(0,10)
       this.info.bidEnd = this.info.bidEnd.substring(0,10)
-      this.pushInfo ={
-        materialCost:'',
-        deviceCost:'',
-        laborCost:'',
-        travelCost:'',
-        other:'',
-        profitsTax:'',
-        amount:'',
-        discountAmount:'',
-        attach:'',
-        rmks:''
-      }
-      this.imgUrls = []
+      this.clearinfo()
       // console.log(this.info)
     },
     async onShow(){

@@ -8,8 +8,8 @@
             <p>{{info.bidStart}}</p>
           </li>
           <li>
-            <span>截止日期</span>
-            <p>{{info.bidEnd}}</p>
+            <span>接单日期</span>
+            <p>{{info.orderTm}}</p>
           </li>
           <li>
             <span>项目人员</span>
@@ -61,7 +61,7 @@
             <img :src="jt" mode="widthFix" v-show="index==currentIndex"  class="img2"/>
           </li>
         </ul>
-        <reports :index="currentIndex" :id="orderId"></reports>
+        <reports :index="currentIndex" :id="orderId" ></reports>
       </div>
     </div>
     <bottomBase></bottomBase>
@@ -88,18 +88,18 @@
       return{
         jt,
         info:{
-          pubTm:'2021-03-20',
-          finishTm:'2021-03-20',
-          pro:'宾利',
-          proP:'项毅',
-          proId:'A2011036',
-          cNm:'南宁宾利',
-          time:'2021-03-20',
-          type:'安装',
-          content:'整体安装-有立柱（包括勘测）',
-          kh:'吴波',
-          khTel:'13806036880',
-          khAddr:'广西省南宁市江南区白沙大道100号',
+          // pubTm:'2021-03-20',
+          // finishTm:'2021-03-20',
+          // pro:'宾利',
+          // proP:'项毅',
+          // proId:'A2011036',
+          // cNm:'南宁宾利',
+          // time:'2021-03-20',
+          // type:'安装',
+          // content:'整体安装-有立柱（包括勘测）',
+          // kh:'吴波',
+          // khTel:'13806036880',
+          // khAddr:'广西省南宁市江南区白沙大道100号',
         },
         centerList:[
           {
@@ -131,7 +131,7 @@
         orderId:'',
       }
     },
-    async onLoad(e){
+    onLoad(e){
       this.orderId = e.id
     },
     async onShow(){
@@ -143,8 +143,11 @@
     },
     methods:{
       async getDetail(id){
+        console.log('我是猪',id);
         let data = await this.api.getInfoWork(id)
         this.info = data.data
+        this.info.bidStart = this.info.bidStart.slice(0,10)
+        this.info.orderTm = this.info.orderTm.slice(0,10)
       },
       showMask(type){
         switch(type){

@@ -67,7 +67,7 @@
       </div>
       <div class="navBox">
         <ul>
-          <li v-for="(item,index) in centerList" :key="index" @click="toPage(item.path)">
+          <li v-for="(item,index) in centerList" :key="index" @click="changeTab(item.path)">
             <img :src="item.imgUrl" mode="aspectFit" class="img"/>
             <p style="color:#303030">{{item.nm}}</p>
           </li>
@@ -218,7 +218,23 @@
         }else{
           this.toPage('/pages/report/satisfactionSurvey/main?id='+item.id)
         }
-      }
+      },
+      changeTab(index){
+        if(index == 0){
+          this.toPage('/pages/report/tabDetail/clock/main?id='+this.orderId +'&type=0')
+        }else if(index ==1){
+          this.toPage('/pages/report/tabDetail/inventory/main?id='+this.orderId + '&type=0')
+        }
+        else if(index ==2){
+          this.toPage('/pages/report/tabDetail/dailyReport/main?id='+this.orderId + '&type=0')
+        }
+        else if(index ==3){
+          this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.orderId + '&type=0')
+        }
+        else if(index ==4){
+          this.toPage('/pages/report/tabDetail/confession/main?id='+this.orderId + '&type=0')
+        }
+      },
     },
     components:{
       bottomBase,modelMask

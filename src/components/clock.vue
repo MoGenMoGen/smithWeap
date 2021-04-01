@@ -29,9 +29,11 @@
             <span>
               行程记录
             </span>
-            <p class="imgUrl">
-              <img :src="z?z:tx" v-for="(z,x) in item.imgUrl" :key="x" mode="width"/>
-            </p>
+            <div class="imgUrl" v-if="item.imgUrl">
+                <div class="box" v-for="(z,x) in item.imgUrl" :key="x">
+                    <img :src="z"  mode="heightFix"/>
+                </div>
+            </div>
           </li>
         </ul>
       </div>
@@ -75,7 +77,6 @@
           }
         ],
         show:true,
-
       }
     },
     onShow(){
@@ -153,6 +154,21 @@
             width: 222rpx;
             font-size: 24rpx;
             color: #303030;
+          }
+          .imgUrl{
+            flex: 1;
+            overflow-x: auto;
+            display: flex;
+            .box{
+              width: 320rpx ;
+              height: 170rpx;
+              margin-right: 20rpx;
+              img{
+                width: 320rpx;
+                height: 170rpx;
+              }
+            }
+
           }
           p{
             flex: 1;

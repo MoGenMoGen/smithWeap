@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <inventory></inventory>
+      <inventory :id='id'></inventory>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -13,7 +13,10 @@
 
   export default {
     data(){
-      return {}
+      return {
+        //传过来的id
+        id:'',
+      }
     },
     watch:{
     },
@@ -23,6 +26,9 @@
           this.util.aHref(url)
         }
       },
+    },
+    onLoad(e){
+      this.id = e.id
     },
     components:{
       Inventory,

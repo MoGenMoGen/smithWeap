@@ -9,9 +9,21 @@
     <div class="photoBox">
       <ul>
         <li>交底照片</li>
-        <li>
-          <img :src="tpsc" mode="width" @click="toPhoto" v-if="info && info.state != 2"/>
-          <img v-for="(item,index) in imageList" :src="item"/>
+        <li v-if="info &&info.state != 2">
+          <img class="left" :src="tpsc" mode="width" @click="toPhoto" v-if="info && info.state != 2"/>
+          <div class="imgUrl">
+            <div class="box" v-for="(item,index) in imageList" :key="index">
+                <img :src="item" mode="width" />
+                <img :src="del" class="del" @click="delimg(index)" />
+            </div>
+          </div>
+        </li>
+        <li v-if="info &&info.state == 2">
+          <div class="imgUrl">
+            <div class="box" v-for="(item,index) in imageList" :key="index">
+                <img :src="item" mode="heightFix" />
+            </div>
+          </div>
         </li>
         <li><span>过程异常说明</span><textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2"></textarea></li>
       </ul>
@@ -23,6 +35,7 @@
   </div>
 </template>
 <script>
+  import del from "@/components/img/删除图标.png"
   import yctb from '@/components/img/logo2.png'
   import cs from '@/components/img/测试.png'
   import btb from '@/components/img/笔图标.png'
@@ -40,6 +53,7 @@
     },
     data(){
       return{
+        del,
         yctb,
         cs,
         btb,
@@ -51,8 +65,11 @@
         imageList:[],
       }
     },
-    onShow(){
+    onLoad(){
       this.getData();
+    },
+    onShow(){
+      // this.getData();
     },
     mounted(){
       this.getData();
@@ -94,6 +111,10 @@
         let imgUrl = await this.api.chooseImages()
         let data = await this.api.upLoad(imgUrl[0])
         this.imageList.push(data.link)
+      },
+      //删除图片
+      delimg(index){
+        this.imageList.splice(index,1)
       },
       toPage(url){
         if(url){
@@ -151,6 +172,36 @@
           img{
             height: 160rpx;
             width: 160rpx;
+          }
+          .left{
+            height: 160rpx;
+            width: 160rpx;
+            padding: 20rpx 0;
+            margin-right: 20rpx;
+          }
+          .imgUrl{
+            flex: 1;
+            overflow-x: auto;
+            display: flex;
+            padding: 20rpx 0;
+            .box{
+              // width: 160rpx ;
+              height: 160rpx;
+              // padding: 20rpx 0;
+              margin-right: 20rpx;
+              position: relative;
+              .del{
+                position: absolute;
+                width: 32rpx !important;
+                height: 32rpx !important;
+                top: -16rpx;
+                right: -16rpx;
+              }
+              img{
+                width: 160rpx;
+                height: 160rpx;
+              }
+            }
           }
           &:first-of-type{
             font-size: 32rpx;

@@ -56,18 +56,30 @@
       <div class="imgBox box">
         <ul>
           <li>完工照片(白天照片)</li>
-          <li><img v-for="(item,index) in dayList" :key="index" :src="item" mode="width"/></li>
+          <li>
+            <div class="imglist">
+              <div class="imgs" v-for="(item,index) in dayList" :key="index" :src="item" >
+                <img :src="item" mode="heightFix"/>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
       <div class="imgBox">
         <ul>
           <li>完工照片(晚上照片)</li>
-          <li><img v-for="(item,index) in nightList" :key="index" :src="item" mode="width"/></li>
+          <li>
+            <div class="imgbox">
+              <div class="imgs" v-for="(item,index) in nightList" :key="index"  >
+                <img :src="item" mode="heightFix"/>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
       <div class="navBox">
         <ul>
-          <li v-for="(item,index) in centerList" :key="index" @click="toPage(item.path)">
+          <li v-for="(item,index) in centerList" :key="index" @click="changeTab(index)">
             <img :src="item.imgUrl" mode="aspectFit" class="img"/>
             <p style="color:#303030">{{item.nm}}</p>
           </li>
@@ -241,8 +253,21 @@
           this.util.aHref(url)
         }
       },
-      changeTab(item,index){
-        this.currentIndex=index
+      changeTab(index){
+        if(index == 0){
+          this.toPage('/pages/report/tabDetail/clock/main?id='+this.orderId +'&type=0')
+        }else if(index ==1){
+          this.toPage('/pages/report/tabDetail/inventory/main?id='+this.orderId + '&type=0')
+        }
+        else if(index ==2){
+          this.toPage('/pages/report/tabDetail/dailyReport/main?id='+this.orderId + '&type=0')
+        }
+        else if(index ==3){
+          this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.orderId + '&type=0')
+        }
+        else if(index ==4){
+          this.toPage('/pages/report/tabDetail/confession/main?id='+this.orderId + '&type=0')
+        }
       },
     },
     components:{
@@ -312,6 +337,17 @@
             border-bottom: 1rpx solid #D0CED8;
             padding: 20rpx 6rpx;
             box-sizing: border-box;
+            .imglist{
+              flex: 1;
+              display: flex;
+              float: left;
+              overflow-x: auto;
+              .imgs{
+                position: relative;
+                margin-right: 20rpx;
+                height: 160rpx;
+              }
+            }
             img{
               width: 240rpx;
               height: 160rpx;

@@ -187,7 +187,6 @@
       // this.getlist()
     },
     async onShow(){
-
     },
     methods:{
       toPage(url){
@@ -200,6 +199,7 @@
         data.data.bidStart = data.data.bidStart.slice(0,10)
         data.data.bidEnd = data.data.bidEnd.slice(0,10)
         this.info = data.data
+        this.workcontent = []
         this.info.worksReportList.forEach(item=>{
           this.workcontent.push(item.jobCont)
         })
@@ -232,7 +232,6 @@
       getDate(e){
         this.reltime = e
         this.putinfo.completionTm = e + ' 00:00:00'
-        // console.log(e)
       },
       //上传图片
       async toPhoto(value){
@@ -359,7 +358,7 @@
                 font-family: PingFang SC;
                 font-weight: 400;
                 line-height: 16rpx;
-                color: #D0CED8;
+                // color: #D0CED8;
                 opacity: 1;
               }
               .time{

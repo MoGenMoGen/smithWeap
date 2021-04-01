@@ -217,8 +217,8 @@
               orderId: item.orderId,
               nm: item.nm,
               unit: item.unit,
-              num: item.num,
-              realNum: item.realNum,
+              num: parseInt(item.num),
+              realNum: parseInt(item.realNum),
               aog: item.aog,
               packing: item.packing,
               unpackCheck: item.unpackCheck,
@@ -266,8 +266,8 @@
             orderId: item.orderId,
             nm: item.nm,
             unit: item.unit,
-            num: item.num,
-            realNum: item.realNum,
+            num: parseInt(item.num),
+            realNum: parseInt(item.realNum),
             aog: item.aog,
             packing: item.packing,
             unpackCheck: item.unpackCheck,
@@ -284,6 +284,7 @@
           imgUrl: this.info.imgUrl,
           worksGoodsDetailList:goodslist,
         }
+        // console.log(param);
         this.api.keepBillADetail(param)
       },
       //增加产品

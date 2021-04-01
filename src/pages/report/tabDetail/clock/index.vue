@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <clock :showButton="false"></clock>
+      <clock :showButton="showBtn" :id='id' ></clock>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -13,7 +13,12 @@
 
   export default {
     data(){
-      return {}
+      return {
+        //传过来的id
+        id:'',
+        //是否显示增添按钮
+        showBtn:false,
+      }
     },
     watch:{
     },
@@ -23,6 +28,14 @@
           this.util.aHref(url)
         }
       },
+    },
+    onLoad(e){
+      this.id = e.id
+      if(e.type == 1){
+        this.showBtn = true
+      }else{
+        this.showBtn = false
+      }
     },
     components:{
       bottomBase,clock
