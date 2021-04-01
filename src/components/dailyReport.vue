@@ -128,6 +128,13 @@
         // console.log(this.info);
         //新增
         if(this.type ==1){
+          if(this.reportDt ==''){
+            return wx.showToast({
+              icon: "none",
+              title: '请选择时间',
+              duration: 2000
+            });
+          }
           let param = this.info
           param.orderId = this.id
           this.api.addReport(param)
@@ -162,7 +169,12 @@
             imgUrl:info.imgUrl,//图片
             rmks:info.rmks,//备注
           };
-          this.reltime = info.reportDt
+          if(info.reportDt == ''){
+            this.reltime = '请选择时间'
+          }else{
+            this.reltime = info.reportDt
+          }
+
           if(this.info.imgUrl){
             this.imgList = this.info.imgUrl.split(',')
           }else{
