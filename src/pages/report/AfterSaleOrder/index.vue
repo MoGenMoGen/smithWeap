@@ -128,9 +128,7 @@
   import modelMask from "@/components/modelMask";
   import Reports from "@/components/reports";
   import gzdk from "@/components/img/工作打卡.png"
-  import gzdk2 from "@/components/img/工作打卡2.png"
   import ycbg from "@/components/img/报告异常.png"
-  import ycbg2 from "@/components/img/检测报告2.png"
   import tpsc from '@/components/img/图片上传图标.png'
   import del from "@/components/img/删除图标.png"
   import jt from "@/components/img/箭头.png"
@@ -152,11 +150,9 @@
           {
             nm:'工作打卡',
             imgUrl:gzdk,
-            imgUrlActive:gzdk2,
           },{
             nm:'异常报告',
             imgUrl:ycbg,
-            imgUrlActive:ycbg2,
           }
         ],
         currentIndex:0,
@@ -183,7 +179,11 @@
         }
       },
       changeTab(item,index){
-        this.currentIndex=index
+        if(index == 0){
+          this.toPage('/pages/report/tabDetail/clock/main?id='+this.id +'&type=0')
+        }else{
+          this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.id + '&type=0')
+        }
       },
       //获取工单详情列表
       async getlist(){
@@ -191,7 +191,8 @@
         this.info = res.data
         this.info.bidStart = this.info.bidStart.slice(0,10)
         this.info.bidEnd = this.info.bidEnd.slice(0,10)
-        this.pushInfo = this.info.worksCompletion2
+        this.pushInfo = this.info.worksCompletion2VO
+        this.pushInfo.completionTm = this.pushInfo.completionTm.slice(0,10)
         // console.log(this.pushInfo);
         this.imglist1 = this.pushInfo.imgBefore.split(',')
         this.imglist2 = this.pushInfo.imgAfter.split(',')
@@ -341,26 +342,21 @@
           padding-bottom: 64rpx;
           padding-left: 10rpx;
           display: flex;
-          // height: 160rpx;
           .imgbox{
            flex: 1;
            display: flex;
            float: left;
            overflow-x: auto;
-          //  padding-top: 20rpx ;
            .imgs{
               position: relative;
               margin-right: 20rpx;
               height: 160rpx;
-              // padding: 10rpx 0;
-              // display: inline-block;
               .del{
                 position: absolute;
                 width: 32rpx;
                 height: 32rpx;
                 top: -16rpx;
                 right: -16rpx;
-                // z-index: 9999;
               }
             }
           }
