@@ -92,19 +92,15 @@
         </div>
         <div class="time">
           <span>完成日期</span>
-          <!-- <dateRange :value="pushInfo.completionTm" @getStart="getDate"></dateRange> -->
           <input v-model="pushInfo.completionTm" type="text" disabled >
         </div>
       </div>
-      <div class="question" style="margin-bottom: 0;" >
+      <div class="question">
         <div class="title">问题反馈：(描述并附带现场照片)</div>
         <div class="br br1"></div>
         <div class="feedback">
           {{pushInfo.feedback}}
         </div>
-        <!-- <div class="textarea">
-          <textarea v-model="pushInfo.feedback" bindblur="bindTextAreaBlur" auto-height disabled />
-        </div> -->
         <div class="picture" style="padding-top: 80rpx;">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist3" :key="index"  >
@@ -113,16 +109,67 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="wait">
-      <img :src="dshtb" alt="">
-      <span>待售后审核</span>
+      <div class="infoBox review">
+        <ul>
+          <li>
+            <span>工作人员</span>
+            <p>{{info.constructionManagerNm? info.constructionManagerNm:'暂无'}}</p>
+          </li>
+          <li>
+            <span>提交时间</span>
+            <p>{{info.worksCompletion2VO.createTime}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="infoBox review" v-if="info.worksCompletion2VO.audit==2  &&sure !=1">
+        <ul>
+          <li>
+            <span>确认二维码</span>
+            <!-- <canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas> -->
+            <img :src="myQrcode" class="myQrcode" mode="heightFix" alt="">
+            <!-- <div v-html="myQrcode"></div> -->
+          </li>
+        </ul>
+      </div>
+      <div class="infoBox review" v-if="sure == 1 &&info.worksCompletion2VO.audit==2">
+        <div class="title">
+          <span>客户负责人签名</span>
+        </div>
+        <div class="sign">
+          <signature @success='getsign'></signature>
+        </div>
+      </div>
+      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletion2VO.audit==1">
+        <p>审核意见</p>
+        <div class="textarea">
+          <textarea placeholder="请输入建议..." v-model="options" name="" id="" cols="30" rows="10"></textarea>
+        </div>
+      </div>
+      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletion2VO.audit ==1)  &&sure !=1 && info.worksCompletion2VO.audit<=3">
+        <ul>
+          <li class="icon">
+            <p>
+              <img  :src="dshtb" mode="width"/>
+              {{info.worksCompletion2VO.audit==1?'待售后审核':info.worksCompletion2VO.audit==2?'待客户确认':'审核已驳回'}}
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
     <bottomBase></bottomBase>
+    <div class="button" v-if="nametype ==2 &&info.worksCompletion2VO.audit==1">
+      <div class="btn1" @click="submit(1)">不通过</div>
+      <div class="btn2" @click="submit(2)">通过</div>
+    </div>
+    <div class="button" v-if="sure == 1 && info.worksCompletion2VO.audit==2">
+      <div class="btn1" @click="custsubmit(1)">取消</div>
+      <div class="btn2" @click="custsubmit(2)">提交</div>
+    </div>
   </div>
 </template>
 
 <script>
+  import signature from "@/components/signature";
   import dateRange from "@/components/dateRange";
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
@@ -167,10 +214,25 @@
         imglist2:[],
         //问题反馈图片
         imglist3:[],
-
+        //供应商 平台方 客户
+        nametype:1,
+        //审核意见
+        options:'',
+        //是否客户确认
+        sure:0,
+        //客户签名
+        custSign:'',
+        myQrcode:'',
       }
     },
+
     async onShow(){
+      drawQrcode({
+        width: 66.66,
+        height: 66.66,
+        canvasId: 'myQrcode',
+        text: '/pages/index/main'
+      })
     },
     methods:{
       toPage(url){
@@ -197,18 +259,89 @@
         this.imglist1 = this.pushInfo.imgBefore.split(',')
         this.imglist2 = this.pushInfo.imgAfter.split(',')
         this.imglist3 = this.pushInfo.feedbackImg.split(',')
+        // let param = {
+        //   appid:'wx5d71635ece5968bd',
+        //   id:this.id,
+        //   type:1,
+        //   sure:1,
+        // }
+        // this.myQrcode = await this.api.getQRcode(param)
+        this.myQrcode = 'https://saf.ae-smith.com/blade-works/worksorder/getQRcode?appid=wx5d71635ece5968bd&id='+this.id+'&type=1&sure=1'
+        // console.log(myQrcode);
         // console.log(this.info);
       },
+      //通过
+      submit(value){
+        let param;
+        if(value ==1){
+          param = {
+            id: this.info.worksCompletion2VO.id,
+            orderId: this.info.worksCompletion2VO.orderId,
+            audit: 3,
+            options: this.options
+          }
+        }else{
+          param = {
+            id: this.info.worksCompletion2VO.id,
+            orderId: this.info.worksCompletion2VO.orderId,
+            audit: 2,
+            options: this.options
+          }
+        }
+        // console.log(param);
+        this.api.workscompletion2approvePC(param).then(res=>{
+          this.getlist()
+        })  
+      },
+      //获取签名
+      getsign(value){
+        // console.log(value);
+        this.custSign = value
+        wx.showToast({
+          icon: "none",
+          title: '保存成功',
+          duration: 2000
+        });
+      },
+      //客户提交
+      custsubmit(value){
+        if(this.custSign ==''){
+          return wx.showToast({
+            icon: "none",
+            title: '请签名后提交',
+            duration: 2000
+          });
+        }
+        var param;
+        if(value ==1 ){
+          return 
+        }else{
+          param = {
+            id: this.info.worksCompletion2VO.id,
+            orderId: this.info.worksCompletion2VO.orderId,
+            audit: 5,
+            custSign: this.custSign,
+            signTm: "2021-04-03 00:00:00",
+          }
+        }
+        // console.log(param);
+        this.api.workscompletion2custAudit(param).then(res=>{
+          this.toPage('/pages/report/satisfactionSurvey/main?id='+this.id)
+        })
+      }
 
     },
     onLoad(e){
       this.id = e.id
+      this.nametype = wx.getStorageSync('loginType')
+      this.sure = e.sure
       this.getlist()
     },
     components:{
       Reports,
       bottomBase,modelMask,
       dateRange,
+      signature,
     }
   }
 </script>
@@ -413,28 +546,88 @@
           }
         }
       }
-    }
-    .wait{
-      margin: 0  20rpx 20rpx 20rpx;
-      border-radius: 12rpx;
-      display: flex;
-      align-items: center;
-      background: #FFFFFF;
-      padding: 26rpx 0 22rpx 40rpx;
-      img{
-        width: 32rpx;
-        height: 32rpx;
+      .review{
+        .title{
+          padding: 20rpx 0 0 42rpx;
+        }
+        .myQrcode{
+          width: 200rpx;
+          height: 200rpx;
+        }
+        .sign{
+          padding: 60rpx 40rpx;
+        }
+        ul{
+          margin-bottom: 20rpx;
+          .icon{
+            >p{
+              color: #E51937;
+              display: flex;
+              align-items: center;
+              >img{
+                width: 32rpx;
+                height: 32rpx;
+                margin-right: 10rpx;
+              }
+            }
+          }
+        }
       }
-      span{
-        flex: 1;
-        padding-left: 12rpx;
+      .options{
+        padding-bottom: 60rpx;
+        p{
+          font-size: 30rpx;
+          font-family: PingFang SC;
+          font-weight: 400;
+          line-height: 40rpx;
+          color: #303030;
+          opacity: 1;
+          padding: 20rpx 0 0 42rpx;
+        }
+        .textarea{
+          background: #FFFFFF;
+          border: 1px solid #909090;
+          opacity: 1;
+          border-radius: 3px;
+          margin: 34rpx 50rpx;
+          padding: 20rpx;
+        }
+      }
+    }
+    .button{
+      width: 100%;
+      // position: relative;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      
+      padding: 0 20rpx 80rpx 20rpx;
+      box-sizing: border-box;
+      display: flex;
+      .btn1,.btn2{
+        float: left;
+        width: 50%;
+        border: 1px solid #E51937;
+        height: 88rpx;
+        line-height: 88rpx;
+        text-align: center;
         font-size: 28rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        line-height: 40rpx;
-        color: #E51937;
         opacity: 1;
       }
+      .btn1{
+        background: #FFFFFF;
+        color: #E51937;
+        border-radius: 12rpx 0 0 12rpx;
+      }
+      .btn2{
+        background: #E51937;
+        color: #ffffff;
+        border-radius:0 12rpx 12rpx 0;
+      }
+
     }
+    
   }
 </style>

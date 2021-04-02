@@ -3,13 +3,13 @@
   <div class="except">
     <ul>
       <li><img :src="yctb"/>现场交底情况说明</li>
-      <li v-if="info && info.state !=2"><textarea placeholder="请输入交底情况" v-model="info.descr"></textarea></li>
+      <li v-if="info && info.state !=2  && showButton"><textarea placeholder="请输入交底情况" v-model="info.descr"></textarea></li>
       <li v-else><p>{{info.descr}}</p></li>
     </ul>
     <div class="photoBox">
       <ul>
         <li>交底照片</li>
-        <li v-if="info &&info.state != 2">
+        <li v-if="info &&info.state != 2 && showButton">
           <img class="left" :src="tpsc" mode="width" @click="toPhoto" v-if="info && info.state != 2"/>
           <div class="imgUrl">
             <div class="box" v-for="(item,index) in imageList" :key="index">
@@ -18,17 +18,20 @@
             </div>
           </div>
         </li>
-        <li v-if="info &&info.state == 2">
+        <li v-else>
           <div class="imgUrl">
             <div class="box" v-for="(item,index) in imageList" :key="index">
                 <img :src="item" mode="heightFix" />
             </div>
           </div>
         </li>
-        <li><span>过程异常说明</span><textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2"></textarea></li>
+        <li><span>过程异常说明</span>
+          <textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2"></textarea>
+          <textarea disabled v-model="info.exceptionDesc" v-else></textarea>
+        </li>
       </ul>
     </div>
-    <div class="submitBox" v-if="info &&info.state != 2">
+    <div class="submitBox" v-if="info &&info.state != 2 && showButton">
       <p @click="toSave">保存</p>
       <p @click="toAdd">提交</p>
     </div>
@@ -96,6 +99,7 @@
       },
       toAdd(){
         const param = {
+          id:this.info.id,
           orderId:this.id,
           descr:this.info.descr,
           exceptionDesc:this.info.exceptionDesc,

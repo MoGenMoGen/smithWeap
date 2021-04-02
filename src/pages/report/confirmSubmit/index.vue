@@ -9,7 +9,7 @@
           </li>
           <li>
             <span>工期时间</span>
-            <p>{{info.bidEnd}}~{{info.bidStart}}</p>
+            <p>{{info.bidStart}}~{{info.bidEnd}}</p>
           </li>
           <li>
             <div class="left">

@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <exceptionReport :showButton="showBtn" :id='id'></exceptionReport>
+      <exceptionReport :showButton="showBtn" :id="id"></exceptionReport>
     </div>
     <bottomBase></bottomBase>
   </div>

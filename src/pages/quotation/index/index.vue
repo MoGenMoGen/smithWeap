@@ -8,15 +8,23 @@
             <picker @change="bindPickerChange" :value="index" :range="array" range-key="dictValue">
               <div class="picker">
                 {{array[index].dictValue}}
-                <img :src="down" v-if="index != 2"/>
+                <img :src="down" v-if="index == 0"/>
               </div>
             </picker>
           </div>
         </div>
         <div class="dateBox">
-          <dateRange :value="startTime" @getStart="getDate"></dateRange>
-          ~
-          <date-range :value="endTime" @getStart="getDate2"></date-range>
+          <div class="timechange">
+            <div class="time">
+              <dateRange :value="startTime" @getStart="getDate"></dateRange> 
+            </div>
+              <span>~</span>
+            <div class="time">
+              <date-range :value="endTime" @getStart="getDate2"></date-range>
+            </div>
+            
+            
+          </div>
           <img :src="dateIcon" class="icon"/>
         </div>
       </div>
@@ -99,7 +107,7 @@
         size:10,
         total:0,
         array:[
-          {dictValue:'安装'}
+          {dictValue:'全部',dictKey:''}
         ],
         index: 0,
         workType: '',
@@ -110,7 +118,14 @@
     },
     async onShow(){
       // this.current = 1
+      this.array=[{dictValue:'全部',dictKey:''}]
+      this.index = 0
       this.list = []
+      this.startTime='开始时间'
+      this.endTime='结束时间'
+      this.workType = ''
+      this.startTm = ''
+      this.endTm = ''
       this.getList();
       this.getDictionary();
     },
@@ -130,6 +145,7 @@
         }
       },
       toSearch(){
+        this.list = []
         this.getList()
       },
       async getList(){
@@ -153,7 +169,7 @@
           cd:'workType'
         }
         let data =await this.api.getDictionary(param)
-        this.array = data.data
+        this.array.push(...data.data)
       },
       toDetail(status,id){
         switch(status){
@@ -164,6 +180,9 @@
               this.toPage('/pages/quotation/detail/main?id='+id)
             break
           case 3:
+              this.toPage('/pages/quotation/detail/main?id='+id)
+            break
+          case 4:
               this.toPage('/pages/quotation/detail/main?id='+id)
             break
         }
@@ -214,6 +233,14 @@
           margin-right: 14rpx;
           height: 60rpx;
           width: 130rpx;
+
+          font-size: 24rpx;
+          font-family: PingFang SC;
+          font-weight: 400;
+          line-height: 16rpx;
+          color: #303030;
+          opacity: 1;
+
           .picker img{
             width: 24rpx;
             height: 16rpx;
@@ -222,17 +249,36 @@
         .dateBox{
           display: flex;
           position: relative;
+          align-items: center;
           flex: 1;
           height: 60rpx;
           align-items: center;
           border: 1rpx solid #303030;
           border-radius: 12rpx;
           padding: 0 20rpx;
+          .timechange{
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 10rpx;
+            font-size: 24rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            // line-height: 16rpx;
+            color: #303030;
+            opacity: 1;
+            .time{
+              flex: 1;
+              display: flex;
+              justify-content: center;
+            }
+          }
           .icon{
             width: 30rpx;
             height: 32rpx;
-            position: absolute;
-            right: 26rpx;
+            // position: absolute;
+            // right: 26rpx;
           }
         }
         >input{

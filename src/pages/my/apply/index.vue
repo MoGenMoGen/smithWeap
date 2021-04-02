@@ -104,8 +104,14 @@
         data.data.records.forEach(item=>{
           item.bidStart = item.bidStart.slice(0,10)
           item.bidEnd = item.bidEnd.slice(0,10)
-          item.worksOffer.discountAmount = this.addCommas(item.worksOffer.discountAmount)
-          item.worksOffer.amount = this.addCommas(item.worksOffer.amount )
+          if(JSON.stringify(item.worksOffer) === '{}'){
+            item.worksOffer.discountAmount= this.addCommas(0)
+            item.worksOffer.amount = this.addCommas(0)
+          }else{
+            item.worksOffer.discountAmount = this.addCommas(item.worksOffer.discountAmount)
+            item.worksOffer.amount = this.addCommas(item.worksOffer.amount )
+          }
+          
         })
         this.list.push(...data.data.records)
         // console.log(this.list);

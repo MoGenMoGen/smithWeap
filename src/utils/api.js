@@ -757,7 +757,46 @@ class api {
         })
       })
     }
-
+    //完工确认单（安装）-售后审核接口
+    workscompletionapprovePC(data){
+      return new Promise(resolve => {
+        post('/blade-works/workscompletion/approvePC',data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //完工确认单（维修）-售后审核接口
+    workscompletion2approvePC(data){
+      return new Promise(resolve => {
+        post('/blade-works/workscompletion2/approvePC',data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //完工确认单（维修）-客户审核接口
+    workscompletioncustAudit(data){
+      return new Promise(resolve => {
+        post('/blade-works/workscompletion/custAudit',data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //完工确认单（维修）-客户审核接口
+    workscompletion2custAudit(data){
+      return new Promise(resolve => {
+        post('/blade-works/workscompletion2/custAudit',data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //获取二维码-安装
+    getQRcode(data){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/getQRcode",data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
 }
 
 export { api };

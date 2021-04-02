@@ -12,7 +12,7 @@
         <div class="questionList" >
           <div v-for="(item,index) in list.cont" :key="index">
             <div class="title">{{item.quesNm}}</div>
-            <div class="cont"><p>{{item.quesAnswer}}</p></div>
+            <div class="cont"><p>{{item.dictValue}}</p></div>
           </div>
         </div>
         <div class="subTitle2">{{list.subTitle2}}</div>
@@ -58,18 +58,17 @@ export default {
     async getlist() {
       // console.log(this.id);
       const res = await this.api.survbillinfo(this.id)
-      this.list = res.data
-      this.list.cont = JSON.parse(this.list.cont)
       const data = await this.api.getlistByPcd()
       this.chooselist = data
-      this.list.cont.forEach(item => {
+      res.data.cont = JSON.parse(res.data.cont)
+      res.data.cont.forEach(item => {
         this.chooselist.forEach(element => {
           if(item.quesAnswer == element.dictKey){
-            item.quesAnswer = element.dictValue
+            item.dictValue = element.dictValue
           }
         });
       });
-
+      this.list = res.data
     },
   },
   onLoad(e){

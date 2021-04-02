@@ -35,11 +35,11 @@
         cs,
         btb,
         list:[
-          {
-            content:'无',
-            time:'2021-02-24',
-            imgUrl:cs,
-          }
+          // {
+          //   content:'无',
+          //   time:'2021-02-24',
+          //   imgUrl:cs,
+          // }
         ],
       }
     },

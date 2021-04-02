@@ -39,7 +39,7 @@
             <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
               <img :src="item" mode="aspectFill" />
             </div>
-            </div> 
+          </div> 
         </li>
       </ul>
     </div>
@@ -47,7 +47,7 @@
       <li><span>现场工作人员</span><p>{{info.fieldStaffNm}}</p></li>
       <li><span>提交时间</span><p>{{info.createTime}}</p></li>
     </ul>
-    <ul class="ulBox ul2" v-if="!change">
+    <ul class="ulBox ul2" v-if="info.signTm">
       <li><span>客户负责人签字</span><img :src="info.custSign"/></li>
       <li><span>确认时间</span><p>{{info.signTm}}</p></li>
     </ul>
@@ -117,7 +117,7 @@
         del,
         info:{
         },
-        change:true,
+        change:false,
         isModel:false,
         changeModel:false,
         submitInfo:{
@@ -140,7 +140,6 @@
     },
     methods:{
       async getData(){
-        this.change = true
         let res = await this.api.worksgoodstype('goodsUnit')
         this.array = []
         res.data.forEach(item=>{
@@ -168,6 +167,8 @@
           }
           this.info.createTime = this.info.createTime.substring(0,10)
           // console.log(this.imgList);
+        }else{
+          this.change = true
         }
         // console.log(this.info)
       },
@@ -411,6 +412,7 @@
               width: 630rpx;
               display: flex;
               float: left;
+              min-height: 400rpx;
               overflow-y: auto;
               justify-content: space-between;
               .imgs:nth-child(1),.imgs:nth-child(2){

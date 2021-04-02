@@ -45,7 +45,7 @@
             </li>
           </ul>
           <div>
-            <p style="border: 1rpx solid #909090;color: #909090;">
+            <p style="border: 1rpx solid #909090;color: #909090;" @click="goto(item)">
               查看
             </p>
           </div>
@@ -112,6 +112,25 @@
       toPage(url){
         if(url){
           this.util.aHref(url)
+        }
+      },
+      goto(item){
+        if(item.workType ==1 ||item.workType == 3){
+          if(item.processStatus <3){
+            this.toPage('/pages/report/index/main?id='+item.id)
+          }else if(item.processStatus <6){
+            this.toPage('/pages/report/confirm/main?id='+item.id)
+          }else if(item.processStatus == 6){
+            this.toPage('/pages/report/confirmOrder/main?id='+item.id)
+          }
+        }else{
+          if(item.processStatus <3){
+            this.toPage('/pages/report/AfterSale/main?id='+item.id)
+          }else if(item.processStatus <6){
+            this.toPage('/pages/report/AfterSaleOrder/main?id='+item.id)
+          }else if(item.processStatus == 6){
+            this.toPage('/pages/report/AfterSaleDetail/main?id='+item.id)
+          }
         }
       },
       toSearch(){

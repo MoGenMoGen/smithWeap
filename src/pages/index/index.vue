@@ -171,7 +171,7 @@
           </ul>
           <div>
             <Steps :status="item.processStatus"></Steps>
-            <p style="border: 1rpx solid #909090;color: #909090;">查看</p>
+            <p style="border: 1rpx solid #909090;color: #909090;" @click="gowork(item.workType,item)">查看</p>
           </div>
         </div>
       </div>
@@ -257,6 +257,7 @@
       this.loginType = wx.getStorageSync('loginType')
     },
     async onShow(){
+      this.loginType = wx.getStorageSync('loginType')
       this.current = 1
       this.list = []
       this.list2 = []
@@ -277,6 +278,13 @@
       toPage(url){
         if(url){
           this.util.aHref(url)
+        }
+      },
+      gowork(type,item){
+        if(type ==1 ||type ==3){
+          this.toPage('/pages/report/confirm/main?id='+item.id)
+        }else if(type ==2){
+          this.toPage('/pages/report/AfterSaleOrder/main?id='+item.id)
         }
       },
       imgH(e) {

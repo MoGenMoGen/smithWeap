@@ -103,7 +103,7 @@ export default {
       }
     },
     async getlist() {
-      console.log('请求发送了');
+      // console.log('请求发送了');
       const res = await this.api.getsurvconfig()
       this.list = res
       const data = await this.api.getlistByPcd()
@@ -151,8 +151,11 @@ export default {
         phone:this.phone,
         list:this.Answeruer
       }
-      this.api.AddSurvbill(param)
-      this.toPage('/pages/report/satisfaction/main?id='+this.id)
+      this.api.AddSurvbill(param).then(res=>{
+        // console.log(res);
+        this.toPage('/pages/report/satisfaction/main?id='+res.data.id)
+      })
+      
       // console.log('提交');
       // console.log(param);
     },
@@ -286,7 +289,7 @@ export default {
           font-family: PingFang SC;
           font-weight: 400;
           line-height: 40rpx;
-          color: #D0CED8;
+          // color: #D0CED8;
           opacity: 1;
           box-sizing: border-box;
           width: 100%;

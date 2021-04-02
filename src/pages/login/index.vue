@@ -13,7 +13,7 @@
       <div class="inputbox">
         <img style="width:22rpx;margin-right:38rpx" mode="widthFix" :src="mm"/>
         <!-- <img :src="mm" alt=""> -->
-        <input v-model="password"   placeholder="请输入密码"/>
+        <input type="password" v-model="password"   placeholder="请输入密码"/>
       </div>
       <div class="submit" @click="submit">
         <p>登录</p>
@@ -30,7 +30,7 @@
   import logo from "@/components/img/logo.png"
   import dl from "@/components/img/登录.png"
   import mm from "@/components/img/密码.png"
-  // import {md5} from '@/utils/md5.js'
+  import {md5} from '@/utils/md5.js'
   export default {
     data(){
       return{
@@ -40,6 +40,10 @@
         username:'',
         password:'',
       }
+    },
+    onShow(){
+      this.username = ''
+      this.password = ''
     },
     mounted(){
     },
@@ -58,11 +62,18 @@
           success(res) {
             const param={
               account:that.username,
-              password:that.password,
+              password:md5(that.password,32),
               tenantId:'000000',
               code:res.code,
             }
             that.api.login2(param).then(res=>{
+              if(res.error_code == 400){
+                return wx.showToast({
+                  icon: "none",
+                  title: res.error_description,
+                  duration: 2000
+                });
+              }
               wx.setStorageSync("token",res.access_token);
               wx.setStorageSync("loginType",res.loginType);
               wx.switchTab({

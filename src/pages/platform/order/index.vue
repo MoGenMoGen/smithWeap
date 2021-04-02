@@ -16,7 +16,7 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in list" :key="index" @click="toPage('/pages/report/confirmOrder/main')">
+        <div class="box" v-for="(item,index) in list" :key="index" @click="gowork(item.workType,item)">
           <ul>
             <li>
               <img :src="gdbh"/>
@@ -147,6 +147,13 @@
       toPage(url){
         if(url){
           this.util.aHref(url)
+        }
+      },
+      gowork(type,item){
+        if(type ==1 ||type ==3){
+          this.toPage('/pages/report/confirm/main?id='+item.id)
+        }else if(type ==2){
+          this.toPage('/pages/report/AfterSaleOrder/main?id='+item.id)
         }
       },
       async getList(){

@@ -130,7 +130,6 @@
       //  确认
       confirmSend() {
         // console.log(this.info);
-        
         if(this.type ==1){
           //新增
           if(this.info.reportDt ==''){
@@ -151,7 +150,6 @@
         //基本操作
         this.changeModel = !this.changeModel;
         this.isModel = !this.isModel;
-        this.clearinfo()//初始化数据
         this.getlist()//重新获取列表
       },
       showModel(val,info) {

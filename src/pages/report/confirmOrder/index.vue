@@ -67,7 +67,7 @@
       </div>
       <div class="navBox">
         <ul>
-          <li v-for="(item,index) in centerList" :key="index" @click="changeTab(item.path)">
+          <li v-for="(item,index) in centerList" :key="index" @click="changeTab(index)">
             <img :src="item.imgUrl" mode="aspectFit" class="img"/>
             <p style="color:#303030">{{item.nm}}</p>
           </li>
@@ -81,14 +81,14 @@
         </ul>
         <ul>
           <li><span>售后审核</span><p>{{info.userName? info.userName:'暂无'}}</p></li>
-          <li><span>审核状态</span><p>{{info.worksCompletionVO.custContact? info.worksCompletionVO.custContact:'暂无'}}</p></li>
+          <li><span>审核状态</span><p>{{info.worksCompletionVO.completionAuditNm? info.worksCompletionVO.completionAuditNm:'暂无'}}</p></li>
           <li><span>审核时间</span><p>{{info.worksCompletionVO.auditTm? info.worksCompletionVO.auditTm:'暂无'}}</p></li>
         </ul>
         <ul>
           <li><span>确认二维码</span><canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas></li>
           <li><span>客户确认</span><img :src="info.worksCompletionVO.custSign"/></li>
           <li><span>确认时间</span><p>{{info.worksCompletionVO.signTm}}</p></li>
-          <li><span>满意度调查</span><p style="color: #5E97F4">{{info.survBill?'已填写':'未填写'}}</p><span class="blueButton" @click="tosatisfactionSurvey(info)">满意度调查表</span></li>
+          <li><span>满意度调查</span><p style="color: #5E97F4">{{isBill?'已填写':'未填写'}}</p><span class="blueButton" @click="tosatisfactionSurvey(info)">满意度调查表</span></li>
           <li><span>填写时间</span><p>{{info.actualEnd}}</p></li>
         </ul>
         <ul>
@@ -165,6 +165,8 @@
         currentIndex:0,
         type:1,
         id:'',
+        //是否填写满意度
+        isBill:false,
       }
     },
     async onLoad(e){
@@ -173,7 +175,7 @@
         width: 66.66,
         height: 66.66,
         canvasId: 'myQrcode',
-        text: '/pages/index/main'
+        text: ''
       })
     },
     mounted(){
@@ -199,7 +201,12 @@
         this.info = data.data
         this.dayList = data.data.worksCompletionVO.imgDay.split(',')
         this.nightList = data.data.worksCompletionVO.imgNight.split(',')
-        console.log(data.data);
+        if(JSON.stringify(this.info.survBill) === '{}'){
+          this.isBill = false
+        }else{
+          this.isBill = true
+        }
+        // console.log(data.data);
       },
       async getlist(){
         // if(this.type == 1){
@@ -213,26 +220,29 @@
         // }
       },
       tosatisfactionSurvey(item){
-        if(item.survBill){
+        // console.log(item);
+        if(this.isBill){
+          //已填写
           this.toPage('/pages/report/satisfaction/main?id='+item.survBill.id)
         }else{
+          //未填写
           this.toPage('/pages/report/satisfactionSurvey/main?id='+item.id)
         }
       },
       changeTab(index){
         if(index == 0){
-          this.toPage('/pages/report/tabDetail/clock/main?id='+this.orderId +'&type=0')
+          this.toPage('/pages/report/tabDetail/clock/main?id='+this.id +'&type=0')
         }else if(index ==1){
-          this.toPage('/pages/report/tabDetail/inventory/main?id='+this.orderId + '&type=0')
+          this.toPage('/pages/report/tabDetail/inventory/main?id='+this.id + '&type=0')
         }
         else if(index ==2){
-          this.toPage('/pages/report/tabDetail/dailyReport/main?id='+this.orderId + '&type=0')
+          this.toPage('/pages/report/tabDetail/dailyReport/main?id='+this.id + '&type=0')
         }
         else if(index ==3){
-          this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.orderId + '&type=0')
+          this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.id + '&type=0')
         }
         else if(index ==4){
-          this.toPage('/pages/report/tabDetail/confession/main?id='+this.orderId + '&type=0')
+          this.toPage('/pages/report/tabDetail/confession/main?id='+this.id + '&type=0')
         }
       },
     },

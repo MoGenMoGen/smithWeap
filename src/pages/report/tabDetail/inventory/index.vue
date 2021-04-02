@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <inventory :id='id'></inventory>
+      <inventory :id="id"></inventory>
     </div>
     <bottomBase></bottomBase>
   </div>

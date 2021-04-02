@@ -33,7 +33,7 @@
           </li>
         </ul>
       </div>
-      <div class="infoBox box">
+      <div class="infoBox box" v-if="isapply">
         <ul>
           <li>
             <span>主材</span>
@@ -83,6 +83,11 @@
           </li>
         </ul>
       </div>
+      <div class="infoBox box " v-else>
+        <div class="cotent">
+          <p>该服务商未进行投标!</p>
+        </div>
+      </div>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -101,7 +106,9 @@
         },
         worksOffer:{
         },
-        imgUrls:[]
+        imgUrls:[],
+        //是否报价
+        isapply:true,
       }
     },
     methods:{
@@ -125,16 +132,33 @@
       this.info.bidStart = this.info.bidStart.substring(0,10)
       this.info.bidEnd = this.info.bidEnd.substring(0,10)
       let data = res.data.worksOffer
-      this.worksOffer.materialCost = this.addCommas(data.materialCost)
-      this.worksOffer.deviceCost= this.addCommas(data.deviceCost)
-      this.worksOffer.laborCost= this.addCommas(data.laborCost)
-      this.worksOffer.travelCost= this.addCommas(data.travelCost)
-      this.worksOffer.other= this.addCommas(data.other)
-      this.worksOffer.profitsTax= this.addCommas(data.profitsTax)
-      this.worksOffer.amount= this.addCommas(data.amount)
-      this.worksOffer.discountAmount= this.addCommas(data.discountAmount)
-      this.worksOffer.attach = data.attach
-      this.worksOffer.rmks= data.rmks
+      // console.log(JSON.stringify(res.data.worksOffer));
+      if(JSON.stringify(res.data.worksOffer) === '{}'){
+        this.isapply = false
+        // this.worksOffer.materialCost = 0
+        // this.worksOffer.deviceCost= 0
+        // this.worksOffer.laborCost= 0
+        // this.worksOffer.travelCost= 0
+        // this.worksOffer.other= 0
+        // this.worksOffer.profitsTax= 0
+        // this.worksOffer.amount= 0
+        // this.worksOffer.discountAmount= 0
+        // this.worksOffer.attach = ''
+        // this.worksOffer.rmks= ''
+      }else{
+        this.worksOffer.materialCost = this.addCommas(data.materialCost)
+        this.worksOffer.deviceCost= this.addCommas(data.deviceCost)
+        this.worksOffer.laborCost= this.addCommas(data.laborCost)
+        this.worksOffer.travelCost= this.addCommas(data.travelCost)
+        this.worksOffer.other= this.addCommas(data.other)
+        this.worksOffer.profitsTax= this.addCommas(data.profitsTax)
+        this.worksOffer.amount= this.addCommas(data.amount)
+        this.worksOffer.discountAmount= this.addCommas(data.discountAmount)
+        this.worksOffer.attach = data.attach
+        this.worksOffer.rmks= data.rmks
+
+      }
+      
       //图片库
       this.imgUrls = res.data.worksOffer.attach.split(',')
     },
@@ -159,6 +183,9 @@
       .infoBox{
         background-color: #FFFFFF;
         border-radius: 12rpx;
+        .cotent{
+          padding: 20rpx;
+        }
         ul{
           padding: 20rpx 0;
           margin: 0 26rpx;

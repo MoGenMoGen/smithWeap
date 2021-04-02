@@ -93,7 +93,7 @@
           </li>
           <li>
             <span>提交时间</span>
-            <p>{{info.worksCompletionVO.createTime? info.worksCompletionVO.createTime:'暂无'}}</p>
+            <p>{{info.worksCompletionVO.createTime}}</p>
           </li>
         </ul>
       </div>
@@ -105,7 +105,7 @@
           </li>
           <li>
             <span>审核状态</span>
-            <p>{{info.worksCompletionVO.custContact? info.worksCompletionVO.custContact:'暂无'}}</p>
+            <p>{{info.worksCompletionVO.completionAuditNm}}</p>
           </li>
           <li>
             <span>审核时间</span>
@@ -113,7 +113,7 @@
           </li>
         </ul>
       </div>
-      <div class="infoBox review" v-if="info.worksCompletionVO.audit==2">
+      <div class="infoBox review" v-if="info.worksCompletionVO.audit==2  &&sure !=1">
         <ul>
           <li>
             <span>确认二维码</span>
@@ -121,26 +121,48 @@
           </li>
         </ul>
       </div>
-      <div class="infoBox review">
+      <div class="infoBox review" v-if="sure == 1 &&info.worksCompletionVO.audit==2">
+        <div class="title">
+          <span>客户负责人签名</span>
+        </div>
+        <div class="sign">
+          <signature @success='getsign'></signature>
+        </div>
+      </div>
+      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletionVO.audit ==1) &&sure !=1 && info.worksCompletionVO.audit<=3">
         <ul>
           <li class="icon">
             <p>
               <img  :src="jg" mode="width"/>
-              {{info.worksCompletionVO.audit==1?'待售后审核':info.worksCompletionVO.audit==2?'待客户审核':'审核已驳回'}}
+              {{info.worksCompletionVO.audit==1?'待售后审核':info.worksCompletionVO.audit==2?'待客户确认':'审核已驳回'}}
             </p>
           </li>
         </ul>
       </div>
+      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletionVO.audit==1">
+        <p>审核意见</p>
+        <div class="textarea">
+          <textarea placeholder="请输入建议..." v-model="options" name="" id="" cols="30" rows="10"></textarea>
+        </div>
+      </div>
     </div>
     <bottomBase></bottomBase>
+    <div class="button" v-if="nametype ==2 &&info.worksCompletionVO.audit==1">
+      <div class="btn1" @click="submit(1)">不通过</div>
+      <div class="btn2" @click="submit(2)">通过</div>
+    </div>
+    <div class="button" v-if="sure == 1 && info.worksCompletionVO.audit==2">
+      <div class="btn1" @click="custsubmit(1)">取消</div>
+      <div class="btn2" @click="custsubmit(2)">提交</div>
+    </div>
   </div>
 </template>
 
 <script>
+  import signature from "@/components/signature";
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
   import drawQrcode from 'weapp-qrcode'
-
   import gzdk from "@/components/img/工作打卡.png"
   import gzdk2 from "@/components/img/工作打卡2.png"
   import hwqd from "@/components/img/清点货物.png"
@@ -159,18 +181,6 @@
         jt,
         jg,
         info:{
-          pubTm:'2021-03-20',
-          finishTm:'2021-03-20',
-          pro:'宾利',
-          proP:'项毅',
-          proId:'A2011036',
-          cNm:'南宁宾利',
-          time:'2021-03-20',
-          type:'安装',
-          content:'整体安装-有立柱（包括勘测）',
-          kh:'吴波',
-          khTel:'13806036880',
-          khAddr:'广西省南宁市江南区白沙大道100号',
         },
         centerList:[
           {
@@ -202,11 +212,21 @@
         orderId:'',
         dayList:[],
         nightList:[],
+        //供应商 平台方 客户
+        nametype:1,
+        //审核意见
+        options:'',
+        //是否客户确认
+        sure:1,
+        //客户签名
+        custSign:'',
       }
     },
-    async onLoad(e){
+    onLoad(e){
       this.type = e.type
       this.orderId = e.id
+      this.nametype = wx.getStorageSync('loginType')
+      this.sure = e.sure
     },
     async onShow(){
       this.getData();
@@ -216,7 +236,6 @@
         canvasId: 'myQrcode',
         text: '/pages/index/main'
       })
-
     },
     methods:{
       async getData(){
@@ -269,9 +288,68 @@
           this.toPage('/pages/report/tabDetail/confession/main?id='+this.orderId + '&type=0')
         }
       },
+      //通过
+      submit(value){
+        let param;
+        if(value ==1){
+          param = {
+            id: this.info.worksCompletionVO.id,
+            orderId: this.info.worksCompletionVO.orderId,
+            audit: 3,
+            options: this.options
+          }
+        }else{
+          param = {
+            id: this.info.worksCompletionVO.id,
+            orderId: this.info.worksCompletionVO.orderId,
+            audit: 2,
+            options: this.options
+          }
+        }
+        // console.log(param);
+        this.api.workscompletionapprovePC(param).then(res=>{
+          this.getData()
+        }) 
+      },
+      //获取签名
+      getsign(value){
+        // console.log(value);
+        this.custSign = value
+        wx.showToast({
+          icon: "none",
+          title: '保存成功',
+          duration: 2000
+        });
+      },
+      //客户确认
+      custsubmit(value){
+        if(this.custSign ==''){
+          return wx.showToast({
+            icon: "none",
+            title: '请签名后提交',
+            duration: 2000
+          });
+        }
+        var param;
+        if(value ==1 ){
+          return 
+        }else{
+          param = {
+            id: this.info.worksCompletionVO.id,
+            orderId: this.info.worksCompletionVO.orderId,
+            audit: 5,
+            custSign: this.custSign,
+            signTm: "2021-04-03 00:00:00",
+          }
+        }
+        // console.log(param);
+        this.api.workscompletioncustAudit(param).then(res=>{
+          this.toPage('/pages/report/satisfactionSurvey/main?id='+this.orderId)
+        })
+      }
     },
     components:{
-      bottomBase,modelMask
+      bottomBase,modelMask,signature
     }
   }
 </script>
@@ -400,6 +478,12 @@
         }
       }
       .review{
+        .title{
+          padding: 20rpx 0 0 42rpx;
+        }
+        .sign{
+          padding: 60rpx 40rpx;
+        }
         ul{
           margin-bottom: 20rpx;
           .icon{
@@ -416,6 +500,60 @@
           }
         }
       }
+      .options{
+        padding-bottom: 60rpx;
+        p{
+          font-size: 30rpx;
+          font-family: PingFang SC;
+          font-weight: 400;
+          line-height: 40rpx;
+          color: #303030;
+          opacity: 1;
+          padding: 20rpx 0 0 42rpx;
+        }
+        .textarea{
+          background: #FFFFFF;
+          border: 1px solid #909090;
+          opacity: 1;
+          border-radius: 3px;
+          margin: 34rpx 50rpx;
+          padding: 20rpx;
+        }
+      }
+    }
+    .button{
+      width: 100%;
+      // position: relative;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      
+      padding: 0 20rpx 80rpx 20rpx;
+      box-sizing: border-box;
+      display: flex;
+      .btn1,.btn2{
+        float: left;
+        width: 50%;
+        border: 1px solid #E51937;
+        height: 88rpx;
+        line-height: 88rpx;
+        text-align: center;
+        font-size: 28rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        opacity: 1;
+      }
+      .btn1{
+        background: #FFFFFF;
+        color: #E51937;
+        border-radius: 12rpx 0 0 12rpx;
+      }
+      .btn2{
+        background: #E51937;
+        color: #ffffff;
+        border-radius:0 12rpx 12rpx 0;
+      }
+
     }
   }
 </style>
