@@ -125,7 +125,7 @@
           <li><span>审核时间</span><p>{{info.worksCompletionVO.auditTm? info.worksCompletionVO.auditTm:'暂无'}}</p></li>
         </ul>
         <ul>
-          <li><span>确认二维码</span><canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas></li>
+          <li><span>确认二维码</span><canvas style="width: 100px; height: 100px;" canvas-id="myQrcode"></canvas></li>
           <li><span>客户确认</span><img :src="info.worksCompletionVO.custSign"/></li>
           <li><span>确认时间</span><p>{{info.worksCompletionVO.signTm}}</p></li>
           <li><span>满意度调查</span><p style="color: #5E97F4">{{info.survBill?'已填写':'未填写'}}</p><span class="blueButton" @click="tosatisfactionSurvey(info)">满意度调查表</span></li>
@@ -232,11 +232,14 @@
     onLoad(e){
       this.id = e.id
       this.getlist(this.id )
+      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5d71635ece5968bd&redirect_uri='+'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+      
       drawQrcode({
         width: 100,
         height: 100,
         canvasId: 'myQrcode',
-        text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.orderId
+        // text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id
+        text:path
       })
     },
     components:{

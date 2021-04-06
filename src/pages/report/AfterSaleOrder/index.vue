@@ -125,7 +125,7 @@
         <ul>
           <li>
             <span>确认二维码</span>
-            <canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas>
+            <canvas style="width: 100px; height: 100px;" canvas-id="myQrcode"></canvas>
             <!-- <img :src="myQrcode" class="myQrcode" mode="heightFix" alt=""> -->
             <!-- <div v-html="myQrcode"></div> -->
           </li>
@@ -170,6 +170,7 @@
 </template>
 
 <script>
+  import drawQrcode from 'weapp-qrcode'
   import signature from "@/components/signature";
   import dateRange from "@/components/dateRange";
   import bottomBase from "@/components/bottomBase";
@@ -262,7 +263,7 @@
         //   sure:1,
         // }
         // this.myQrcode = await this.api.getQRcode(param)
-        this.myQrcode = 'https://saf.ae-smith.com/blade-works/worksorder/getQRcode?appid=wx5d71635ece5968bd&id='+this.id+'&type=1&sure=1'
+        // this.myQrcode = 'https://saf.ae-smith.com/blade-works/worksorder/getQRcode?appid=wx5d71635ece5968bd&id='+this.id+'&type=1&sure=1'
         // console.log(myQrcode);
         // console.log(this.info);
       },
@@ -336,7 +337,7 @@
         width: 100,
         height: 100,
         canvasId: 'myQrcode',
-        text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.orderId
+        text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id
       })
       this.getlist()
     },

@@ -130,9 +130,11 @@
             this.api.orderRefused(param)
           }
           wx.redirectTo({url:'/pages/construction/index/main'})
+        }else{
+          this.changeModel = item.changeModel
+          this.isModel = item.isModel
         }
-        this.changeModel = item.changeModel
-        this.isModel = item.isModel
+        
       },
       toPage(url){
         if(url){

@@ -276,7 +276,8 @@
         // console.log(this.pushInfo);
         this.api.postaddCompletion2(this.pushInfo).then(res=>{
           //跳转
-          this.toPage('/pages/report/AfterSaleOrder/main?id=' +this.id) 
+           wx.redirectTo({url:'/pages/report/AfterSaleOrder/main?id=' +this.id})
+          // this.toPage('/pages/report/AfterSaleOrder/main?id=' +this.id) 
         })
         
       },

@@ -13,9 +13,15 @@
           </div>
         </div>
         <div class="dateBox">
-          <dateRange :value="startTime"></dateRange>
-          ~
-          <date-range :value="endTime"></date-range>
+          <div class="timechange">
+            <div class="time">
+              <dateRange :value="startTime" @getStart="getDate"></dateRange> 
+            </div>
+              <span>~</span>
+            <div class="time">
+              <date-range :value="endTime" @getStart="getDate2"></date-range>
+            </div>
+          </div>
           <img :src="dateIcon" class="icon"/>
         </div>
       </div>
@@ -97,11 +103,18 @@
         list:[],
         array: ['安装', '施工'],
         index: 0,
+        startTm:'',//开始时间
+        endTm:'',//结束时间
       }
     },
     async onShow(){
       this.current = 1
       this.list = []
+      this.startTime='开始时间'
+      this.endTime='结束时间'
+      this.workType = ''
+      this.startTm = ''
+      this.endTm = ''
       this.getList()
     },
     onReachBottom(){
@@ -139,7 +152,16 @@
         this.toPage(url)
       },
       bindPickerChange(e) {
-          this.index = e.mp.detail.value
+        this.index = e.mp.detail.value;
+        this.workType = this.array[this.index].dictKey
+      },
+      getDate(e){
+        this.startTm = e
+        this.startTime = e
+      },
+      getDate2(e){
+        this.endTm = e
+        this.endTime = e
       },
     },
     components:{
@@ -157,6 +179,8 @@
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
+    display: flex;
+    flex-direction: column;
     .nav{
       display: flex;
       align-items: center;
@@ -175,6 +199,12 @@
           margin-right: 20rpx;
           height: 60rpx;
           width: 124rpx;
+          font-size: 24rpx;
+          font-family: PingFang SC;
+          font-weight: 400;
+          line-height: 16rpx;
+          color: #303030;
+          opacity: 1;
           .picker img{
             width: 24rpx;
             height: 16rpx;
@@ -189,11 +219,29 @@
           border: 1rpx solid #303030;
           border-radius: 12rpx;
           padding: 0 20rpx;
+          .timechange{
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 10rpx;
+            font-size: 24rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            // line-height: 16rpx;
+            color: #303030;
+            opacity: 1;
+            .time{
+              flex: 1;
+              display: flex;
+              justify-content: center;
+            }
+          }
           .icon{
             width: 30rpx;
             height: 32rpx;
-            position: absolute;
-            right: 26rpx;
+            // position: absolute;
+            // right: 26rpx;
           }
         }
         >input{
@@ -219,6 +267,7 @@
     .main{
       padding: 20rpx;
       box-sizing: border-box;
+      flex: 1;
       .listBox{
         /*margin-top: 30rpx;*/
         .box{

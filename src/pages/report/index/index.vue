@@ -193,7 +193,10 @@
     min-height: 100vh;
     background-color: #ECECEC;
     padding-bottom: 150rpx;
+    display: flex;
+    flex-direction: column;
     .main{
+      flex: 1;
       padding: 20rpx;
       box-sizing: border-box;
       .infoBox{

@@ -188,6 +188,8 @@
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
+    display: flex;
+    flex-direction: column;
     .nav{
       display: flex;
       align-items: center;
@@ -202,9 +204,15 @@
           align-items: center;
           justify-content: center;
           position: relative;
+          font-size: 16px;
+          font-family: PingFang SC;
+          font-weight: 400;
+          line-height: 22px;
+          opacity: 1;
         }
         .active{
           color: #E51937;
+          font-weight: 600;
         }
         .active:after{
           position: absolute;
@@ -219,6 +227,7 @@
       }
     }
     .main{
+      flex:1;
       padding: 20rpx;
       box-sizing: border-box;
       .listBox{

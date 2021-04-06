@@ -22,8 +22,6 @@
             <div class="time">
               <date-range :value="endTime" @getStart="getDate2"></date-range>
             </div>
-            
-            
           </div>
           <img :src="dateIcon" class="icon"/>
         </div>
@@ -215,6 +213,8 @@
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
+    display: flex;
+    flex-direction: column;
     .nav{
       display: flex;
       align-items: center;
@@ -304,6 +304,7 @@
     .main{
       padding: 20rpx;
       box-sizing: border-box;
+      flex: 1;
       .listBox{
         /*margin-top: 30rpx;*/
         .box{

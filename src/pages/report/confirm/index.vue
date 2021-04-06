@@ -117,7 +117,7 @@
         <ul>
           <li>
             <span>确认二维码</span>
-            <canvas style="width: 100px; height: 100px;" canvas-id="myQrcode"></canvas>
+            <canvas style="width: 150px; height: 150px;" canvas-id="myQrcode"></canvas>
           </li>
         </ul>
       </div>
@@ -230,16 +230,17 @@
       this.sure = e.sure
       this.custSign = ''
       this.options = ''
+      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5d71635ece5968bd&redirect_uri='+'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+      drawQrcode({
+        width: 150,
+        height: 150,
+        canvasId: 'myQrcode',
+        text: 'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId
+        // text:path
+      })
     },
     async onShow(){
       this.getData();
-      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5d71635ece5968bd&redirect_uri='+'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
-      drawQrcode({
-        width: 100,
-        height: 100,
-        canvasId: 'myQrcode',
-        text: 'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId
-      })
     },
     methods:{
       async getData(){
