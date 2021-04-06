@@ -1,5 +1,8 @@
 <template>
   <div class="app">
+    <div class="title">
+      <p>完工确认单</p>
+    </div>
     <div class="main">
       <div class="infoBox">
         <ul>
@@ -65,7 +68,7 @@
           </li>
         </ul>
       </div>
-      <div class="imgBox box">
+      <div class="imgBox">
         <ul>
           <li>完工照片(晚上照片)</li>
           <li>
@@ -85,18 +88,6 @@
           </li>
         </ul>
       </div>
-      <div class="infoBox review">
-        <ul>
-          <li>
-            <span>工作人员</span>
-            <p>{{info.constructionManagerNm? info.constructionManagerNm:'暂无'}}</p>
-          </li>
-          <li>
-            <span>提交时间</span>
-            <p>{{info.worksCompletionVO.createTime}}</p>
-          </li>
-        </ul>
-      </div>
       <div class="infoBox review" v-if="info.worksCompletionVO.audit==2">
         <ul>
           <li>
@@ -113,46 +104,17 @@
           </li>
         </ul>
       </div>
-      <div class="infoBox review" v-if="info.worksCompletionVO.audit==2  &&sure !=1">
-        <ul>
-          <li>
-            <span>确认二维码</span>
-            <canvas style="width: 100px; height: 100px;" canvas-id="myQrcode"></canvas>
-          </li>
-        </ul>
-      </div>
-      <div class="infoBox review" v-if="sure == 1 &&info.worksCompletionVO.audit==2">
-        <div class="title">
+      <div class="infoBox review" v-if="info.worksCompletionVO.audit==2">
+        <div class="signtitle">
           <span>客户负责人签名</span>
         </div>
         <div class="sign">
           <signature @success='getsign'></signature>
         </div>
       </div>
-      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletionVO.audit ==1) &&sure !=1 && info.worksCompletionVO.audit<=3">
-        <ul>
-          <li class="icon">
-            <p>
-              <img  :src="jg" mode="width"/>
-              {{info.worksCompletionVO.audit==1?'待售后审核':info.worksCompletionVO.audit==2?'待客户确认':'审核已驳回'}}
-            </p>
-          </li>
-        </ul>
-      </div>
-      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletionVO.audit==1">
-        <p>审核意见</p>
-        <div class="textarea">
-          <textarea placeholder="请输入建议..." v-model="options" name="" id="" cols="30" rows="10"></textarea>
-        </div>
-      </div>
-      <div @click="toPage('/pages/report/custaffirm/confirm/main?id='+info.id)">我要审核</div>
     </div>
     <bottomBase></bottomBase>
-    <div class="button" v-if="nametype ==2 &&info.worksCompletionVO.audit==1">
-      <div class="btn1" @click="submit(1)">不通过</div>
-      <div class="btn2" @click="submit(2)">通过</div>
-    </div>
-    <div class="button" v-if="sure == 1 && info.worksCompletionVO.audit==2">
+    <div class="button" v-if="info.worksCompletionVO.audit==2">
       <div class="btn1" @click="custsubmit(1)">取消</div>
       <div class="btn2" @click="custsubmit(2)">提交</div>
     </div>
@@ -163,17 +125,9 @@
   import signature from "@/components/signature";
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
-  import drawQrcode from 'weapp-qrcode'
-  import gzdk from "@/components/img/工作打卡.png"
-  import gzdk2 from "@/components/img/工作打卡2.png"
   import hwqd from "@/components/img/清点货物.png"
-  import hwqd2 from "@/components/img/清点货物2.png"
-  import mrhb from "@/components/img/每日汇报.png"
-  import mrhb2 from "@/components/img/每日汇报2.png"
   import ycbg from "@/components/img/报告异常.png"
-  import ycbg2 from "@/components/img/检测报告2.png"
   import jdbg from "@/components/img/交底报告.png"
-  import jdbg2 from "@/components/img/交底报告2.png"
   import jt from "@/components/img/箭头.png"
   import jg from "@/components/img/无打卡图标.png"
   export default {
@@ -185,65 +139,38 @@
         },
         centerList:[
           {
-            nm:'工作打卡',
-            imgUrl:gzdk,
-            imgUrlActive:gzdk2,
-          },{
             nm:'货物清点',
             imgUrl:hwqd,
-            imgUrlActive:hwqd2,
-          },{
-            nm:'每日汇报',
-            imgUrl:mrhb,
-            imgUrlActive:mrhb2,
           },{
             nm:'异常报告',
             imgUrl:ycbg,
-            imgUrlActive:ycbg2,
           },{
             nm:'交底报告',
             imgUrl:jdbg,
-            imgUrlActive:jdbg2,
           },
         ],
-        currentIndex:0,
-        isModel:false,
-        changeModel:false,
         type:1,
         orderId:'',
         dayList:[],
         nightList:[],
-        //供应商 平台方 客户
-        nametype:1,
         //审核意见
         options:'',
-        //是否客户确认
-        sure:1,
         //客户签名
         custSign:'',
+        userInfo:'',
       }
     },
     onLoad(e){
       this.type = e.type
       this.orderId = e.id
-      this.nametype = wx.getStorageSync('loginType')
-      this.sure = e.sure
-      this.custSign = ''
-      this.options = ''
     },
     async onShow(){
       this.getData();
-      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5d71635ece5968bd&redirect_uri='+'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
-      drawQrcode({
-        width: 100,
-        height: 100,
-        canvasId: 'myQrcode',
-        text: 'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId
-      })
+      this.getusername();
     },
     methods:{
       async getData(){
-        let data = await this.api.getInstallDtl(this.orderId)
+        let data = await this.api.infoCustAudit(this.orderId)
         data.data.bidStart = data.data.bidStart.slice(0,10)
         data.data.bidEnd = data.data.bidEnd.slice(0,10)
         data.data.worksCompletionVO.createTime = data.data.worksCompletionVO.createTime.slice(0,10)
@@ -252,68 +179,21 @@
         this.dayList = data.data.worksCompletionVO.imgDay.split(',')
         this.nightList = data.data.worksCompletionVO.imgNight.split(',')
       },
-      showMask(type){
-        switch(type){
-          case 1:
-            this.type = 1
-            this.changeModel = !this.changeModel;
-            this.isModel = !this.isModel;
-            break
-          case 2:
-            this.type = 2
-            this.changeModel = !this.changeModel;
-            this.isModel = !this.isModel;
-            break
-        }
-      },
-      //将子组件中变化的数据赋值于父组件
-      mask(e){
-        this.changeModel = e.changeModel
-        this.isModel = e.isModel
-      },
       toPage(url){
         if(url){
           this.util.aHref(url)
         }
       },
       changeTab(index){
-        if(index == 0){
-          this.toPage('/pages/report/tabDetail/clock/main?id='+this.orderId +'&type=0')
-        }else if(index ==1){
+        if(index ==0){
           this.toPage('/pages/report/tabDetail/inventory/main?id='+this.orderId + '&type=0')
         }
-        else if(index ==2){
-          this.toPage('/pages/report/tabDetail/dailyReport/main?id='+this.orderId + '&type=0')
-        }
-        else if(index ==3){
+        else if(index ==1){
           this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.orderId + '&type=0')
         }
-        else if(index ==4){
+        else if(index ==2){
           this.toPage('/pages/report/tabDetail/confession/main?id='+this.orderId + '&type=0')
         }
-      },
-      //通过
-      submit(value){
-        let param;
-        if(value ==1){
-          param = {
-            id: this.info.worksCompletionVO.id,
-            orderId: this.info.worksCompletionVO.orderId,
-            audit: 3,
-            options: this.options
-          }
-        }else{
-          param = {
-            id: this.info.worksCompletionVO.id,
-            orderId: this.info.worksCompletionVO.orderId,
-            audit: 2,
-            options: this.options
-          }
-        }
-        // console.log(param);
-        this.api.workscompletionapprovePC(param).then(res=>{
-          this.getData()
-        }) 
       },
       //获取签名
       getsign(value){
@@ -324,6 +204,19 @@
           title: '保存成功',
           duration: 2000
         });
+      },
+      //获取客户信息
+      getusername(){
+        wx.getUserProfile({
+          desc: '获取用户会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+          success: (res) => {
+            this.setData({
+              userInfo: res.userInfo,
+              hasUserInfo: true
+            })
+          }
+        })
+        console.log(this.userInfo);
       },
       //客户确认
       custsubmit(value){
@@ -366,6 +259,24 @@
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
+    .title{
+      width: 100%;
+      height: 80rpx;
+      padding-top: 48rpx;
+      text-align: center;
+      background-color: #FFFFFF;
+      display: flex;
+      justify-content: center;
+      // align-items: center;
+      p{
+        font-size: 34rpx;
+        font-family: PingFang SC;
+        font-weight: 500;
+        line-height: 48rpx;
+        color: #000000;
+        opacity: 1;
+      }
+    }
     .main{
       padding: 20rpx;
       box-sizing: border-box;
@@ -482,7 +393,7 @@
         }
       }
       .review{
-        .title{
+        .signtitle{
           padding: 20rpx 0 0 42rpx;
         }
         .sign{

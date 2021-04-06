@@ -6,21 +6,21 @@
         <img :src="logo"/>
         产品目录及到货情况
       </p>
-      <ul v-if="change">
+      <ul v-if="change &&showButton">
         <li><span>人员到场日期</span><div><dateRange  :value="info.staffArriveDt" @getStart="getDate1"></dateRange></div><img :src="rltb"/></li>
         <li><span>产品到货日期</span><div><dateRange  :value="info.goodsArriveDt" @getStart="getDate2"></dateRange></div><img :src="rltb"/></li>
       </ul>
-      <ul v-if="!change">
+      <ul v-else>
         <li><span>人员到场日期</span><div>{{info.staffArriveDt}}</div><img :src="rltb"/></li>
         <li><span>产品到货日期</span><div>{{info.goodsArriveDt}}</div><img :src="rltb"/></li>
       </ul>
     </div>
     <info-tem-plate v-for="(item,index) in info.worksGoodsDetailList" :key="index" :info="item" :change="change"></info-tem-plate>
-    <p class="submit" @click="showModel" v-if="change">增加产品</p>
+    <p class="submit" @click="showModel" v-if="change &&showButton">增加产品</p>
     <div class="photoBox">
       <ul>
         <li>整体拍照</li>
-        <li v-if="change" class="imgpost">
+        <li v-if="change &&showButton" class="imgpost">
           <div class="unmr" v-if="imgList.length>0">
             <div class="imgbox">
               <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
@@ -51,7 +51,7 @@
       <li><span>客户负责人签字</span><img :src="info.custSign"/></li>
       <li><span>确认时间</span><p>{{info.signTm}}</p></li>
     </ul>
-    <div class="submitBox" v-if="change">
+    <div class="submitBox" v-if="change &&showButton">
       <p @click="keep">保存</p>
       <p @click="submit">提交</p>
     </div>
@@ -104,7 +104,12 @@
       id:{
         default:'',
         type:String
+      },
+      showButton:{
+        type:Boolean,
+        default:true,
       }
+
     },
     data(){
       return{
@@ -133,20 +138,31 @@
       // this.getData()
     },
     onload(){
-      this.getData()
+      if(this.id =="") return ;
+      this.getData(this.id)
     },
     mounted(){
-      this.getData()
+      if(this.id =="") return ;
+      this.getData(this.id)
+    },
+    onUnload(){
+      this.info = {}
+      this.imgList = []
+      this.change =false
+      this.isModel =false
+      this.changeModel =false
+    },
+    watch:{
     },
     methods:{
-      async getData(){
+      async getData(id){
         let res = await this.api.worksgoodstype('goodsUnit')
         this.array = []
         res.data.forEach(item=>{
           this.array.push(item.dictKey)
         })
         //请求获取是否有订单
-        let data = await this.api.getInventoryDtl(this.id)
+        let data = await this.api.getInventoryDtl(id)
         if(data.code == 200){
           this.info = data.data
           if(this.info.state == 2){
@@ -237,7 +253,7 @@
             worksGoodsDetailList:goodslist,
           }
           this.api.addBillADetail(param)
-          this.getData()
+          this.getData(this.id)
         }
 
         this.changeModel = !this.changeModel;

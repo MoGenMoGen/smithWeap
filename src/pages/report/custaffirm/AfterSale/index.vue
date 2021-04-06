@@ -1,5 +1,8 @@
 <template>
   <div class="app">
+    <div class="title">
+      <p>完工确认单</p>
+    </div>
     <div class="main">
       <div class="infoBox">
         <ul>
@@ -62,7 +65,7 @@
         </ul>
       </div>
       <div class="repairbefore">
-        <div class="title">维修前照片</div>
+        <div class="imgtitle">维修前照片</div>
         <div class="br"></div>
         <div class="picture">
           <div class="imgbox">
@@ -73,7 +76,7 @@
         </div>
       </div>
       <div class="repairbefore">
-        <div class="title">维修后照片</div>
+        <div class="imgtitle">维修后照片</div>
         <div class="br "></div>
         <div class="picture">
           <div class="imgbox">
@@ -85,7 +88,7 @@
         </div>
       </div>
       <div class="work bottom">
-        <div class="title">工作完成情况：(填写工作内容)</div>
+        <div class="imgtitle">工作完成情况：(填写工作内容)</div>
         <div class="br br1"></div>
         <div class="textarea">
           <textarea v-model="pushInfo.completionDesc" bindblur="bindTextAreaBlur" auto-height disabled />
@@ -96,7 +99,7 @@
         </div>
       </div>
       <div class="question">
-        <div class="title">问题反馈：(描述并附带现场照片)</div>
+        <div class="imgtitle">问题反馈：(描述并附带现场照片)</div>
         <div class="br br1"></div>
         <div class="feedback">
           {{pushInfo.feedback}}
@@ -121,48 +124,17 @@
           </li>
         </ul>
       </div>
-      <div class="infoBox review" v-if="info.worksCompletion2VO.audit==2  &&sure !=1">
-        <ul>
-          <li>
-            <span>确认二维码</span>
-            <canvas style="width: 66.66px; height: 66.66px;" canvas-id="myQrcode"></canvas>
-            <!-- <img :src="myQrcode" class="myQrcode" mode="heightFix" alt=""> -->
-            <!-- <div v-html="myQrcode"></div> -->
-          </li>
-        </ul>
-      </div>
-      <div class="infoBox review" v-if="sure == 1 &&info.worksCompletion2VO.audit==2">
-        <div class="title">
+      <div class="infoBox review" v-if="info.worksCompletion2VO.audit==2">
+        <div class="imgtitle">
           <span>客户负责人签名</span>
         </div>
         <div class="sign">
           <signature @success='getsign'></signature>
         </div>
       </div>
-      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletion2VO.audit==1">
-        <p>审核意见</p>
-        <div class="textarea">
-          <textarea placeholder="请输入建议..." v-model="options" name="" id="" cols="30" rows="10"></textarea>
-        </div>
-      </div>
-      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletion2VO.audit ==1)  &&sure !=1 && info.worksCompletion2VO.audit<=3">
-        <ul>
-          <li class="icon">
-            <p>
-              <img  :src="dshtb" mode="width"/>
-              {{info.worksCompletion2VO.audit==1?'待售后审核':info.worksCompletion2VO.audit==2?'待客户确认':'审核已驳回'}}
-            </p>
-          </li>
-        </ul>
-      </div>
-      <div @click="toPage('/pages/report/custaffirm/AfterSale/main?id='+info.id)">我要审核</div>
     </div>
     <bottomBase></bottomBase>
-    <div class="button" v-if="nametype ==2 &&info.worksCompletion2VO.audit==1">
-      <div class="btn1" @click="submit(1)">不通过</div>
-      <div class="btn2" @click="submit(2)">通过</div>
-    </div>
-    <div class="button" v-if="sure == 1 && info.worksCompletion2VO.audit==2">
+    <div class="button" v-if="info.worksCompletion2VO.audit==2">
       <div class="btn1" @click="custsubmit(1)">取消</div>
       <div class="btn2" @click="custsubmit(2)">提交</div>
     </div>
@@ -171,21 +143,19 @@
 
 <script>
   import signature from "@/components/signature";
-  import dateRange from "@/components/dateRange";
+
   import bottomBase from "@/components/bottomBase";
-  import modelMask from "@/components/modelMask";
-  import Reports from "@/components/reports";
+
+
   import gzdk from "@/components/img/工作打卡.png"
   import ycbg from "@/components/img/报告异常.png"
-  import tpsc from '@/components/img/图片上传图标.png'
   import del from "@/components/img/删除图标.png"
-  import jt from "@/components/img/箭头.png"
   import dshtb from "@/components/img/待审核图标.png"
   export default {
     data(){
       return{
-        jt,
-        tpsc,
+
+
         del,
         dshtb,
         //初始数据
@@ -203,9 +173,6 @@
             imgUrl:ycbg,
           }
         ],
-        currentIndex:0,
-        isModel:false,
-        changeModel:false,
         type:1,
         //获取到的id值
         id:'',
@@ -219,8 +186,6 @@
         nametype:1,
         //审核意见
         options:'',
-        //是否客户确认
-        sure:0,
         //客户签名
         custSign:'',
         myQrcode:'',
@@ -228,7 +193,7 @@
     },
 
     async onShow(){
-      
+
     },
     methods:{
       toPage(url){
@@ -243,6 +208,18 @@
           this.toPage('/pages/report/tabDetail/exceptionReport/main?id='+this.id + '&type=0')
         }
       },
+      //获取客户信息
+      getusername(){
+        wx.getUserProfile({
+          desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+          success: (res) => {
+            this.setData({
+              userInfo: res.userInfo,
+              hasUserInfo: true
+            })
+          }
+        })
+      },
       //获取工单详情列表
       async getlist(){
         const res= await this.api.getServiceDtl(this.id)
@@ -251,43 +228,9 @@
         this.info.bidEnd = this.info.bidEnd.slice(0,10)
         this.pushInfo = this.info.worksCompletion2VO
         this.pushInfo.completionTm = this.pushInfo.completionTm.slice(0,10)
-        // console.log(this.pushInfo);
         this.imglist1 = this.pushInfo.imgBefore.split(',')
         this.imglist2 = this.pushInfo.imgAfter.split(',')
         this.imglist3 = this.pushInfo.feedbackImg.split(',')
-        // let param = {
-        //   appid:'wx5d71635ece5968bd',
-        //   id:this.id,
-        //   type:1,
-        //   sure:1,
-        // }
-        // this.myQrcode = await this.api.getQRcode(param)
-        this.myQrcode = 'https://saf.ae-smith.com/blade-works/worksorder/getQRcode?appid=wx5d71635ece5968bd&id='+this.id+'&type=1&sure=1'
-        // console.log(myQrcode);
-        // console.log(this.info);
-      },
-      //通过
-      submit(value){
-        let param;
-        if(value ==1){
-          param = {
-            id: this.info.worksCompletion2VO.id,
-            orderId: this.info.worksCompletion2VO.orderId,
-            audit: 3,
-            options: this.options
-          }
-        }else{
-          param = {
-            id: this.info.worksCompletion2VO.id,
-            orderId: this.info.worksCompletion2VO.orderId,
-            audit: 2,
-            options: this.options
-          }
-        }
-        // console.log(param);
-        this.api.workscompletion2approvePC(param).then(res=>{
-          this.getlist()
-        })  
       },
       //获取签名
       getsign(value){
@@ -330,20 +273,12 @@
     onLoad(e){
       this.id = e.id
       this.nametype = wx.getStorageSync('loginType')
-      this.sure = e.sure
-      this.options = ''
-      drawQrcode({
-        width: 100,
-        height: 100,
-        canvasId: 'myQrcode',
-        text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.orderId
-      })
       this.getlist()
     },
     components:{
-      Reports,
-      bottomBase,modelMask,
-      dateRange,
+      
+      bottomBase,
+      
       signature,
     }
   }
@@ -352,13 +287,30 @@
 
 </style>
 <style scoped lang="less">
-@import url("../../../css/common.less");
   .app{
     width: 100%;
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
     padding-bottom: 150rpx;
+    .title{
+      width: 100%;
+      height: 80rpx;
+      padding-top: 48rpx;
+      text-align: center;
+      background-color: #FFFFFF;
+      display: flex;
+      justify-content: center;
+      // align-items: center;
+      p{
+        font-size: 34rpx;
+        font-family: PingFang SC;
+        font-weight: 500;
+        line-height: 48rpx;
+        color: #000000;
+        opacity: 1;
+      }
+    }
     .main{
       padding: 20rpx;
       box-sizing: border-box;
@@ -445,7 +397,7 @@
         margin-bottom: 20rpx;
         background: #FFFFFF;
         border-radius: 12rpx;
-        .title{
+        .imgtitle{
           //margin: 40rpx 0 18rpx 30rpx;
           font-size: 32rpx;
           font-family: PingFang SC;
@@ -550,7 +502,7 @@
         }
       }
       .review{
-        .title{
+        .imgtitle{
           padding: 20rpx 0 0 42rpx;
         }
         .myQrcode{

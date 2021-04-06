@@ -5,11 +5,19 @@
         <p>异常现象描述：</p>
         <textarea v-model="info.descr" placeholder="请输入异常现象..."></textarea>
         <div class="imageList">
-          <img :src="tpsctb" @click="toPhoto"/>
-          <div v-for="(item,index) in imageList" :key="index">
+          <div class="left">
+            <img :src="tpsctb" @click="toPhoto"/>
+          </div>
+          <div class="right">
+            <div class="imgs" v-for="(item,index) in imageList" :key="index">
+              <img :src="item"/>
+              <img :src="del" class="del" @click="deleteImg(index)" />
+            </div>
+          </div>
+          <!-- <div v-for="(item,index) in imageList" :key="index" >
             <img :src="item"/>
             <img :src="del" class="del" @click="deleteImg(index)"/>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="submitBox">
@@ -146,20 +154,45 @@
           img{
             width: 160rpx;
             height: 160rpx;
-            margin-right: 20rpx;
           }
-          >div{
-            position: relative;
-            .del{
-              position: absolute;
-              width: 32rpx;
-              height: 32rpx;
-              right: 7rpx;
-              margin: 0;
-              top: -16rpx;
-
+          .left{
+            width: 160rpx;
+            height: 160rpx;
+            margin-left: 20rpx;
+            padding: 20rpx 0;
+          }
+          .right{
+              flex: 1;
+              overflow-x: auto;
+              display: flex;
+              padding: 20rpx 0;
+              .imgs{
+                width: 160rpx;
+                height: 160rpx;
+                margin-left: 20rpx;
+                position: relative;
+                .del{
+                  position: absolute;
+                  width: 32rpx !important;
+                  height: 32rpx !important;
+                  top: -16rpx;
+                  right: -16rpx;
+                  margin-left: 0;
+                }
+              }
             }
-          }
+          // >div{
+          //   position: relative;
+          //   .del{
+          //     position: absolute;
+          //     width: 32rpx;
+          //     height: 32rpx;
+          //     right: 7rpx;
+          //     margin: 0;
+          //     top: -16rpx;
+
+          //   }
+          // }
         }
       }
       .submitBox{

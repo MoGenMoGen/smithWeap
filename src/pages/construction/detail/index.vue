@@ -129,7 +129,7 @@
             }
             this.api.orderRefused(param)
           }
-          this.toPage('/pages/construction/index/main')
+          wx.redirectTo({url:'/pages/construction/index/main'})
         }
         this.changeModel = item.changeModel
         this.isModel = item.isModel

@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <daily-report :showButton="showBtn" :id='id'></daily-report>
+      <daily-report ref="child" :id="id" :showButton="showBtn" ></daily-report>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -36,6 +36,13 @@
       }else{
         this.showBtn = false
       }
+    },
+    onShow(){
+      console.log(this.id);
+      this.$refs.child.getlist(this.id)
+    },
+    onUnload(){
+      this.id = ""
     },
     components:{
       DailyReport,

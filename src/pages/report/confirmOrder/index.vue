@@ -169,13 +169,13 @@
         isBill:false,
       }
     },
-    async onLoad(e){
+    onLoad(e){
       this.id = e.id
       drawQrcode({
         width: 66.66,
         height: 66.66,
         canvasId: 'myQrcode',
-        text: ''
+        text: 'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId
       })
     },
     mounted(){
@@ -183,7 +183,7 @@
       // this.getlist()
     },
     async onShow(){
-
+      
     },
     methods:{
       toPage(url){

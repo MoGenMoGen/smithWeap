@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <inventory :id="id"></inventory>
+      <inventory ref="child" :id="id" :showButton="showBtn"></inventory>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -16,6 +16,8 @@
       return {
         //传过来的id
         id:'',
+        //是否显示增添按钮
+        showBtn:false,
       }
     },
     watch:{
@@ -29,6 +31,17 @@
     },
     onLoad(e){
       this.id = e.id
+      if(e.type == 1){
+        this.showBtn = true
+      }else{
+        this.showBtn = false
+      }
+    },
+    onShow(){
+      this.$refs.child.getData(this.id)
+    },
+    onUnload(){
+      this.id = ""
     },
     components:{
       Inventory,

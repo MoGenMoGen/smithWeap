@@ -26,7 +26,7 @@
           </div>
         </li>
         <li><span>过程异常说明</span>
-          <textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2"></textarea>
+          <textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2 && showButton"></textarea>
           <textarea disabled v-model="info.exceptionDesc" v-else></textarea>
         </li>
       </ul>
@@ -69,17 +69,19 @@
       }
     },
     onLoad(){
-      this.getData();
+      if(this.id =="") return ;
+      this.getData(this.id);
     },
     onShow(){
       // this.getData();
     },
     mounted(){
-      this.getData();
+      if(this.id =="") return ;
+      this.getData(this.id);
     },
     methods:{
-      async getData(){
-        let data = await this.api.getConfession(this.id)
+      async getData(id){
+        let data = await this.api.getConfession(id)
         this.info = data.data
         this.imageList = data.data.imgUrl.split(',')
       },
@@ -93,7 +95,7 @@
         }
         this.api.saveConfession(param).then(res=>{
           if(res.code == 200){
-            this.getData();
+            this.getData(this.id);
           }
         })
       },
@@ -107,7 +109,7 @@
         }
         this.api.addConfession(param).then(res=>{
           if(res.code == 200){
-            this.getData();
+            this.getData(this.id);
           }
         })
       },

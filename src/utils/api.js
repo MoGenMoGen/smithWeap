@@ -109,8 +109,6 @@ function post(url, data,header) {
             })
           }
           resolve(res.data);
-
-
         }  else if(res.data.code == 401){
           wx.removeStorageSync('token')
           getToken()
@@ -773,7 +771,7 @@ class api {
         })
       })
     }
-    //完工确认单（维修）-客户审核接口
+    //完工确认单（安装）-客户审核接口
     workscompletioncustAudit(data){
       return new Promise(resolve => {
         post('/blade-works/workscompletion/custAudit',data).then(res=>{
@@ -793,6 +791,22 @@ class api {
     getQRcode(data){
       return new Promise(resolve =>{
         get("/blade-works/worksorder/getQRcode",data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    // 完工确认单（安装）-待客户审核详情
+    infoCustAudit(id){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/infoCustAudit?orderId="+id).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //  完工确认单（维修）-待客户审核详情
+    infoCustAudit2(id){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/infoCustAudit2?orderId="+id).then(res=>{
           resolve(res)
         })
       })

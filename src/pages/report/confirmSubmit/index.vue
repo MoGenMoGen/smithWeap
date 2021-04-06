@@ -127,7 +127,7 @@
   import dateRange from "@/components/dateRange";
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
-  import drawQrcode from 'weapp-qrcode'
+
   import jt from "@/components/img/箭头.png"
   import wdktb from "@/components/img/无打卡图标.png"
   import rltb from '@/components/img/日历图标.png'
@@ -179,6 +179,7 @@
     },
     async onLoad(e){
       this.id = e.id
+      this.reltime = '史密斯工作人员离开现场'
       //获取参数信息
       this.getData()
     },
@@ -267,7 +268,7 @@
             });
           }
           this.api.postaddCompletion(this.putinfo).then(res=>{
-            this.toPage('/pages/report/confirm/main?id='+this.id)
+            wx.redirectTo({url:'/pages/report/confirm/main?id='+this.id})
           })
           // console.log(this.putinfo)
         }

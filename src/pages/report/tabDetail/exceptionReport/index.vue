@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <exceptionReport :showButton="showBtn" :id="id"></exceptionReport>
+      <exceptionReport ref="child" :id="id" :showButton="showBtn" ></exceptionReport>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -36,7 +36,12 @@
       }else{
         this.showBtn = false
       }
-      // console.log(e);
+    },
+    onShow(){
+      this.$refs.child.getList(this.id)
+    },
+    onUnload(){
+      this.id = ""
     },
     components:{
       bottomBase,exceptionReport

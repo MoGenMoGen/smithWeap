@@ -34,7 +34,9 @@
     "pages/report/AfterSale/main",
     "pages/report/AfterSaleOrder/main",
     "pages/report/AfterSaleDetail/main",
-    "pages/platform/order/main"
+    "pages/platform/order/main",
+    "pages/report/custaffirm/AfterSale/main",
+    "pages/report/custaffirm/confirm/main"
 
   ],
   "permission": {

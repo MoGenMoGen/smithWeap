@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <clock :showButton="showBtn" :id='id' ></clock>
+      <clock ref="child" :id="id" :showButton="showBtn"  ></clock>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -30,12 +30,21 @@
       },
     },
     onLoad(e){
+      // console.log('我出发');
       this.id = e.id
+      // console.log('this',this.id);
+      // console.log('e',e.id);
       if(e.type == 1){
         this.showBtn = true
       }else{
         this.showBtn = false
       }
+    },
+    onShow(){
+      this.$refs.child.getList(this.id)
+    },
+    onUnload(){
+      this.id = ""
     },
     components:{
       bottomBase,clock

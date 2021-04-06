@@ -168,7 +168,8 @@
         let param = this.pushInfo
         param.orderId = this.info.id
         this.api.addOffer(param).then(res=>{
-          this.toPage('/pages/quotation/detail/main?id='+this.info.id)
+          wx.redirectTo({url:'/pages/quotation/detail/main?id='+this.info.id})
+          // this.toPage()
         })
       },
       //上传图片

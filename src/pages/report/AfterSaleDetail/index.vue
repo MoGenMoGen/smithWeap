@@ -194,6 +194,7 @@
       }
     },
     async onShow(){
+
     },
     methods:{
       toPage(url){
@@ -206,8 +207,8 @@
         this.toPage('/pages/report/tabDetail/clock/main?id='+this.id +'&type=0')
       },
       //获取工单详情列表
-      async getlist(){
-        const res= await this.api.getServiceDtl(this.id)
+      async getlist(id){
+        const res= await this.api.getServiceDtl(id)
         this.info = res.data
         this.info.bidStart = this.info.bidStart.slice(0,10)
         this.info.bidEnd = this.info.bidEnd.slice(0,10)
@@ -230,7 +231,13 @@
     },
     onLoad(e){
       this.id = e.id
-      this.getlist()
+      this.getlist(this.id )
+      drawQrcode({
+        width: 100,
+        height: 100,
+        canvasId: 'myQrcode',
+        text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.orderId
+      })
     },
     components:{
       Reports,

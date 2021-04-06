@@ -153,7 +153,8 @@ export default {
       }
       this.api.AddSurvbill(param).then(res=>{
         // console.log(res);
-        this.toPage('/pages/report/satisfaction/main?id='+res.data.id)
+        wx.redirectTo({url:'/pages/report/satisfaction/main?id='+res.data.id})
+        // this.toPage('/pages/report/satisfaction/main?id='+res.data.id)
       })
       
       // console.log('提交');

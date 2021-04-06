@@ -5,7 +5,12 @@
       <li><img :src="yctb"/>异常现象描述</li>
       <li v-for="(item,index) in list" :key="index">
         <p>{{item.descr}}</p>
-        <img :src="item.imgUrl"/>
+        <div class="imgbox">
+          <div v-for="(imgsrc,i) in item.imgUrl" :key="i" class="imgs">
+            <img class="imgs" :src="imgsrc"/>
+          </div>
+        </div>
+        
         <p><span>提交日期：{{item.createTime}}</span><img v-if="showButton" :src="btb" @click="toPage('/pages/report/newException/main?itemId='+item.id+'&type='+ 2)"/></p>
       </li>
     </ul>
@@ -35,23 +40,23 @@
         cs,
         btb,
         list:[
-          // {
-          //   content:'无',
-          //   time:'2021-02-24',
-          //   imgUrl:cs,
-          // }
         ],
       }
     },
     onShow(){
-      this.getList();
+      if(this.id =="") return ;
+      this.getList(this.id);
     },
     mounted(){
-      this.getList();
+      if(this.id =="") return ;
+      this.getList(this.id);
     },
     methods:{
-      async getList(){
-        let data = await this.api.getExceptionList(this.id)
+      async getList(id){
+        let data = await this.api.getExceptionList(id)
+        data.data.forEach(item => {
+          item.imgUrl = item.imgUrl.split(',')
+        });
         this.list =  data.data
         this.list.forEach(item=>{
           item.createTime = item.createTime.slice(0,10)
@@ -88,6 +93,18 @@
             margin-right: 20rpx;
           }
         }
+        .imgbox{
+              flex: 1;
+              overflow-x: auto;
+              display: flex;
+              padding: 20rpx 0;
+              .imgs{
+                border-radius: 12rpx;
+                width: 320rpx;
+                height: 240rpx;
+                margin-right: 20rpx;
+              }
+            }
         img{
           border-radius: 12rpx;
           width: 320rpx;

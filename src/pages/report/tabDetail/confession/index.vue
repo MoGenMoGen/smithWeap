@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <confession :showButton="showBtn" :id='id'></confession>
+      <confession ref="child" :id="id" :showButton="showBtn" ></confession>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -36,6 +36,12 @@
       }else{
         this.showBtn = false
       }
+    },
+    onShow(){
+      this.$refs.child.getData(this.id)
+    },
+    onUnload(){
+      this.id = ""
     },
     components:{
       bottomBase,confession

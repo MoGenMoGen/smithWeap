@@ -150,7 +150,7 @@
         //基本操作
         this.changeModel = !this.changeModel;
         this.isModel = !this.isModel;
-        this.getlist()//重新获取列表
+        this.getlist(this.id)//重新获取列表
       },
       showModel(val,info) {
         if(val ==1){
@@ -221,8 +221,8 @@
         this.info.imgUrl = this.imgList.join(',');
       },
       //获取列表数据
-      async getlist(){
-        var res = await this.api.getlistByOrder(this.id)
+      async getlist(id){
+        var res = await this.api.getlistByOrder(id)
         // console.log(res);
         this.list = res.data
         // console.log(this.list);
@@ -232,14 +232,13 @@
       }
     },
     mounted(){
-      this.getlist()
+      if(this.id == "") return ;
+      this.getlist(this.id)
     },
     onShow(){
+      if(this.id == "") return ;
       //获取列表
-      this.getlist()
-      // const res = this.api.getlistByOrder(this.id)
-      // console.log(res);
-      // this.list = res.data
+      this.getlist(this.id)
     }
   }
 </script>

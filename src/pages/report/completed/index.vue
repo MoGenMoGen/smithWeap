@@ -124,9 +124,9 @@
         }
       },
       goDetail(item){
-        if(item.workTypeNm ==1 || item.workTypeNm ==3){
+        if(item.workType ==1 || item.workType ==3){
           this.toPage('/pages/report/confirmOrder/main?id='+item.id)
-        }else if(item.workTypeNm ==2){
+        }else if(item.workType == 2){
           this.toPage('/pages/report/AfterSaleDetail/main?id='+item.id)
         }
       },
