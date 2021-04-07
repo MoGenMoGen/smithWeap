@@ -177,8 +177,9 @@
       </div>
       <!--loginType == 3-->
       <reportStatu v-if="loginType == 3"></reportStatu>
+      <bottomBase></bottomBase>
+
     </div>
-    <bottomBase></bottomBase>
   </div>
 </template>
 
@@ -258,6 +259,7 @@
     },
     async onShow(){
       this.loginType = wx.getStorageSync('loginType')
+      console.log(this.loginType)
       this.current = 1
       this.list = []
       this.list2 = []
@@ -354,10 +356,15 @@
 <style scoped lang="less">
   .app{
     width: 100%;
-    height: 100%;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #ECECEC;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
     .main{
+      flex: 1;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
       padding: 20rpx;
       box-sizing: border-box;
       #swiper{

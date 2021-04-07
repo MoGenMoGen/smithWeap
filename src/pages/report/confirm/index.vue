@@ -121,6 +121,30 @@
           </li>
         </ul>
       </div>
+      <div class="infoBox review" v-if="info.worksCompletionVO.audit>=5">
+        <ul>
+          <li>
+            <span>确认二维码</span>
+            <canvas style="width: 100px; height: 100px;" canvas-id="myQrcode"></canvas>
+          </li>
+          <li>
+            <span>客户确认</span>
+            <image :src="info.worksCompletionVO.custSign" mode="widthFix"/>
+          </li>
+          <li>
+            <span>确认时间</span>
+            <p>{{info.worksCompletionVO.signTm? info.worksCompletionVO.signTm:'暂无'}}</p>
+          </li>
+          <!--<li>-->
+            <!--<span>满意度调查</span>-->
+            <!--<p>{{info.worksCompletiworksCompletionVOon2VO.auditTm? info.worksCompletionVO.auditTm:'暂无'}}</p>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<span>填写时间</span>-->
+            <!--<p>{{info.worksCompletionVO.auditTm? info.worksCompletionVO.auditTm:'暂无'}}</p>-->
+          <!--</li>-->
+        </ul>
+      </div>
       <div class="infoBox review" v-if="sure == 1 &&info.worksCompletionVO.audit==2">
         <div class="title">
           <span>客户负责人签名</span>
@@ -145,7 +169,7 @@
           <textarea placeholder="请输入建议..." v-model="options" name="" id="" cols="30" rows="10"></textarea>
         </div>
       </div>
-      <div @click="toPage('/pages/report/custaffirm/confirm/main?id='+info.id)">我要审核</div>
+      <!--<div @click="toPage('/pages/report/custaffirm/confirm/main?id='+info.id)">我要审核</div>-->
     </div>
     <bottomBase></bottomBase>
     <div class="button" v-if="nametype ==2 &&info.worksCompletionVO.audit==1">
@@ -230,12 +254,12 @@
       this.sure = e.sure
       this.custSign = ''
       this.options = ''
-      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5d71635ece5968bd&redirect_uri='+'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+this.appid+'&redirect_uri='+this.wxHostUrl+'/views/smith/confirm.html?id='+this.orderId+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
       drawQrcode({
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
         canvasId: 'myQrcode',
-        text: 'http://192.168.0.37:8085/views/smith/confirm.html?id='+this.orderId
+        text: this.wxHostUrl+'/views/smith/confirm.html?id='+this.orderId
         // text:path
       })
     },
@@ -314,7 +338,7 @@
         // console.log(param);
         this.api.workscompletionapprovePC(param).then(res=>{
           this.getData()
-        }) 
+        })
       },
       //获取签名
       getsign(value){
@@ -337,7 +361,7 @@
         }
         var param;
         if(value ==1 ){
-          return 
+          return
         }else{
           param = {
             id: this.info.worksCompletionVO.id,
@@ -532,7 +556,7 @@
       right: 0;
       left: 0;
       bottom: 0;
-      
+
       padding: 0 20rpx 80rpx 20rpx;
       box-sizing: border-box;
       display: flex;

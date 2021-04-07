@@ -40,7 +40,7 @@
         </ul>
       </div>
     </div>
-    
+
     <p @click="toPage('/pages/login/main')">测试跳转登录页面</p>
 
     <bottomBase></bottomBase>
@@ -117,6 +117,9 @@
       }
     },
     async onLoad(){
+
+    },
+    async onShow(){
       this.loginType = wx.getStorageSync('loginType')
       switch(this.loginType){
         case 1:
@@ -192,8 +195,6 @@
           ]
           break
       }
-    },
-    async onShow(){
       this.getUser();
     },
     methods:{

@@ -10,6 +10,7 @@ const hostUrl = config.serverURL;
 // Vue.prototype.globalData = getApp().globalData
 
 const appid = 'wx5d71635ece5968bd'
+const wxHostUrl = 'https://saf.ae-smith.com'
 const tenantId = '000000'
 
 function get(url, data, header,loading) {
@@ -150,6 +151,12 @@ function login(data) {
     // console.log(data)
     data.tenantId = tenantId
     post("/blade-wxMa/access/"+appid+"/login2", data, header).then(res => {
+      if(res.error_code == 400){
+        wx.reLaunch({
+          url: '/pages/login/main'
+        })
+        return
+      }
       console.log('res',res);
       wx.setStorageSync("token",res.access_token);
       console.log('保存token')
@@ -219,6 +226,12 @@ class api {
     return new Promise((resolve, reject) => {
       data.tenantId = tenantId
       post("/blade-wxMa/access/"+appid+"/login2",data,header).then(res=>{
+        if(res.error_code == 400){
+          wx.reLaunch({
+            url: '/pages/login/main'
+          })
+          return
+        }
         wx.setStorageSync("token",res.access_token);
         wx.setStorageSync("loginInfo",res);
         console.log('登录')
@@ -226,11 +239,7 @@ class api {
         // store.store.commit('token',res.token)
         console.log('设置token时间')
         wx.setStorageSync("tokenTime",new Date());
-        if(res.error_code == 400){
-          wx.reLaunch({
-            url: '/pages/login/main'
-          })
-        }
+
         resolve(res.data.token);
       })
     });
@@ -813,4 +822,4 @@ class api {
     }
 }
 
-export { api };
+export { api,wxHostUrl,appid };

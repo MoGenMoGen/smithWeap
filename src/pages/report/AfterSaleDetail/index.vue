@@ -232,14 +232,14 @@
     onLoad(e){
       this.id = e.id
       this.getlist(this.id )
-      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5d71635ece5968bd&redirect_uri='+'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
-      
+      let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+this.appid+'&redirect_uri='+this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+
       drawQrcode({
         width: 100,
         height: 100,
         canvasId: 'myQrcode',
-        // text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id
-        text:path
+        text: this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id
+        // text:path
       })
     },
     components:{

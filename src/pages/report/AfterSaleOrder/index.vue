@@ -121,6 +121,47 @@
           </li>
         </ul>
       </div>
+      <div class="infoBox review" v-if="info.worksCompletion2VO.audit>=2">
+        <ul>
+          <li>
+            <span>售后审核</span>
+            <p>{{info.userName? info.userName:'暂无'}}</p>
+          </li>
+          <li>
+            <span>审核状态</span>
+            <p>{{info.worksCompletion2VO.audit==3?'驳回':'通过'}}</p>
+          </li>
+          <li>
+            <span>审核时间</span>
+            <p>{{info.worksCompletion2VO.auditTm? info.worksCompletion2VO.auditTm:'暂无'}}</p>
+          </li>
+        </ul>
+      </div>
+      <!--客户已确认-->
+      <div class="infoBox review" v-if="info.worksCompletion2VO.audit>=5">
+        <ul>
+          <li>
+            <span>确认二维码</span>
+            <canvas style="width: 100px; height: 100px;" canvas-id="myQrcode"></canvas>
+          </li>
+          <li>
+            <span>客户确认</span>
+            <image :src="info.worksCompletion2VO.custSign" mode="widthFix"/>
+          </li>
+          <li>
+            <span>确认时间</span>
+            <p>{{info.worksCompletion2VO.signTm? info.worksCompletion2VO.signTm:'暂无'}}</p>
+          </li>
+          <!--<li>-->
+            <!--<span>满意度调查</span>-->
+            <!--<p>{{info.worksCompletion2VO.auditTm? info.worksCompletion2VO.auditTm:'暂无'}}</p>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<span>填写时间</span>-->
+            <!--<p>{{info.worksCompletion2VO.auditTm? info.worksCompletion2VO.auditTm:'暂无'}}</p>-->
+          <!--</li>-->
+        </ul>
+      </div>
       <div class="infoBox review" v-if="info.worksCompletion2VO.audit==2  &&sure !=1">
         <ul>
           <li>
@@ -155,7 +196,7 @@
           </li>
         </ul>
       </div>
-      <div @click="toPage('/pages/report/custaffirm/AfterSale/main?id='+info.id)">我要审核</div>
+      <!--<div @click="toPage('/pages/report/custaffirm/AfterSale/main?id='+info.id)">我要审核</div>-->
     </div>
     <bottomBase></bottomBase>
     <div class="button" v-if="nametype ==2 &&info.worksCompletion2VO.audit==1">
@@ -229,7 +270,7 @@
     },
 
     async onShow(){
-      
+
     },
     methods:{
       toPage(url){
@@ -288,7 +329,7 @@
         // console.log(param);
         this.api.workscompletion2approvePC(param).then(res=>{
           this.getlist()
-        })  
+        })
       },
       //获取签名
       getsign(value){
@@ -311,7 +352,7 @@
         }
         var param;
         if(value ==1 ){
-          return 
+          return
         }else{
           param = {
             id: this.info.worksCompletion2VO.id,
@@ -333,11 +374,13 @@
       this.nametype = wx.getStorageSync('loginType')
       this.sure = e.sure
       this.options = ''
+      let path = this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id
+      console.log(this.wxHostUrl)
       drawQrcode({
         width: 100,
         height: 100,
         canvasId: 'myQrcode',
-        text: 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id
+        text:path
       })
       this.getlist()
     },
@@ -604,7 +647,7 @@
       right: 0;
       left: 0;
       bottom: 0;
-      
+
       padding: 0 20rpx 80rpx 20rpx;
       box-sizing: border-box;
       display: flex;
@@ -632,6 +675,6 @@
       }
 
     }
-    
+
   }
 </style>
