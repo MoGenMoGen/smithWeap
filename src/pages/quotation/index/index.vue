@@ -16,7 +16,7 @@
         <div class="dateBox">
           <div class="timechange">
             <div class="time">
-              <dateRange :value="startTime" @getStart="getDate"></dateRange> 
+              <dateRange :value="startTime" @getStart="getDate"></dateRange>
             </div>
               <span>~</span>
             <div class="time">
@@ -144,6 +144,7 @@
       },
       toSearch(){
         this.list = []
+        this.current=1
         this.getList()
       },
       async getList(){

@@ -27,7 +27,7 @@
       <div v-if="loginType == 1" class="listBox">
         <div class="title">
           <p>
-            <img :src="logo2"/>
+            <img :src="logo2"  mode="widthFix" class="titleImg"/>
             {{infoNm}}
           </p>
           <p @click="toPage('/pages/quotation/index/main')">
@@ -74,7 +74,7 @@
       <div v-if="loginType == 1" class="listBox">
         <div class="title">
           <p>
-            <img :src="logo2"/>
+            <img :src="logo2"  mode="widthFix" class="titleImg"/>
             {{info2Nm}}
           </p>
           <p @click="toPage('/pages/construction/index/main')">
@@ -128,7 +128,7 @@
       <div v-if="loginType == 2" class="listBox">
         <div class="title">
           <p>
-            <img :src="logo2"/>
+            <img :src="logo2" mode="widthFix"  class="titleImg"/>
             施工确认
           </p>
           <p @click="toPage('/pages/platform/order/main?type=1')">
@@ -417,6 +417,7 @@
               color: #303030;
             }
           }
+
           p img{
             width: 35rpx;
             height: 30rpx;
@@ -424,6 +425,9 @@
             &:last-of-type{
               margin: 0 0 0 9rpx;
             }
+          }
+          .titleImg{
+            margin-right: 10rpx !important;
           }
           .right{
             width: 12rpx !important;

@@ -15,7 +15,7 @@
       <li>{{info.nm}}</li>
       <li><span>单位：{{info.unit}}</span><p>应到数量：<input v-model="info2.num"/></p></li>
       <li><span>实际数量</span><p><input v-model="info2.realNum"/></p></li>
-      <li><span>缺货数量</span><p>{{info2.num - info2.realNum}}</p></li>
+      <li><span>缺货数量</span><p :class="{red:info2.num - info2.realNum}">{{info2.num - info2.realNum}}</p></li>
       <li>
         <span>是否到货</span>
         <div class="check">
@@ -140,7 +140,7 @@
           this.info2.install = index + 1
         }
       },
-      
+
     }
   }
 </script>
@@ -150,6 +150,9 @@
     background-color: #FFFFFF;
     margin-top: 20rpx;
     border-radius: 12rpx;
+    .red{
+      color: #E51937;
+    }
     ul{
       padding: 20rpx 30rpx;
       box-sizing: border-box;
@@ -164,7 +167,7 @@
         span{
           width: 210rpx;
         }
-        
+
         p{
           flex: 1;
         }
@@ -197,7 +200,7 @@
               margin-right: 18rpx;
             }
           }
-          
+
         }
         p{
           display: flex;

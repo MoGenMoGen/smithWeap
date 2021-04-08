@@ -20,27 +20,29 @@
     <div class="photoBox">
       <ul>
         <li>整体拍照</li>
-        <li v-if="change &&showButton" class="imgpost">
-          <div class="unmr" v-if="imgList.length>0">
-            <div class="imgbox">
-              <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
-                <img :src="item" mode="aspectFill" />
-                <img :src="del" class="del" @click="delimg(index)" />
-              </div>
-              <img :src="tpsc" @click="toPhoto"/>
-             </div> 
-          </div>
-          <div class="mr" v-else >
-              <img :src="pztb" @click="toPhoto"/>
+        <li v-if="change &&showButton" class="imgpost" @click="toPhoto">
+          <div class="mr">
+              <img :src="pztb" />
           </div>
         </li>
         <li v-else class="imgget">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
-              <img :src="item" mode="aspectFill" />
+              <img :src="item" mode="aspectFill" @click="viewImg(item,imgList)"/>
             </div>
-          </div> 
+          </div>
         </li>
+        <li v-if="change &&showButton && imgList.length>0" class="imgget">
+          <div class="unmr">
+            <div class="imgbox">
+              <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
+                <img :src="item" mode="aspectFill" @click="viewImg(item,imgList)"/>
+                <img :src="del" class="del" @click="delimg(index)" />
+              </div>
+            </div>
+          </div>
+        </li>
+
       </ul>
     </div>
     <ul class="ulBox" v-if="!change">
@@ -68,7 +70,7 @@
         <li>
           <span>单位</span>
           <div class="section">
-            <picker @change="bindPickerChange" :value="index" :range="array">
+            <picker @change="bindPickerChange" :value="index" :range="array" style="flex:1;text-align: center">
               <p class="picker">
                 {{array[index]}}
               </p>
@@ -135,13 +137,16 @@
       }
     },
     onShow(){
-      // this.getData()
+      // if(this.id =="") return ;
+      // this.getData(this.id)
     },
     onload(){
+      console.log('onload')
       if(this.id =="") return ;
       this.getData(this.id)
     },
     mounted(){
+      console.log('mounted',this.id)
       if(this.id =="") return ;
       this.getData(this.id)
     },
@@ -155,6 +160,13 @@
     watch:{
     },
     methods:{
+      //图片预览
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       async getData(id){
         let res = await this.api.worksgoodstype('goodsUnit')
         this.array = []
@@ -163,8 +175,10 @@
         })
         //请求获取是否有订单
         let data = await this.api.getInventoryDtl(id)
+        console.log(data)
         if(data.code == 200){
           this.info = data.data
+          console.log(this.info)
           if(this.info.state == 2){
             this.change = false
           }else{
@@ -267,13 +281,14 @@
       },
       //保存
       keep(){
-        // console.log(this.info);
+        console.log(this.info);
         if(this.info.goodsArriveDt == '请选择产品到货日期' || this.info.staffArriveDt == '请选择人员到场日期'){
-          return wx.showToast({
+           wx.showToast({
               icon: "none",
-              title: '请核对信息再进行保存',
+              title: '请填写日期',
               duration: 2000
             });
+          return
         }
         //处理参数
         let goodslist = []
@@ -379,6 +394,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 12rpx;
+      overflow: hidden;
       font-size: 28rpx;
       margin-top: 40rpx;
       color: #FFFFFF;
@@ -398,7 +414,7 @@
           padding: 20rpx 0;
           box-sizing: border-box;
           font-size: 32rpx;
-        }  
+        }
         .imgpost{
           padding: 0;
           margin: 40rpx 10rpx;
@@ -444,7 +460,7 @@
                   height: 32rpx;
                   top: 0rpx;
                   right: 0rpx;
-                } 
+                }
               }
             }
           }
@@ -464,7 +480,7 @@
             .imgs:nth-child(1),.imgs:nth-child(2){
               margin-top: 0rpx;
             }
-            
+
             .imgs{
               position: relative;
               height: 200rpx;
@@ -473,10 +489,17 @@
                 width: 300rpx;
                 height: 200rpx;
               }
+              .del{
+                position: absolute;
+                width: 32rpx;
+                height: 32rpx;
+                top: 0rpx;
+                right: 0rpx;
+              }
             }
           }
         }
-        
+
       }
     }
     .submitBox{
@@ -488,6 +511,7 @@
       position: fixed;
       bottom: 80rpx;
       z-index:50;
+      overflow: hidden;
       p{
         font-size: 28rpx;
         width: 50%;

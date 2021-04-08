@@ -20,16 +20,16 @@
 <!--          <input v-model="info.reportDt" placeholder="请输入工作时间"/>-->
           <div style="flex:1" ><dateRange :value="reltime" @getStart="getDate"></dateRange></div>
 
-          <img :src="rltb"/>
+          <img :src="rltb"  mode="widthFix"/>
         </li>
-        <li><span>工作地址</span><input v-model="info.addr" placeholder="请输入工作地址"/><img :src="dwhs"/></li>
+        <li><span>工作地址</span><input v-model="info.addr" placeholder="请输入工作地址"/><img :src="dwhs" mode="widthFix"/></li>
         <li><span>工作内容</span><textarea v-model="info.jobCont" placeholder="请输入工作内容"></textarea></li>
         <li><span>现场照片</span>
           <div class="wrap">
             <div class="box">
               <img :src="tj"  @click="toPhoto" />
               <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
-                <img :src="item" mode="heightFix"/>
+                <img :src="item" mode="scaleToFill" @click="viewImg(item,imgList)" style="width: 100%;height: 100%"/>
                 <img :src="del" class="del" @click="delimg(index)" />
               </div>
             </div>
@@ -99,6 +99,36 @@
       }
     },
     methods:{
+      getLocation(){
+        let _this = this
+        wx.getLocation({
+          type: 'gcj02',
+          isHighAccuracy:true,
+          success: function (res) {
+            // console.log("获取当前经纬度：" + JSON.stringify(res));
+            //发送请求通过经纬度反查地址信息
+            var getAddressUrl = "https://apis.map.qq.com/ws/geocoder/v1/?location=" + res.latitude + "," + res.longitude + "&key=E2QBZ-KAICX-C4B4Z-TT4O2-5A6ZO-RMBVE";
+            // _this.longitude = res.longitude;
+            // _this.latitude = res.latitude
+            // _this.postInfo.lng = _this.longitude
+            // _this.postInfo.lat = _this.latitude
+            wx.request({
+              url: getAddressUrl,
+              success: function (result) {
+                _this.info.addr = result.data.result.address
+                // _this.addr = _this.locations
+                // _this.postInfo.addr = _this.addr
+              }
+            })
+          }
+        })
+      },
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -157,7 +187,10 @@
           this.clearinfo()
           this.getLocation();
           this.type = 1;
-          this.reltime = '请选择时间'
+          // this.reltime = '请选择时间'
+          let date = this.util.formatDate()
+          this.info.reportDt = date.year+'-'+date.month+'-'+date.day
+          this.reltime = this.info.reportDt
         }
         else if(val ==2){
           // console.log(info);
@@ -174,7 +207,10 @@
             rmks:info.rmks,//备注
           };
           if(info.reportDt == ''){
-            this.reltime = '请选择时间'
+            let date = this.util.formatDate()
+            this.info.reportDt = date.year+'-'+date.month+'-'+date.day
+            this.reltime = this.info.reportDt
+
           }else{
             this.reltime = info.reportDt
           }
@@ -189,18 +225,18 @@
         this.isModel = !this.isModel;
       },
       //获取经纬度
-      getLocation(){
-        console.log('获取经纬度');
-        let _this = this
-        wx.getLocation({
-          type: 'wgs84',
-          success (res) {
-          //  console.log(res);
-          _this.info.lng = res.longitude
-          _this.info.lat = res.latitude
-          }
-        })
-      },
+      // getLocation(){
+      //   console.log('获取经纬度');
+      //   let _this = this
+      //   wx.getLocation({
+      //     type: 'wgs84',
+      //     success (res) {
+      //     //  console.log(res);
+      //     _this.info.lng = res.longitude
+      //     _this.info.lat = res.latitude
+      //     }
+      //   })
+      // },
       //日期选择回调函数
       getDate(e){
         this.reltime = e
@@ -254,6 +290,7 @@
       position: fixed;
       bottom: 80rpx;
       z-index:50;
+      overflow: hidden;
       p{
         font-size: 28rpx;
         width: 50%;
@@ -337,12 +374,13 @@
                 height: 160rpx;
                 .imgs{
                   position: relative;
-                  // width: 160rpx;
+                  width: 160rpx;
                   height: 160rpx;
                   display: inline-block;
+                  margin-right: 10rpx;
                   .del{
                     position: absolute;
-                    width: 32rpx;
+                    width: 32rpx !important;
                     height: 32rpx;
                     top: -16rpx;
                     right: -16rpx;
@@ -366,7 +404,7 @@
           }
           img{
             width: 30rpx;
-            height: 32rpx;
+            /*height: 32rpx;*/
           }
         }
       }

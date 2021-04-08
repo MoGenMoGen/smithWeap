@@ -4,9 +4,9 @@
       <div class="searchBox">
         <div>
           <div class="section">
-            <picker @change="bindPickerChange" :value="index" :range="array">
+            <picker @change="bindPickerChange" :value="index" :range="array" range-key="dictValue">
               <div class="picker">
-                {{array[index]}}
+                {{array[index].dictValue}}
                 <img :src="down"/>
               </div>
             </picker>
@@ -15,7 +15,7 @@
         <div class="dateBox">
           <div class="timechange">
             <div class="time">
-              <dateRange :value="startTime" @getStart="getDate"></dateRange> 
+              <dateRange :value="startTime" @getStart="getDate"></dateRange>
             </div>
               <span>~</span>
             <div class="time">
@@ -101,7 +101,9 @@
         total:0,
         //接单列表
         list:[],
-        array: ['安装', '施工'],
+        array:[
+          {dictValue:'全部',dictKey:''}
+        ],
         index: 0,
         startTm:'',//开始时间
         endTm:'',//结束时间
@@ -116,6 +118,8 @@
       this.startTm = ''
       this.endTm = ''
       this.getList()
+      this.array=[{dictValue:'全部',dictKey:''}]
+      this.getDictionary();
     },
     onReachBottom(){
       if(this.list.length>=this.total){
@@ -127,6 +131,14 @@
       }
     },
     methods:{
+      //获取工作类型
+      async getDictionary(){
+        const param = {
+          cd:'workType'
+        }
+        let data =await this.api.getDictionary(param)
+        this.array.push(...data.data)
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -135,6 +147,7 @@
       async getList(){
         const param={
           current:this.current,
+          endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
           size:this.size
         }
         let data =await this.api.listAfterWork(param)
@@ -146,7 +159,9 @@
         this.total = data.data.total
       },
       toSearch(){
-        console.log('搜索')
+        this.list = []
+        this.current=1
+        this.getList()
       },
       toDetail(url){
         this.toPage(url)

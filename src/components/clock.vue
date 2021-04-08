@@ -31,7 +31,7 @@
             </span>
             <div class="imgUrl" v-if="item.imgUrl">
                 <div class="box" v-for="(z,x) in item.imgUrl" :key="x">
-                    <img :src="z"  mode="heightFix"/>
+                    <img :src="z"  mode="scaleToFill" @click="viewImg(z,item.imgUrl)"/>
                 </div>
             </div>
           </li>
@@ -80,8 +80,8 @@
       }
     },
     onShow(){
-      if(this.id =='') return ;
-      this.getList(this.id)
+      // if(this.id =='') return ;
+      // this.getList(this.id)
       // console.log();
     },
     onLoad(){
@@ -93,6 +93,12 @@
       this.getList(this.id)
     },
     methods:{
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -171,8 +177,8 @@
               height: 170rpx;
               margin-right: 20rpx;
               img{
-                width: 320rpx;
-                height: 170rpx;
+                width: 100%;
+                height: 100%;
               }
             }
 

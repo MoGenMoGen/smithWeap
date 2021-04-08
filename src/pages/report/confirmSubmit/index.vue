@@ -364,7 +364,7 @@
               }
               .time{
                 flex: 1;
-                color:#D0CED8;
+                /*color:#D0CED8;*/
               }
               .rltb{
                 width: 30rpx !important;

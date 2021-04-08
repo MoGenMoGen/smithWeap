@@ -13,7 +13,7 @@
           <img class="left" :src="tpsc" mode="width" @click="toPhoto" v-if="info && info.state != 2"/>
           <div class="imgUrl">
             <div class="box" v-for="(item,index) in imageList" :key="index">
-                <img :src="item" mode="width" />
+                <img :src="item" mode="width" @click="viewImg(item,imageList)"/>
                 <img :src="del" class="del" @click="delimg(index)" />
             </div>
           </div>
@@ -21,12 +21,13 @@
         <li v-else>
           <div class="imgUrl">
             <div class="box" v-for="(item,index) in imageList" :key="index">
-                <img :src="item" mode="heightFix" />
+                <img :src="item" mode="heightFix" @click="viewImg(item,imageList)"/>
             </div>
           </div>
         </li>
         <li><span>过程异常说明</span>
-          <textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2 && showButton"></textarea>
+          <input  placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2 && showButton"/>
+          <!--<textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2 && showButton"></textarea>-->
           <textarea disabled v-model="info.exceptionDesc" v-else></textarea>
         </li>
       </ul>
@@ -80,6 +81,12 @@
       this.getData(this.id);
     },
     methods:{
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       async getData(id){
         let data = await this.api.getConfession(id)
         this.info = data.data
@@ -91,7 +98,7 @@
           orderId:this.id,
           descr:this.info.descr,
           exceptionDesc:this.info.exceptionDesc,
-          imgUrl:this.imageList.join(),
+          imgUrl:this.imageList.join(','),
         }
         this.api.saveConfession(param).then(res=>{
           if(res.code == 200){
@@ -105,7 +112,7 @@
           orderId:this.id,
           descr:this.info.descr,
           exceptionDesc:this.info.exceptionDesc,
-          imgUrl:this.imageList.join(),
+          imgUrl:this.imageList.join(','),
         }
         this.api.addConfession(param).then(res=>{
           if(res.code == 200){
@@ -133,6 +140,9 @@
 <style lang="less" scoped>
   .except{
     width: 100%;
+    /*textarea{*/
+      /*font-size: 24rpx;*/
+    /*}*/
     ul{
       background-color: #FFFFFF;
       padding: 20rpx 26rpx;
@@ -175,6 +185,12 @@
       ul{
         padding-bottom: 78rpx;
         li{
+          &:last-of-type{
+            /*align-items: flex-start;*/
+            /*span{*/
+              /*padding-top: 20rpx;*/
+            /*}*/
+          }
           img{
             height: 160rpx;
             width: 160rpx;
@@ -215,10 +231,13 @@
           }
           &:last-of-type{
             textarea{
-              height: 80rpx;
+              height: 120rpx;
               flex: 1;
-              display: flex;
-              align-items: center;
+              padding: 0;
+              /*padding-top: 20rpx;*/
+              background: #ffda4b;
+              /*display: flex;*/
+              /*align-items: center;*/
             }
           }
         }
@@ -233,6 +252,7 @@
       position: fixed;
       bottom: 80rpx;
       z-index:50;
+      overflow: hidden;
       p{
         font-size: 28rpx;
         width: 50%;

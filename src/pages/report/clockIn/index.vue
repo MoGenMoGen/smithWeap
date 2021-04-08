@@ -22,7 +22,7 @@
                 <img :src="del" class="del" @click="delimg(index)" />
               </div>
             </div>
-            
+
           </div>
         </div>
         <div class="clockBox">
@@ -113,7 +113,7 @@
       getLocation(){
         let _this = this
         wx.getLocation({
-          type: 'wgs84',
+          type: 'gcj02',
           isHighAccuracy:true,
           success: function (res) {
             // console.log("获取当前经纬度：" + JSON.stringify(res));
@@ -147,7 +147,15 @@
         }
       },
       toClock(){
-        this.postInfo.imgUrl = this.imageList.join()
+        if(this.imageList.length==0){
+          wx.showToast({
+            title: '请上传图片',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        this.postInfo.imgUrl = this.imageList.join(',')
         this.api.newClock(this.postInfo).then(res=>{
           if(res.code == 200){
             this.toBack();
@@ -265,7 +273,7 @@
               }
             }
           }
-          
+
         }
       }
       .clockBox{

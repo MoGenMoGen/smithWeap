@@ -5,15 +5,15 @@
      <ul>
        <li>
          <img :src="mm"/>
-         <input placeholder="请输入原始密码" v-model="info.password"/>
+         <input placeholder="请输入原始密码" type="password" v-model="info.oldPassword"/>
        </li>
        <li>
          <img :src="mm"/>
-         <input placeholder="请输入新密码" v-model="info.newPassword"/>
+         <input placeholder="请输入新密码" type="password" v-model="info.newPassword"/>
        </li>
        <li>
          <img :src="mm"/>
-         <input placeholder="请输入新密码" v-model="info.newPassword1"/>
+         <input placeholder="请输入新密码" type="password" v-model="info.newPassword1"/>
        </li>
      </ul>
      <p @click="toChangePassword(info)">确定</p>
@@ -31,7 +31,7 @@
       return{
         mm,
         info:{
-          password:'',
+          oldPassword:'',
           newPassword:'',
           newPassword1:'',
         }
@@ -46,15 +46,15 @@
         }
       },
       async toChangePassword(info){
-        if(!info.password || !info.newPassword ||info.newPassword1){
+        if(!info.oldPassword || !info.newPassword || !info.newPassword1){
           wx.showToast({
             title:'必填项不得为空'
           })
-        }else if(info.password == !info.newPassword){
+        }else if(info.oldPassword == !info.newPassword){
           wx.showToast({
             title:'不得使用旧密码'
           })
-        }else if(info.newPassword == info.newPassword1){
+        }else if(info.newPassword !== info.newPassword1){
           wx.showToast({
             title:'两次新密码不相同！'
           })

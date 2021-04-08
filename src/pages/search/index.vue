@@ -3,10 +3,14 @@
     <div class="nav">
       <div class="searchBox">
         <div class="dateBox">
-          <dateRange :value="startTime"></dateRange>
+          <div>
+            <dateRange :value="startTime" @getStart="setStartTime"></dateRange>
+          </div>
           ~
-          <date-range :value="endTime"></date-range>
-          <img :src="dateIcon" class="icon"/>
+          <div>
+            <date-range :value="endTime" @getStart="setEndTime"></date-range>
+          </div>
+          <img :src="dateIcon" class="icon" mode="widthFix"/>
         </div>
         <input v-model="searchData" placeholder="请输入经销商名称或工单编号"/>
       </div>
@@ -109,6 +113,12 @@
       }
     },
     methods:{
+      setStartTime(e){
+        this.startTime = e
+      },
+      setEndTime(e){
+        this.endTime = e
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -135,13 +145,16 @@
       },
       toSearch(){
         console.log('搜索')
+        this.list = []
+        this.current = 1
+        this.getList()
       },
       //获取数据
       async getList(){
         const param={
           current:this.current,
           size:this.size,
-          // endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+          endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
           nm:this.searchData,
         }
         let data =await this.api.getlistAll(param)
@@ -182,17 +195,18 @@
         flex: 1;
         .dateBox{
           display: flex;
-          position: relative;
           height: 60rpx;
           align-items: center;
           border: 1rpx solid #303030;
           border-radius: 12rpx;
           padding: 0 20rpx;
+          >div{
+            flex: 1;
+            text-align: center;
+          }
           .icon{
             width: 30rpx;
-            height: 32rpx;
-            position: absolute;
-            right: 26rpx;
+            margin-right: 26rpx;
           }
         }
         >input{

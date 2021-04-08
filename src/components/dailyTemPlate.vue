@@ -5,7 +5,7 @@
       <li><span>工作地址</span><p>{{info.addr}}</p></li>
       <li><span>工作内容</span><p>{{info.jobCont}}</p></li>
       <li><span>现场照片</span><p>
-        <img v-for="(item,index) in info.imgList " :src="item" :key="index"/>
+        <img v-for="(item,index) in info.imgList " :src="item" :key="index" @click="viewImg(item,info.imgList)" />
       </p></li>
       <li><span>备注</span><p>{{info.rmks}}</p><img @click="edit" :src="btb" v-if="showButton"/></li>
     </ul>
@@ -30,9 +30,15 @@
       }
     },
     mounted(){
-    
+
     },
     methods:{
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       edit(){
         this.$emit('showMask',2,this.info)
       }

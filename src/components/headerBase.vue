@@ -1,7 +1,8 @@
 <template>
   <div class="headerBase"  :style="{height:custom.height+'px',paddingTop:custom.top+'px',paddingRight:custom.width+20+'px'}">
-    <p class="logo2Box">
-      <img :src="msg" @click="toPage('/pages/my/message/main')">
+    <p class="logo2Box" @click="toPage('/pages/my/message/main')">
+      <span v-if="total">{{total>99?'99+':total}}</span>
+      <img :src="msg" mode="widthFix" >
     </p>
     <div class="logoBox">
       <img :src="logo" mode="widthFix" />
@@ -18,6 +19,7 @@
       return{
         logo,
         msg,
+        total:0,
         statusBar:'',
         customBar:'',
         custom:null,
@@ -42,10 +44,22 @@
     onReady: function () {
 
     },
-
+    onShow(){
+      this.getList()
+    },
     async mounted(){
+      this.getList()
     },
     methods:{
+      //获取信息数量
+      async getList(){
+        const param={
+          current:1,
+          size:1,
+        }
+        let data = await this.api.getMessageList(param)
+        this.total = data.data.total
+      },
       toSearch(){
         wx.reLaunch({url:'/pages/search/main?wd='+this.searchData})
         // this.toPage()
@@ -75,9 +89,22 @@
       margin-right: 15rpx;
       font-size: 20rpx;
       padding-left: 30rpx;
+      position: relative;
+      span{
+        position: absolute;
+        right: -5rpx;
+        top:-8rpx;
+        width: 24rpx;
+        height: 24rpx;
+        border-radius: 50%;
+        line-height: 24rpx;
+        background: #FA5151;
+        color: #ffffff;
+        font-size: 16rpx;
+        text-align: center;
+      }
       img{
         width: 31.2rpx;
-        height: 31.2rpx;
         margin-right: 10rpx;
       }
     }

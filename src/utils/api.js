@@ -369,7 +369,7 @@ class api {
     let promise = new Promise((resolve,reject)=> {
       let that = this
       wx.chooseImage({
-        // count: max || 9,           //一次最多可以选择的图片张数
+        count: 1,           //一次最多可以选择的图片张数
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: type || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
@@ -407,8 +407,8 @@ class api {
           'Blade-Auth':token
         },
         success: function(res) {
-          console.log('================')
-          console.log(JSON.parse(res.data).data)
+          // console.log('================')
+          // console.log(JSON.parse(res.data).data)
           let img = JSON.parse(res.data).data
           resolve(img)
         },
@@ -646,8 +646,12 @@ class api {
     }
     //修改密码
     changePassword(data){
+      let  header = {
+        "Content-Type": "application/x-www-form-urlencoded",
+
+      };
       return new Promise(resolve => {
-        post('/blade-user/updatePassword'+data).then(res=>{
+        post('/blade-user/updatePassword',data,header).then(res=>{
           resolve(res)
         })
       })

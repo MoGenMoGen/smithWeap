@@ -10,7 +10,7 @@
           </div>
           <div class="right">
             <div class="imgs" v-for="(item,index) in imageList" :key="index">
-              <img :src="item"/>
+              <img :src="item" @click="viewImg(item,imageList)"/>
               <img :src="del" class="del" @click="deleteImg(index)" />
             </div>
           </div>
@@ -65,6 +65,12 @@
     watch:{
     },
     methods:{
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -81,7 +87,7 @@
         this.imageList.push(data.link)
       },
       deleteImg(index){
-        this.imgList.splice(index,1)
+        this.imageList.splice(index,1)
       },
       toBack(){
         this.util.back(1)
@@ -91,7 +97,7 @@
           const param ={
             orderId:this.id,
             descr:this.info.descr,
-            imgUrl:this.imageList.join(),
+            imgUrl:this.imageList.join(','),
           }
           this.api.addException(param).then(res=>{
             if(res.code == 200){
@@ -204,6 +210,7 @@
         position: fixed;
         bottom: 80rpx;
         z-index:50;
+        overflow: hidden;
         p{
           font-size: 28rpx;
           width: 50%;

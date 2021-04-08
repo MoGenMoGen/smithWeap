@@ -97,10 +97,6 @@
             imgUrl:gd,
             path:'/pages/report/reportStatus/main',
           },{
-            nm:'我的报价',
-            imgUrl:bj,
-            path:'/pages/my/apply/main',
-          },{
             nm:'我的消息',
             imgUrl:xx,
             path:'/pages/my/message/main',
@@ -194,6 +190,7 @@
             }
           ]
           break
+
       }
       this.getUser();
     },
@@ -252,10 +249,10 @@
     background-color: #ECECEC;
     .headBack{
       background-color: #E51937;
-      height: 550rpx;
+      height: 400rpx;
       width: 100%;
       .infoBox{
-        padding: 236rpx 40rpx 0;
+        padding: 80rpx 40rpx 0;
         box-sizing: border-box;
         display: flex;
         .userImgBox{

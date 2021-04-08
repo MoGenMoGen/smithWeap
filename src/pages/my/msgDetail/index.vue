@@ -6,16 +6,16 @@
       <p>
         {{info.sendTm}}
       </p>
-      <swiper style="height: 320rpx;" class="valueSwiper" id="swiper" :style="swiperStyle" indicator-dots="true" indicator-color="white" indicator-active-color="rgba(229, 25, 55, 1)">
-        <block v-for="(item,index) in swiperList" :key="index" >
-          <swiper-item>
-            <!-- <img :src="item" mode="aspectFill" @load="imgH"> -->
-            <img :src="item" mode="aspectFill" >
-          </swiper-item>
-        </block>
-      </swiper>      <p>
-        {{info.cont}}
-      </p>
+      <!--<swiper style="height: 320rpx;" class="valueSwiper" id="swiper" :style="swiperStyle" indicator-dots="true" indicator-color="white" indicator-active-color="rgba(229, 25, 55, 1)">-->
+        <!--<block v-for="(item,index) in swiperList" :key="index" >-->
+          <!--<swiper-item>-->
+            <!--&lt;!&ndash; <img :src="item" mode="aspectFill" @load="imgH"> &ndash;&gt;-->
+            <!--<img :src="item" mode="aspectFill" >-->
+          <!--</swiper-item>-->
+        <!--</block>-->
+      <!--</swiper>      -->
+      <div v-html="info.cont">
+      </div>
     </div>
   </div>
 </template>
@@ -99,11 +99,13 @@
         font-size: 24rpx;
         color: #000000;
         margin-top: 4rpx;
-        &:last-of-type{
+
+      }
+      div{
           font-size: 28rpx;
           color: #606060;
           margin-top: 30rpx;
-        }
+          display: block;
       }
     }
   }

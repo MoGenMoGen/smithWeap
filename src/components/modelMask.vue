@@ -1,8 +1,8 @@
 <template>
   <div>
     <!--弹窗的页面-->
-    <div class="modalMask" v-if="isModel"></div>
-    <div class="modalDialog" v-if="changeModel">
+    <div class="modalMask" v-if="isModel" @click="tapCancel"></div>
+    <div class="modalDialog" v-if="changeModel" :style="{height:type==1 ? '600rpx' : '400rpx'}" @click.top = ''>
       <div class="header">
         <p class="tips">提示</p>
         <p>您确认{{type==1?'承接':'拒接'}}此工单？</p>
@@ -12,11 +12,10 @@
         <div class="swiper">
           <swiper :current="current"
                   vertical="true"
-                  circular="true"
-                  previous-margin="50rpx"
-                  next-margin="50rpx"
+                  previous-margin="30rpx"
+                  next-margin="30rpx"
                   @change="swiperChangeBig"
-                  style="height:200rpx;width: 100%;"
+                  style="height:100rpx;width: 100%;"
           >
             <block v-for="(item,index) in eventList" :key="index">
               <swiper-item class="swiperBox">
@@ -93,7 +92,7 @@
           }
           this.$emit('tapCancel',emit)
         }
-        
+
       },
       swiperChangeBig(e){
         this.current = e.mp.detail.current
@@ -131,12 +130,14 @@
     left: 0;
     z-index: 9999;
     background: #fff;
-    border-radius: 8rpx;
+    border-top-right-radius: 10rpx;
+    border-top-left-radius: 10rpx;
     display: flex;
     flex-direction: column;
+    padding: 0 40rpx;
     .header{
-      margin: 0 40rpx;
-      border-bottom: 1rpx solid #adadad;
+      /*margin: 0 40rpx;*/
+      border-bottom: 1rpx solid rgba(0,0,0,0.1);
       p{
         padding: 28rpx 0;
         box-sizing: border-box;
@@ -151,10 +152,11 @@
       flex: 1;
       box-sizing: border-box;
       display: flex;
-      padding: 50rpx 53rpx;
+      padding: 10rpx 53rpx;
       font-size: 32rpx;
       align-items: center;
       justify-content: center;
+      border-bottom: 1rpx solid rgba(0,0,0,0.1);
       span{
         font-size: 32rpx;
         color: #000000;
@@ -165,7 +167,7 @@
           p{
             text-align: center;
             font-size: 32rpx;
-            margin: 30rpx 0;
+            margin: 10rpx 0;
             color: #9FA0A0;
           }
           p.active{
@@ -177,24 +179,25 @@
     .modalFooter {
       box-sizing: border-box;
       display: flex;
-      flex-direction: row;
-      height: 100rpx;
-      border-top: 1px solid #e5e5e5;
+      justify-content: center;
       font-size: 32rpx;
-      line-height: 100rpx;
-      .btnCancel {
-        width: 50%;
+      padding: 50rpx 0 80rpx;
+      >div{
+        width: 220rpx;
         font-size: 32rpx;
-        color: #E51937;
+        height: 80rpx;
+        line-height: 80rpx;
+        border-radius: 10rpx;
         text-align: center;
-        border-right: 1px solid #e5e5e5;
+      }
+      .btnCancel {
+        color: #E51937;
+        background: rgba(0, 0, 0, 0.05);
+        margin-right: 24rpx;
       }
       .btnConfirm {
-        font-size: 32rpx;
-        width: 50%;
         color: #FFF;
         background-color: #E51937;
-        text-align: center;
       }
     }
   }

@@ -117,7 +117,7 @@
         <ul>
           <li>
             <span>确认二维码</span>
-            <canvas style="width: 150px; height: 150px;" canvas-id="myQrcode"></canvas>
+            <canvas style="width: 100px; height: 100px;" canvas-id="myQrcode"></canvas>
           </li>
         </ul>
       </div>

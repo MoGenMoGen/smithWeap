@@ -38,7 +38,7 @@
           <li>
             <span>主材</span>
             <!-- <p>{{worksOffer.materialCost | Commas}}</p> -->
-            <p>{{worksOffer.materialCost}}</p> 
+            <p>{{worksOffer.materialCost}}</p>
           </li>
           <li>
             <span>设备</span>
@@ -71,7 +71,7 @@
           <li style="border-bottom: none">
             <span>附件上传</span>
             <div class="imgs" v-if="worksOffer.attach">
-              <div v-for="(item,index) in imgUrls" :key="index">
+              <div v-for="(item,index) in imgUrls" :key="index" @click="viewImg(item,imgUrls)">
                 <image :src="item" mode="heightFix"  />
               </div>
             </div>
@@ -112,6 +112,13 @@
       }
     },
     methods:{
+      //图片预览
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -158,7 +165,7 @@
         this.worksOffer.rmks= data.rmks
 
       }
-      
+
       //图片库
       this.imgUrls = res.data.worksOffer.attach.split(',')
     },

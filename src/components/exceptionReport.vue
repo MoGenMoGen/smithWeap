@@ -7,10 +7,10 @@
         <p>{{item.descr}}</p>
         <div class="imgbox">
           <div v-for="(imgsrc,i) in item.imgUrl" :key="i" class="imgs">
-            <img class="imgs" :src="imgsrc"/>
+            <img class="imgs" :src="imgsrc" mode="scaleToFill" @click="viewImg(imgsrc,item.imgUrl)"/>
           </div>
         </div>
-        
+
         <p><span>提交日期：{{item.createTime}}</span><img v-if="showButton" :src="btb" @click="toPage('/pages/report/newException/main?itemId='+item.id+'&type='+ 2)"/></p>
       </li>
     </ul>
@@ -52,6 +52,12 @@
       this.getList(this.id);
     },
     methods:{
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       async getList(id){
         let data = await this.api.getExceptionList(id)
         data.data.forEach(item => {

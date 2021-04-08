@@ -69,12 +69,16 @@
           </li>
         </ul>
       </div>
-      <p class="submit" style="color: #FFFFFF;background-color: #E51937;" @click="showMask(1)">
-        接单
-      </p>
-      <p class="submit" style="color: #303030;background-color: #FFFFFF;" @click="showMask(2)">
-        拒单
-      </p>
+      <div class="submitBox">
+        <p  @click="showMask(2)">
+          拒单
+        </p>
+        <p  @click="showMask(1)">
+          接单
+        </p>
+
+      </div>
+
     </div>
     <modelMask :isModel="isModel" :changeModel="changeModel" @tapCancel="mask" :type="type"></modelMask>
     <bottomBase></bottomBase>
@@ -134,7 +138,7 @@
           this.changeModel = item.changeModel
           this.isModel = item.isModel
         }
-        
+
       },
       toPage(url){
         if(url){
@@ -172,6 +176,35 @@
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
+    padding-bottom: 140rpx;
+    box-sizing: border-box;
+    .submitBox{
+      width: 710rpx;
+      height: 88rpx;
+      display: flex;
+      border-radius: 12rpx;
+      border: 1rpx solid #E51937;
+      position: fixed;
+      bottom: 80rpx;
+      z-index:50;
+      overflow: hidden;
+      p{
+        font-size: 28rpx;
+        width: 50%;
+        background-color: #FFFFFF;
+        color: #E51937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:first-of-type{
+          border-radius: 12rpx 0 0 12rpx;
+        }
+        &:last-of-type{
+          color: #FFFFFF;
+          background-color: #E51937;
+        }
+      }
+    }
     .main{
       padding: 20rpx;
       box-sizing: border-box;
@@ -210,16 +243,16 @@
           }
         }
       }
-      .submit{
-        width: 100%;
-        height: 88rpx;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12rpx;
-        font-size: 28rpx;
-        margin-top: 40rpx;
-      }
+      /*.submit{*/
+        /*width: 100%;*/
+        /*height: 88rpx;*/
+        /*display: flex;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        /*border-radius: 12rpx;*/
+        /*font-size: 28rpx;*/
+        /*margin-top: 40rpx;*/
+      /*}*/
       .box{
         margin-top: 24rpx;
       }

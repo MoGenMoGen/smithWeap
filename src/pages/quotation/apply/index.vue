@@ -76,15 +76,13 @@
             <div class="picture" v-if="pushInfo.attach">
               <div class="imgbox">
                 <div class="imgs" v-for="(item,index) in imgUrls" :key="index"  >
-                  <img :src="item" mode="heightFix" @click="toPhoto" />
+                  <img :src="item" mode="heightFix" @click="viewImg(item,imgUrls)" />
                   <img :src="del" class="del" @click="delimg(index)" />
                 </div>
               </div>
             </div>
-            <div class="img" v-else @click="toPhoto">
-              <input disabled placeholder="请上传附件" placeholder-style="color: #D0CED8;font-size:28rpx;">
-              <img :src="fjsc" />
-            </div>
+            <input disabled v-else placeholder="请上传附件" placeholder-style="color: #D0CED8;font-size:28rpx;" @click="toPhoto">
+            <img :src="fjsc" mode="widthFix" @click="toPhoto" style="width:30rpx"/>
           </li>
         </ul>
       </div>
@@ -96,12 +94,14 @@
           </li>
         </ul>
       </div>
-      <p class="submit" style="color: #FFFFFF;background-color: #E51937;" @click="submit" >
-        提交
-      </p>
-      <p class="submit" style="color: #303030;background-color: #FFFFFF" @click="back">
-        取消
-      </p>
+      <div class="submitBox">
+        <p @click="back">
+          取消
+        </p>
+        <p @click="submit" >
+          提交
+        </p>
+      </div>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -137,6 +137,13 @@
       }
     },
     methods:{
+      //图片预览
+      viewImg(url,list){
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: list // 需要预览的图片http链接列表
+        })
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -268,6 +275,35 @@
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
+    padding-bottom: 140rpx;
+    box-sizing: border-box;
+    .submitBox{
+      width: 710rpx;
+      height: 88rpx;
+      display: flex;
+      border-radius: 12rpx;
+      border: 1rpx solid #E51937;
+      position: fixed;
+      bottom: 80rpx;
+      z-index:50;
+      overflow: hidden;
+      p{
+        font-size: 28rpx;
+        width: 50%;
+        background-color: #FFFFFF;
+        color: #E51937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:first-of-type{
+          border-radius: 12rpx 0 0 12rpx;
+        }
+        &:last-of-type{
+          color: #FFFFFF;
+          background-color: #E51937;
+        }
+      }
+    }
     .main{
       padding: 20rpx;
       box-sizing: border-box;
@@ -321,6 +357,9 @@
               color: #303030;
               width: 190rpx;
             }
+            input{
+              flex: 1;
+            }
             .img{
               flex: 1;
               display: flex;
@@ -356,7 +395,7 @@
                     top: -16rpx;
                     right: -16rpx;
                     // z-index: 9999;
-                  } 
+                  }
                 }
               }
               img{
@@ -364,10 +403,10 @@
                 height: 140rpx;
                 margin-right: 20rpx;
               }
-              
-              
+
+
             }
-            
+
           }
         }
       }

@@ -19,7 +19,7 @@
         <p>登录</p>
       </div>
       <div class="forget">
-        <p>忘记密码</p>
+        <p @click="toPage('/pages/my/changePassword/main')">忘记密码</p>
       </div>
   </div>
 
