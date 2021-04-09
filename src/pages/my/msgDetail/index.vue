@@ -40,7 +40,7 @@
     },
     async onShow(){
       this.getDetail()
-      this.getAdvertising();
+      // this.getAdvertising();
     },
     methods:{
       toPage(url){
@@ -56,17 +56,17 @@
         data.data.sendTm = data.data.sendTm.slice(0,10)
         this.info = data.data
       },
-      async getAdvertising(){
-        let paramimg = {
-          posCd:'ADPOS_001',
-        }
-        //获取广告轮播图
-        let dataimgs = await this.api.listAdsByPos(paramimg)
-        this.swiperList = []
-        dataimgs.data.forEach(item => {
-          this.swiperList.push(...(item.imgUrl).split(','))
-        });
-      },
+      // async getAdvertising(){
+      //   let paramimg = {
+      //     posCd:'ADPOS_001',
+      //   }
+      //   //获取广告轮播图
+      //   let dataimgs = await this.api.listAdsByPos(paramimg)
+      //   this.swiperList = []
+      //   dataimgs.data.forEach(item => {
+      //     this.swiperList.push(...(item.imgUrl).split(','))
+      //   });
+      // },
     },
     components:{
     }

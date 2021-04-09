@@ -33,13 +33,11 @@
   import bottomBase from "@/components/bottomBase";
 
   import tpsctb from "@/components/img/图片上传图标.png"
-  import cs from "@/components/img/测试.png"
   import del from "@/components/img/删除图标.png"
   export default {
     data(){
       return{
         tpsctb,
-        cs,
         del,
         id:'',
         imageList:[],

@@ -80,15 +80,16 @@
       }
     },
     onShow(){
-      // if(this.id =='') return ;
-      // this.getList(this.id)
-      // console.log();
+      console.log('onShow')
+      if(this.id =='') return ;
+      this.getList(this.id)
     },
     onLoad(){
       if(this.id =='') return ;
       this.getList(this.id)
     },
     async mounted(){
+      console.log('mounted')
       if(this.id =='') return ;
       this.getList(this.id)
     },

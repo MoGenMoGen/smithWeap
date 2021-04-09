@@ -21,7 +21,6 @@
 </template>
 <script>
   import yctb from '@/components/img/异常图标.png'
-  import cs from '@/components/img/测试.png'
   import btb from '@/components/img/笔图标.png'
   export default {
     props:{
@@ -37,7 +36,6 @@
     data(){
       return{
         yctb,
-        cs,
         btb,
         list:[
         ],

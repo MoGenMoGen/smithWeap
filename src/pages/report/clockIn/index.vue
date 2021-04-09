@@ -48,7 +48,6 @@
   import jt from "@/components/img/箭头.png"
   import xltb from "@/components/img/下拉图标.png"
   import tpsctb from "@/components/img/图片上传图标.png"
-  import cs from "@/components/img/测试.png"
   import dwls from "@/components/img/定位蓝色.png"
   import bg from "@/components/img/打卡按钮.png"
   export default {
@@ -57,7 +56,6 @@
         jt,
         xltb,
         tpsctb,
-        cs,
         dwls,
         del,
         bg:bg,

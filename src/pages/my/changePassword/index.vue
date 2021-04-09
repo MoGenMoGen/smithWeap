@@ -26,6 +26,7 @@
   import bottomBase from "@/components/bottomBase";
 
   import mm from "@/components/img/密码.png"
+  import {md5} from '@/utils/md5.js'
   export default {
     data(){
       return{
@@ -59,7 +60,11 @@
             title:'两次新密码不相同！'
           })
         }else{
-          await this.api.changePassword(info).then(res=>{
+          await this.api.changePassword({
+            oldPassword:md5(this.info.oldPassword,32),
+            newPassword:md5(this.info.newPassword,32),
+            newPassword1:md5(this.info.newPassword1,32)
+          }).then(res=>{
             if(res.code ==200){
               wx.showToast({
                 title:'修改成功！'

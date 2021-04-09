@@ -8,7 +8,7 @@
       <div class="inputbox">
         <img style="width:22rpx;margin-right:38rpx" mode="widthFix" :src="dl"/>
         <!-- <img :src="mm" alt=""> -->
-        <input v-model="username" maxlength="11" placeholder="请输入账号"/>
+        <input v-model="username"  maxlength="11" placeholder="请输入账号"/>
       </div>
       <div class="inputbox">
         <img style="width:22rpx;margin-right:38rpx" mode="widthFix" :src="mm"/>
@@ -57,6 +57,9 @@
         // if(!this.username) return ;
         // if(!this.password) return ;
         // this.password =md5(this.password,32)
+        wx.showLoading({
+          title: '加载中',
+        })
         let that = this
         wx.login({
           success(res) {
@@ -74,11 +77,20 @@
                   duration: 2000
                 });
               }
+
               wx.setStorageSync("token",res.access_token);
               wx.setStorageSync("loginType",res.loginType);
-              wx.switchTab({
-                url: '/pages/index/main'
+              wx.hideLoading()
+              wx.showToast({
+                title: '登录成功',
+                icon: 'success',
+                duration: 2000
               })
+              setTimeout(()=>{
+                wx.switchTab({
+                  url: '/pages/index/main'
+                })
+              },1500)
             })
           }
         });
@@ -128,8 +140,7 @@
     display: flex;
     align-items:center;
     margin: 0rpx 90rpx;
-    margin-bottom: 40rpx;
-    padding-bottom: 30rpx;
+    margin-bottom: 30rpx;
     box-sizing: border-box;
     border-bottom: 1px solid #D0CED8;
     opacity: 1;
@@ -143,10 +154,11 @@
       font-size: 28rpx;
       font-family: PingFang SC;
       font-weight: 300;
-      line-height: 18rpx;
+      line-height: 80rpx;
       color: #121214;
       opacity: 1;
       flex: 1;
+      height: 80rpx;
     }
   }
   .submit{

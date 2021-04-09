@@ -58,7 +58,7 @@ function get(url, data, header,loading) {
           if(res.data.error_description){
             wx.showToast({
               icon: "none",
-              title: res.data.error_description,
+              title: JSON.stringify(res.data),
               duration: 2000
             });
           }
@@ -672,6 +672,14 @@ class api {
         })
       })
     }
+  //消息未计统计
+  msgNoRead(){
+    return new Promise(resolve => {
+      get("/blade-msg/msgrecords/countMsg").then(res=>{
+        resolve(res)
+      })
+    })
+  }
     //获取金额统计列表
     getPorecordsList(data){
       return new Promise(resolve =>{

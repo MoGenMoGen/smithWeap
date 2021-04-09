@@ -4,6 +4,7 @@
     <div class="main">
       <div class="listBox">
         <div class="box" v-for="(item,index) in list" :key="index" @click="toPage('/pages/my/msgDetail/main?id='+item.id)">
+          <span v-if="!item.state"></span>
           <p>{{item.nm}}</p>
           <p>{{item.cont}}</p>
           <p>{{item.sendTm}}</p>
@@ -83,6 +84,17 @@
           margin-bottom: 28rpx;
           padding: 28rpx 60rpx 22rpx;
           box-sizing: border-box;
+          position: relative;
+          span{
+            position: absolute;
+            width: 15rpx;
+            height: 15rpx;
+            left: 25rpx;
+            top:28rpx;
+            border-radius: 50%;
+            background: #FF194C;
+            display: block;
+          }
           p{
             font-size: 24rpx;
             &:first-of-type{

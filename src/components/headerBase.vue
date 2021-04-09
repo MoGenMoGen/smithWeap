@@ -53,12 +53,9 @@
     methods:{
       //获取信息数量
       async getList(){
-        const param={
-          current:1,
-          size:1,
-        }
-        let data = await this.api.getMessageList(param)
-        this.total = data.data.total
+
+        let data = await this.api.msgNoRead()
+        this.total = data.data
       },
       toSearch(){
         wx.reLaunch({url:'/pages/search/main?wd='+this.searchData})
@@ -66,7 +63,7 @@
       },
       toPage(url){
         if(url){
-          wx.reLaunch({url:url})
+          this.util.aHref(url)
         }
       },
     }

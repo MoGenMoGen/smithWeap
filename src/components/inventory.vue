@@ -226,7 +226,10 @@
         this.isModel = !this.isModel;
       },
       //  确认
-      confirmSend() {
+      async confirmSend() {
+        wx.showLoading({
+          title: '加载中',
+        })
         if(this.type ==1){
           console.log("新增");
           let param ={
@@ -236,10 +239,11 @@
             unit: this.array[this.index],
           }
           // console.log(param);
-          this.api.worksgoodsdetailadd(param)
+          await this.api.worksgoodsdetailadd(param)
           this.api.getInventoryDtl(this.id).then(res=>{
             this.info.worksGoodsDetailList = res.data.worksGoodsDetailList
           })
+          wx.hideLoading()
         }else if(this.type ==2){
           let goodslist = []
           this.info.worksGoodsDetailList.forEach(item => {
@@ -266,8 +270,9 @@
             imgUrl: this.info.imgUrl,
             worksGoodsDetailList:goodslist,
           }
-          this.api.addBillADetail(param)
+          await this.api.addBillADetail(param)
           this.getData(this.id)
+          wx.hideLoading()
         }
 
         this.changeModel = !this.changeModel;

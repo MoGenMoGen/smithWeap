@@ -15,7 +15,7 @@
                   previous-margin="30rpx"
                   next-margin="30rpx"
                   @change="swiperChangeBig"
-                  style="height:100rpx;width: 100%;"
+                  style="height:120rpx;width: 100%;"
           >
             <block v-for="(item,index) in eventList" :key="index">
               <swiper-item class="swiperBox">

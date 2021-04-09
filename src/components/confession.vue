@@ -28,7 +28,8 @@
         <li><span>过程异常说明</span>
           <input  placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2 && showButton"/>
           <!--<textarea placeholder="请输入异常说明" v-model="info.exceptionDesc" v-if="info && info.state != 2 && showButton"></textarea>-->
-          <textarea disabled v-model="info.exceptionDesc" v-else></textarea>
+          <!--<textarea disabled v-model="info.exceptionDesc" v-else></textarea>-->
+          <input  disabled v-model="info.exceptionDesc" v-else/>
         </li>
       </ul>
     </div>
@@ -41,7 +42,6 @@
 <script>
   import del from "@/components/img/删除图标.png"
   import yctb from '@/components/img/logo2.png'
-  import cs from '@/components/img/测试.png'
   import btb from '@/components/img/笔图标.png'
   import tpsc from '@/components/img/图片上传图标.png'
   export default {
@@ -59,7 +59,6 @@
       return{
         del,
         yctb,
-        cs,
         btb,
         tpsc,
         id2:'',
@@ -235,7 +234,7 @@
               flex: 1;
               padding: 0;
               /*padding-top: 20rpx;*/
-              background: #ffda4b;
+              /*background: #ffda4b;*/
               /*display: flex;*/
               /*align-items: center;*/
             }

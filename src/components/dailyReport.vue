@@ -51,7 +51,6 @@
   import rltb from '@/components/img/日历图标.png'
   import dwhs from '@/components/img/定位黑色.png'
   import xlhs from '@/components/img/下拉黑色.png'
-  import cs from '@/components/img/测试.png'
   import btb from '@/components/img/笔图标.png'
   import tj from '@/components/img/图片上传图标.png'
   import del from "@/components/img/删除图标.png"
@@ -160,7 +159,23 @@
       //  确认
       confirmSend() {
         // console.log(this.info);
-        if(this.type ==1){
+        if(!this.info.imgUrl){
+          wx.showToast({
+            icon: "none",
+            title: '请上传现场照片',
+            duration: 2000
+          });
+          return
+        }
+        if(!this.info.jobCont){
+          wx.showToast({
+            icon: "none",
+            title: '请填写工作内容',
+            duration: 2000
+          });
+          return
+        }
+        if(this.type ==1){ //新增
           //新增
           if(this.info.reportDt ==''){
             return wx.showToast({
@@ -172,7 +187,7 @@
           let param = this.info
           param.orderId = this.id
           this.api.addReport(param)
-        }else if(this.type ==2){
+        }else if(this.type ==2){ //修改
           //修改
           let param = this.info
           this.api.alterReport(param)
@@ -346,7 +361,7 @@
         }
       }
       ul{
-        padding: 38rpx 50rpx 20rpx;
+        padding: 0rpx 50rpx 50rpx;
         box-sizing: border-box;
         li{
           display: flex;
