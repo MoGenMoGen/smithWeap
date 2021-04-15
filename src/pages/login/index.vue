@@ -39,11 +39,13 @@
         dl,
         username:'',
         password:'',
+        onloading:true,
       }
     },
     onShow(){
       this.username = ''
       this.password = ''
+      this.onloading = true
     },
     mounted(){
     },
@@ -54,9 +56,10 @@
         }
       },
       submit(){
-        // if(!this.username) return ;
-        // if(!this.password) return ;
-        // this.password =md5(this.password,32)
+        if(!this.onloading) return ;
+        console.log('我要登陆');
+        this.onloading = false
+        var _this = this
         wx.showLoading({
           title: '加载中',
         })
@@ -70,27 +73,38 @@
               code:res.code,
             }
             that.api.login2(param).then(res=>{
-              if(res.error_code == 400){
-                return wx.showToast({
-                  icon: "none",
-                  title: res.error_description,
-                  duration: 2000
-                });
-              }
-
-              wx.setStorageSync("token",res.access_token);
-              wx.setStorageSync("loginType",res.loginType);
-              wx.hideLoading()
-              wx.showToast({
-                title: '登录成功',
-                icon: 'success',
-                duration: 2000
-              })
-              setTimeout(()=>{
-                wx.switchTab({
-                  url: '/pages/index/main'
+              if(!res.access_token){
+                _this.onloading = true
+                if(res.code ==500){
+                  return wx.showToast({
+                    icon: "error",
+                    title: res.msg,
+                    duration: 2000
+                  });
+                }else{
+                  return wx.showToast({
+                    icon: "error",
+                    title: res.error_description,
+                    duration: 2000
+                  });
+                }
+              }else{
+                wx.setStorageSync("token",res.access_token);
+                wx.setStorageSync("loginType",res.loginType);
+                wx.hideLoading()
+                wx.showToast({
+                  title: '登录成功',
+                  icon: 'success',
+                  duration: 1000
                 })
-              },1500)
+                setTimeout(()=>{
+                  wx.switchTab({
+                    url: '/pages/index/main'
+                  })
+                },200)
+              }
+            }).catch(error=>{
+              console.log(error);
             })
           }
         });

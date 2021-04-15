@@ -42,7 +42,6 @@
     </div>
 
     <p @click="toPage('/pages/login/main')">测试跳转登录页面</p>
-
     <bottomBase></bottomBase>
   </div>
 </template>
@@ -190,7 +189,34 @@
             }
           ]
           break
-
+        case 3:
+          this.coreList= [
+            {
+              nm:'我的消息',
+              imgUrl:xx,
+              path:'/pages/my/message/main',
+            },{
+              nm:'帮助中心',
+              imgUrl:bzzx,
+              path:'/pages/my/helpCenter/main',
+            },{
+              nm:'修改密码',
+              imgUrl:xgmm,
+              path:'/pages/my/changePassword/main',
+            }
+          ]
+          this.navList = [
+            {
+              nm:'待汇报',
+              num:0,
+              path:'/pages/report/reportStatus/main',
+            },{
+              nm:'已完工',
+              num:0,
+              path:'/pages/report/completed/main',
+            }
+          ]
+          break
       }
       this.getUser();
     },
@@ -214,6 +240,11 @@
             let data3 = await this.api.getCountNum2();
             this.navList[0].num = data3.data.order
             this.navList[1].num = data3.data.orderFinish
+            break
+          case 3:
+            let data4 = await this.api.getCountNum2();
+            this.navList[0].num = data4.data.order
+            this.navList[1].num = data4.data.orderFinish
             break
         }
 

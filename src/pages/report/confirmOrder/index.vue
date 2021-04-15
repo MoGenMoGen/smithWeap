@@ -176,7 +176,7 @@
         width: 100,
         height: 100,
         canvasId: 'myQrcode',
-        text: this.wxHostUrl+'/views/smith/confirm.html?id='+this.orderId
+        text: this.wxHostUrl+'/views/smith/confirm.html?id='+this.id
         // text:path
       })
     },

@@ -101,6 +101,11 @@
     async onShow(){
       this.searchData = ''
       this.list = []
+      this.current = 1
+      this.startTime = '开始时间'
+      this.endTime = '结束时间'
+      this.startTm = ''
+      this.endTm = ''
       this.getList();
     },
     onReachBottom(){
@@ -115,9 +120,11 @@
     methods:{
       setStartTime(e){
         this.startTime = e
+        this.startTm = e
       },
       setEndTime(e){
         this.endTime = e
+        this.endTm = e
       },
       toPage(url){
         if(url){

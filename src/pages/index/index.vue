@@ -15,7 +15,7 @@
       <!--分类-->
       <div v-if="loginType == 1" class="nav">
         <ul>
-          <li v-for="(item,index) in navList" :key="index" @click="toPage(item.path)">
+          <li v-for="(item,index) in navList" :key="index" @click="toPages(item.path,index)">
             <img :src="item.imgUrl"/>
             <p>
               {{item.nm}}
@@ -116,7 +116,7 @@
       <!--loginType == 2-->
       <div v-if="loginType == 2" class="nav2">
         <ul>
-          <li v-for="(item,index) in navList2" :key="index" @click="toPage(item.path)">
+          <li v-for="(item,index) in navList2" :key="index" @click="toPages(item.path,index)">
             <img :src="item.imgUrl"/>
             <p>
               {{item.nm}}
@@ -258,9 +258,8 @@
       this.loginType = wx.getStorageSync('loginType')
     },
     async onShow(){
+      console.log('show');
       this.loginType = wx.getStorageSync('loginType')
-      console.log(this.loginType)
-      this.current = 1
       this.list = []
       this.list2 = []
       this.list3 = []
@@ -282,6 +281,45 @@
           this.util.aHref(url)
         }
       },
+      toPages(url,index){
+        var _this = this
+        if(index == 0){
+          if(this.loginType ==1){
+            wx.requestSubscribeMessage({
+              tmplIds: ['ZUNpikPJ_qs_lMxwgiqtiJYnjiNW8qVF-z3p-9duwII','7SSeMdB5G7cQ4ZeWTkbhN68T5vQrneqXob2npDgg9k8'],
+              success (res) {
+                _this.toPage(url)
+              },
+              fail(res){
+                _this.toPage(url)
+              }
+            })
+          }else if(this.loginType ==2){
+            wx.requestSubscribeMessage({
+              tmplIds: ['y-ar-G5IdNnampmsr7G8xMqldtaX6j81ZGsQScB6Jnc'],
+              success (res) {
+                _this.toPage(url)
+              },
+              fail(res){
+                _this.toPage(url)
+              }
+            })
+          }else if(this.loginType ==3){
+            wx.requestSubscribeMessage({
+              tmplIds: ['plCNG98KmuMCaNfc3QbyNqQECnZa-P3ku55UZG_2u_g','wnLaXb9erVNEHv18d7VizAWv9bZqqRcFhuEvoshKNVA'],
+              success (res) {
+                _this.toPage(url)
+              },
+              fail(res){
+                _this.toPage(url)
+              }
+            })
+          }
+        }else{
+          this.toPage(url)
+        }
+        // console.log(url);
+      },
       gowork(type,item){
         if(type ==1 ||type ==3){
           this.toPage('/pages/report/confirm/main?id='+item.id)
@@ -300,6 +338,8 @@
       },
       //获取首页接单报价列表和接单施工列表
       async getList(){
+        // this.list = []
+        // this.list2 = []
         const param={
           current:this.current,
           size:this.size
@@ -314,11 +354,12 @@
           item.bidStart = item.bidStart.slice(0,10)
           item.bidEnd = item.bidEnd.slice(0,10)
         })
-        this.list.push(...data.data.records)
-        this.list2.push(...data2.data.records)
+        this.list = data.data.records
+        this.list2 = data2.data.records
       },
       //获取首页接单报价列表和接单施工列表
       async getList2(){
+        // this.list3 = []
         const param={
           current:this.current,
           size:3
@@ -328,7 +369,7 @@
           item.bidStart = item.bidStart.slice(0,10)
           item.bidEnd = item.bidEnd.slice(0,10)
         })
-        this.list3.push(...data.data.records)
+        this.list3 = data.data.records
       },
       async getAdvertising(){
         let paramimg = {

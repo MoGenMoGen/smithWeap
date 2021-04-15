@@ -153,6 +153,7 @@
         // this.worksOffer.attach = ''
         // this.worksOffer.rmks= ''
       }else{
+        this.isapply = true
         this.worksOffer.materialCost = this.addCommas(data.materialCost)
         this.worksOffer.deviceCost= this.addCommas(data.deviceCost)
         this.worksOffer.laborCost= this.addCommas(data.laborCost)
@@ -163,7 +164,6 @@
         this.worksOffer.discountAmount= this.addCommas(data.discountAmount)
         this.worksOffer.attach = data.attach
         this.worksOffer.rmks= data.rmks
-
       }
 
       //图片库

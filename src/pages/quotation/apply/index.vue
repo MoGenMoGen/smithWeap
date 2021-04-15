@@ -172,12 +172,28 @@
               duration: 2000
             });
         }
+        var _this = this
         let param = this.pushInfo
         param.orderId = this.info.id
-        this.api.addOffer(param).then(res=>{
-          wx.redirectTo({url:'/pages/quotation/detail/main?id='+this.info.id})
-          // this.toPage()
+        wx.requestSubscribeMessage({
+          tmplIds: ['0cujeQw1KXsQnZ1ibkPfZxAEOJWa1H-_U4LSK8JhA7g','ZpESJqIDEMI5qs39ZC8Cl7TvidawExk-TVkCW_bQX1o'],
+          success (res) {
+            _this.api.addOffer(param).then(res=>{
+              wx.redirectTo({url:'/pages/quotation/detail/main?id='+_this.info.id})
+            })
+          },
+          fail(res){
+            _this.api.addOffer(param).then(res=>{
+              wx.redirectTo({url:'/pages/quotation/detail/main?id='+_this.info.id})
+            })
+          }
         })
+
+        // let param = this.pushInfo
+        // param.orderId = this.info.id
+        // this.api.addOffer(param).then(res=>{
+        //   wx.redirectTo({url:'/pages/quotation/detail/main?id='+this.info.id})
+        // })
       },
       //上传图片
       async toPhoto(){

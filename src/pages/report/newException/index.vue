@@ -31,7 +31,6 @@
 
 <script>
   import bottomBase from "@/components/bottomBase";
-
   import tpsctb from "@/components/img/图片上传图标.png"
   import del from "@/components/img/删除图标.png"
   export default {
@@ -56,6 +55,12 @@
     async onShow(){
       if(this.type == 2){
         this.getData(this.itemId)
+      }else{
+        this.info={
+          descr:'',
+          imgUrl:''
+        }
+        this.imageList = []
       }
     },
     onUnload(){

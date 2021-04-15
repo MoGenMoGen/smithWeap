@@ -9,7 +9,7 @@ const app = getApp()
 const hostUrl = config.serverURL;
 // Vue.prototype.globalData = getApp().globalData
 
-const appid = 'wx5d71635ece5968bd'
+const appid = 'wxd6ce1371cc156c45'
 const wxHostUrl = 'https://saf.ae-smith.com'
 const tenantId = '000000'
 
@@ -100,9 +100,9 @@ function post(url, data,header) {
       url: config.serverURL + url,
       success: function(res) {
         wx.hideLoading();
-        console.log(res.data)
-        if (res.data.code == 200 || !res.data.code) {
-          if(url.indexOf('login')==-1){
+        // console.log(res)
+        if (res.data.code == 200 || !res.data.code || url.indexOf('bindAndLogin')!=-1) {
+          if(url.indexOf('bindAndLogin')==-1){
             wx.showToast({
               title: '操作成功',
               icon: 'success',

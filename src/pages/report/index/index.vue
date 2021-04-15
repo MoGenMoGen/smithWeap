@@ -143,7 +143,7 @@
     },
     methods:{
       async getDetail(id){
-        console.log('我是猪',id);
+        // console.log('我是猪',id);
         let data = await this.api.getInfoWork(id)
         this.info = data.data
         this.info.bidStart = this.info.bidStart.slice(0,10)

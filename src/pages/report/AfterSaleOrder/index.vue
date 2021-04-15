@@ -375,6 +375,8 @@
       this.sure = e.sure
       this.options = ''
       let path = this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id
+      // let path = 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id
+     
       console.log(this.wxHostUrl)
       drawQrcode({
         width: 100,

@@ -273,6 +273,13 @@
       },
       //提交表单
       submit(){
+        if(this.pushInfo.completionTm == ''){
+          return wx.showToast({
+              icon: "none",
+              title: '请选择完工时间',
+              duration: 2000
+            });
+        }
         // console.log(this.pushInfo);
         this.api.postaddCompletion2(this.pushInfo).then(res=>{
           //跳转

@@ -74,7 +74,6 @@
 <script>
   import bottomBase from "@/components/bottomBase";
   import dateRange from "@/components/dateRange";
-
   import logo2 from "@/components/img/logo2.png"
   import logo from "@/components/img/logo.png"
   import jx from "@/components/img/经销商名称图标.png"
@@ -102,23 +101,26 @@
         startTime:'开始时间',
         endTime:'结束时间',
         list:[],
-        array: [],
+        array: [{dictValue:'全部',dictKey:''}],
         index: 0,
         size:10,
         startTm:'',//开始时间
         endTm:'',//结束时间
+        workType:'',
       }
     },
     async onShow(){
       this.current = 1
       this.list = []
+      this.index = 0
+      this.array=[{dictValue:'全部',dictKey:''}]
       this.startTime='开始时间'
       this.endTime='结束时间'
       this.workType = ''
       this.startTm = ''
       this.endTm = ''
-      this.getList()
       this.getDictionary()
+      this.getList()
     },
     //上滑获取下一页
     onReachBottom(){
@@ -167,7 +169,7 @@
           cd:'workType'
         }
         let data =await this.api.getDictionary(param)
-        this.array = data.data
+        this.array.push(...data.data)
       },
       bindPickerChange(e) {
         this.index = e.mp.detail.value;
@@ -197,6 +199,8 @@
     height: 100%;
     min-height: 100vh;
     background-color: #ECECEC;
+    display: flex;
+    flex-direction: column;
     .nav{
       display: flex;
       align-items: center;
@@ -283,6 +287,7 @@
     .main{
       padding: 20rpx;
       box-sizing: border-box;
+      flex: 1;
       .listBox{
         /*margin-top: 30rpx;*/
         .box{
