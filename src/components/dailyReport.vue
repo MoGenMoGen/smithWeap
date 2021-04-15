@@ -27,7 +27,9 @@
         <li><span>现场照片</span>
           <div class="wrap">
             <div class="box">
-              <img :src="tj"  @click="toPhoto" />
+              <div class="mr">
+                <img :src="tj"  @click="toPhoto" />
+              </div>
               <div class="imgs" v-for="(item,index) in imgList" :key="index"  >
                 <img :src="item" mode="scaleToFill" @click="viewImg(item,imgList)" style="width: 100%;height: 100%"/>
                 <img :src="del" class="del" @click="delimg(index)" />
@@ -175,6 +177,7 @@
           });
           return
         }
+
         if(this.type ==1){ //新增
           //新增
           if(this.info.reportDt ==''){
@@ -187,15 +190,24 @@
           let param = this.info
           param.orderId = this.id
           this.api.addReport(param)
+          //基本操作
+          this.changeModel = !this.changeModel;
+          this.isModel = !this.isModel;
+          this.getlist(this.id)//重新获取列表
         }else if(this.type ==2){ //修改
           //修改
           let param = this.info
           this.api.alterReport(param)
+          //基本操作
+          this.changeModel = !this.changeModel;
+          this.isModel = !this.isModel;
+          this.getlist(this.id)//重新获取列表
+
         }
-        //基本操作
-        this.changeModel = !this.changeModel;
-        this.isModel = !this.isModel;
-        this.getlist(this.id)//重新获取列表
+        // //基本操作
+        // this.changeModel = !this.changeModel;
+        // this.isModel = !this.isModel;
+        // this.getlist(this.id)//重新获取列表
       },
       showModel(val,info) {
         if(val ==1){
@@ -338,7 +350,9 @@
     .modalDialog {
       box-sizing: border-box;
       width: 700rpx;
-      overflow: hidden;
+      height: 80%;
+      // overflow: hidden;
+      overflow: auto;
       position: fixed;
       top: 50%;
       left: 50%;
@@ -381,6 +395,8 @@
               img{
                 width: 160rpx;
                 height: 160rpx;
+              }
+              .mr{
                 margin-right: 20rpx;
               }
               .box{

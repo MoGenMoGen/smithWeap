@@ -118,9 +118,30 @@
 <style lang="less" scoped>
   .component{
     width: 100%;
+    min-height: 100%;
+    background-color: #ECECEC;
+    padding-bottom: 105px;
+    .title{
+      width: 100%;
+      height: 40px;
+      padding-top: 12px;
+      text-align: center;
+      background-color: #FFFFFF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      p{
+        font-size: 17px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        line-height: 24px;
+        color: #000000;
+        opacity: 1;
+      }
+    }
     .clockBox{
       width: 100%;
-      border-radius: 12rpx;
+      border-radius: 6px;
       background-color: #FFFFFF;
       .clock{
         display: flex;
@@ -128,21 +149,21 @@
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        height: 340rpx;
+        height: 170px;
         img{
-          width: 60rpx;
-          height: 60rpx;
+          width: 30px;
+          height: 30px;
         }
         p{
           color: #E51937;
-          font-size: 24rpx;
-          margin-top: 14rpx;
+          font-size: 12px;
+          margin-top: 7px;
         }
       }
     }
     .box2{
-      margin-bottom: 20rpx;
-      padding: 38rpx 26rpx;
+      margin-bottom: 10px;
+      padding: 19px 13px;
       box-sizing: border-box;
       .initBox{
         width: 100%;
@@ -150,23 +171,23 @@
         .title{
           display: flex;
           align-items: center;
-          font-size: 28rpx;
+          font-size: 14px;
           color: #E51937;
           font-weight: 600;
           >img{
-            width: 22.18rpx;
-            height: 28rpx;
-            margin-right: 20rpx;
+            width: 11px;
+            height: 14px;
+            margin-right: 10px;
           }
         }
         ul li{
-          padding: 23rpx 14rpx;
+          padding: 12px 7px;
           display: flex;
           align-items: center;
-          border-bottom: 1rpx solid #D0CED8;
+          border-bottom: 1px solid #D0CED8;
           span{
-            width: 222rpx;
-            font-size: 24rpx;
+            width: 111px;
+            font-size: 12px;
             color: #303030;
           }
           .imgUrl{
@@ -174,9 +195,9 @@
             overflow-x: auto;
             display: flex;
             .box{
-              width: 320rpx ;
-              height: 170rpx;
-              margin-right: 20rpx;
+              width: 160px ;
+              height: 85px;
+              margin-right: 10px;
               img{
                 width: 100%;
                 height: 100%;
@@ -189,23 +210,23 @@
             overflow: hidden;
             text-overflow:ellipsis;
             white-space: nowrap;
-            font-size: 24rpx;
+            font-size: 12px;
             color: #303030;
           }
           &:last-of-type{
             align-items: flex-start;
             border-bottom: none;
             >p{
-              width: 320rpx;
-              height: 170rpx;
+              width: 160px;
+              height: 85px;
               background-color: #F7F7F7;
               display: flex;
               align-items: flex-start;
               justify-content: flex-start;
               >img{
-                margin-right: 10rpx;
-                height: 170rpx;
-                width: 170rpx;
+                margin-right: 5px;
+                height: 85px;
+                width: 85px;
               }
             }
           }
@@ -214,13 +235,13 @@
     }
     .submit{
       width: 100%;
-      height: 88rpx;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12rpx;
-      font-size: 28rpx;
-      margin-top: 40rpx;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 20px;
       color: #FFFFFF;
       background-color: #E51937;
     }
