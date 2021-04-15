@@ -112,7 +112,6 @@
           </div>
         </div>
       </div>
-
       <!--loginType == 2-->
       <div v-if="loginType == 2" class="nav2">
         <ul>
@@ -177,9 +176,9 @@
       </div>
       <!--loginType == 3-->
       <reportStatu v-if="loginType == 3"></reportStatu>
-      <bottomBase></bottomBase>
-
     </div>
+    
+    <bottomBase></bottomBase>
   </div>
 </template>
 
