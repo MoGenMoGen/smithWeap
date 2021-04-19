@@ -133,7 +133,7 @@
       },
       goto(item){
         if(item.workType ==1 ||item.workType == 3){
-          if(item.processStatus <3){
+          if(item.processStatus <2){
             this.toPage('/pages/report/index/main?id='+item.id)
           }else if(item.processStatus <6){
             this.toPage('/pages/report/confirm/main?id='+item.id)
@@ -141,7 +141,7 @@
             this.toPage('/pages/report/confirmOrder/main?id='+item.id)
           }
         }else{
-          if(item.processStatus <3){
+          if(item.processStatus <2){
             this.toPage('/pages/report/AfterSale/main?id='+item.id)
           }else if(item.processStatus <6){
             this.toPage('/pages/report/AfterSaleOrder/main?id='+item.id)
