@@ -120,8 +120,8 @@
     </div>
     <bottomBase></bottomBase>
     <div class="button">
-      <div class="btn1" @click="submit">取消</div>
-      <div class="btn2" @click="submit">确定</div>
+      <div class="btn1" @click="submit(1)">取消</div>
+      <div class="btn2" @click="submit(2)">确定</div>
     </div>
   </div>
 </template>
@@ -272,7 +272,8 @@
         }
       },
       //提交表单
-      submit(){
+      submit(index){
+        if(index == 1) return this.util.back()
         if(this.pushInfo.completionTm == ''){
           return wx.showToast({
               icon: "none",
@@ -286,7 +287,6 @@
            wx.redirectTo({url:'/pages/report/AfterSaleOrder/main?id=' +this.id})
           // this.toPage('/pages/report/AfterSaleOrder/main?id=' +this.id) 
         })
-        
       },
       //时间选择回调函数
       getDate(e){
