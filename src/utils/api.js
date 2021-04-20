@@ -163,13 +163,17 @@ function login(data) {
       // store.store.commit('token',res.data.token)
       console.log('设置token时间')
       wx.setStorageSync("tokenTime",new Date());
-      resolve(res.data.token);
+      console.log('保存登录者类别')
+      wx.setStorageSync("loginType",res.loginType);
+      wx.setStorageSync("loginInfo",res);
+      resolve();
     }).catch(e=>{
       wx.showToast({
         icon: "none",
         title: e.msg,
         duration: 2000
       });
+      
     });
   })
 
@@ -233,13 +237,13 @@ class api {
           return
         }
         wx.setStorageSync("token",res.access_token);
+        console.log('api获取到了type');
+        wx.setStorageSync("loginType",res.loginType);
         wx.setStorageSync("loginInfo",res);
         console.log('登录')
         console.log(wx.getStorageSync("loginInfo"))
-        // store.store.commit('token',res.token)
-        console.log('设置token时间')
+        console.log('api设置token时间')
         wx.setStorageSync("tokenTime",new Date());
-
         resolve(res.data.token);
       })
     });
@@ -828,6 +832,14 @@ class api {
     infoCustAudit2(id){
       return new Promise(resolve =>{
         get("/blade-works/worksorder/infoCustAudit2?orderId="+id).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    //平台方- 查询工单
+    listAllPlat(data){
+      return new Promise(resolve =>{
+        get("/blade-works/worksorder/listAllPlat",data).then(res=>{
           resolve(res)
         })
       })
