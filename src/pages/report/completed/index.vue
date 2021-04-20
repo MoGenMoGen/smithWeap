@@ -7,7 +7,7 @@
             <picker @change="bindPickerChange" :value="index" :range="array"  range-key="dictValue">
               <div class="picker">
                 {{array[index].dictValue}}
-                <img :src="down" v-if="index != 2"/>
+                <img :src="down" v-if="index ==0 "/>
               </div>
             </picker>
           </div>
@@ -103,10 +103,12 @@
         list:[],
         array: [{dictValue:'全部',dictKey:''}],
         index: 0,
+        current:1,
         size:10,
         startTm:'',//开始时间
         endTm:'',//结束时间
         workType:'',
+
       }
     },
     async onShow(){
@@ -149,7 +151,7 @@
         const param={
           current:this.current,
           size:this.size,
-          endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+          endTime:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
           workType:this.workType,
         }
         let data =await this.api.listToComplete(param)
@@ -161,6 +163,8 @@
         this.total = data.data.total
       },
       toSearch(){
+        this.list = []
+        this.current = 1
         this.getList();
       },
       //获取工作类型
