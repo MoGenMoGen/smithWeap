@@ -13,169 +13,177 @@
       </swiper>
       <!--loginType == 1-->
       <!--分类-->
-      <div v-if="loginType == 1" class="nav">
-        <ul>
-          <li v-for="(item,index) in navList" :key="index" @click="toPages(item.path,index)">
-            <img :src="item.imgUrl"/>
+      <div class="loginType" v-if="loginType == 1">
+        <div class="nav">
+          <ul>
+            <li v-for="(item,index) in navList" :key="index" @click="toPages(item.path,index)">
+              <img :src="item.imgUrl"/>
+              <p>
+                {{item.nm}}
+              </p>
+            </li>
+          </ul>
+        </div>
+        <!--接单报价-->
+        <div class="listBox">
+          <div class="title">
             <p>
-              {{item.nm}}
+              <img :src="logo2"  mode="widthFix" class="titleImg"/>
+              {{infoNm}}
             </p>
-          </li>
-        </ul>
-      </div>
-      <!--接单报价-->
-      <div v-if="loginType == 1" class="listBox">
-        <div class="title">
-          <p>
-            <img :src="logo2"  mode="widthFix" class="titleImg"/>
-            {{infoNm}}
-          </p>
-          <p @click="toPage('/pages/quotation/index/main')">
-            查看更多
-            <img class="right" :src="right"/>
-          </p>
-        </div>
-        <div class="box" v-for="(item,index) in list" :key="index">
-          <ul>
-            <li>
-              <img :src="jx"/>
-              <span>经销商名称</span>
-              <p>{{item.custNm}}</p>
-            </li>
-            <li>
-              <img :src="type"/>
-              <span>工作类型</span>
-              <p>{{item.workTypeNm}}</p>
-            </li>
-            <li>
-              <img :src="fb"/>
-              <span>发布日期</span>
-              <p>{{item.bidStart}}</p>
-            </li>
-            <li>
-              <img :src="jz"/>
-              <span>截止日期</span>
-              <p>{{item.bidEnd}}</p>
-            </li>
-          </ul>
-          <div>
-             <p v-if="item.worksOfferStatusVo.state ==1" style="color:#FFFFFF;background-color: #E51937" @click="toPage('/pages/quotation/apply/main?id='+item.id)">
-              <img :src="tbj"/>
-              {{item.worksOfferStatusVo.stateNm}}
-            </p>
-            <p v-if="item.worksOfferStatusVo.state !=1" style="color:#FFFFFF;background-color: #909090" @click="toPage('/pages/quotation/detail/main?id='+item.id)">
-              <img :src="tbj"/>
-              {{item.worksOfferStatusVo.stateNm}}
+            <p @click="toPage('/pages/quotation/index/main')">
+              查看更多
+              <img class="right" :src="right"/>
             </p>
           </div>
-        </div>
-      </div>
-      <!--接单施工-->
-      <div v-if="loginType == 1" class="listBox">
-        <div class="title">
-          <p>
-            <img :src="logo2"  mode="widthFix" class="titleImg"/>
-            {{info2Nm}}
-          </p>
-          <p @click="toPage('/pages/construction/index/main')">
-            查看更多
-            <img class="right" :src="right"/>
-          </p>
-        </div>
-        <div class="box" v-for="(item,index) in list2" :key="index">
-          <ul>
-            <li>
-              <img :src="jx"/>
-              <span>经销商名称</span>
-              <p>{{item.custNm}}</p>
-            </li>
-            <li>
-              <img :src="type"/>
-              <span>工作类型</span>
-              <p>{{item.workTypeNm}}</p>
-            </li>
-            <li>
-              <img :src="fb"/>
-              <span>发布日期</span>
-              <p>{{item.bidStart}}</p>
-            </li>
-            <li>
-              <img :src="jz"/>
-              <span>截止日期</span>
-              <p>{{item.bidEnd}}</p>
-            </li>
-          </ul>
-          <div>
-            <p style="border: 1rpx solid #909090;color: #909090;" @click="toPage('/pages/construction/detail/main?id='+item.id)">
-              查看
-            </p>
+          <div class="box" v-for="(item,index) in list" :key="index">
+            <ul>
+              <li>
+                <img :src="jx"/>
+                <span>经销商名称</span>
+                <p>{{item.custNm}}</p>
+              </li>
+              <li>
+                <img :src="type"/>
+                <span>工作类型</span>
+                <p>{{item.workTypeNm}}</p>
+              </li>
+              <li>
+                <img :src="fb"/>
+                <span>发布日期</span>
+                <p>{{item.bidStart}}</p>
+              </li>
+              <li>
+                <img :src="jz"/>
+                <span>截止日期</span>
+                <p>{{item.bidEnd}}</p>
+              </li>
+            </ul>
+            <div>
+              <p v-if="item.worksOfferStatusVo.state ==1" style="color:#FFFFFF;background-color: #E51937" @click="toPage('/pages/quotation/apply/main?id='+item.id)">
+                <img :src="tbj"/>
+                {{item.worksOfferStatusVo.stateNm}}
+              </p>
+              <p v-if="item.worksOfferStatusVo.state !=1" style="color:#FFFFFF;background-color: #909090" @click="toPage('/pages/quotation/detail/main?id='+item.id)">
+                <img :src="tbj"/>
+                {{item.worksOfferStatusVo.stateNm}}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <!--loginType == 2-->
-      <div v-if="loginType == 2" class="nav2">
-        <ul>
-          <li v-for="(item,index) in navList2" :key="index" @click="toPages(item.path,index)">
-            <img :src="item.imgUrl"/>
+        <!--接单施工-->
+        <div class="listBox">
+          <div class="title">
             <p>
-              {{item.nm}}
+              <img :src="logo2"  mode="widthFix" class="titleImg"/>
+              {{info2Nm}}
             </p>
-          </li>
-        </ul>
-      </div>
-      <!--施工确认-->
-      <div v-if="loginType == 2" class="listBox">
-        <div class="title">
-          <p>
-            <img :src="logo2" mode="widthFix"  class="titleImg"/>
-            施工确认
-          </p>
-          <p @click="toPage('/pages/platform/order/main?type=1')">
-            查看更多
-            <img class="right" :src="right"/>
-          </p>
-        </div>
-        <div class="box" v-for="(item,index) in list3" :key="index">
-          <ul>
-            <li>
-              <img :src="gdbh"/>
-              <span>工单编号</span>
-              <p>{{item.cd}}</p>
-            </li>
-            <li>
-              <img :src="jx"/>
-              <span>供应商名称</span>
-              <p>{{item.orgNm}}</p>
-            </li>
-            <li>
-              <img :src="jx"/>
-              <span>经销商名称</span>
-              <p>{{item.custNm}}</p>
-            </li>
-            <li>
-              <img :src="type"/>
-              <span>工作类型</span>
-              <p>{{item.workTypeNm}}</p>
-            </li>
-            <li>
-              <img :src="fb"/>
-              <span>发布日期</span>
-              <p>{{item.bidStart}}</p>
-            </li>
-            <li>
-              <img :src="hbrq"/>
-              <span>汇报日期</span>
-              <p>{{item.bidEnd}}</p>
-            </li>
-          </ul>
-          <div>
-            <Steps :status="item.processStatus"></Steps>
-            <p style="border: 1rpx solid #909090;color: #909090;" @click="gowork(item.workType,item)">查看</p>
+            <p @click="toPage('/pages/construction/index/main')">
+              查看更多
+              <img class="right" :src="right"/>
+            </p>
+          </div>
+          <div class="box" v-for="(item,index) in list2" :key="index">
+            <ul>
+              <li>
+                <img :src="jx"/>
+                <span>经销商名称</span>
+                <p>{{item.custNm}}</p>
+              </li>
+              <li>
+                <img :src="type"/>
+                <span>工作类型</span>
+                <p>{{item.workTypeNm}}</p>
+              </li>
+              <li>
+                <img :src="fb"/>
+                <span>发布日期</span>
+                <p>{{item.bidStart}}</p>
+              </li>
+              <li>
+                <img :src="jz"/>
+                <span>截止日期</span>
+                <p>{{item.bidEnd}}</p>
+              </li>
+            </ul>
+            <div>
+              <p style="border: 1rpx solid #909090;color: #909090;" @click="toPage('/pages/construction/detail/main?id='+item.id)">
+                查看
+              </p>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="loginType" v-if="loginType == 2">
+        <!--loginType == 2-->
+        <div  class="nav2">
+          <ul>
+            <li v-for="(item,index) in navList2" :key="index" @click="toPages(item.path,index)">
+              <img :src="item.imgUrl"/>
+              <p>
+                {{item.nm}}
+              </p>
+            </li>
+          </ul>
+        </div>
+        <!--施工确认-->
+        <div class="listBox">
+          <div class="title">
+            <p>
+              <img :src="logo2" mode="widthFix"  class="titleImg"/>
+              施工确认
+            </p>
+            <p @click="toPage('/pages/platform/order/main?type=1')">
+              查看更多
+              <img class="right" :src="right"/>
+            </p>
+          </div>
+          <div class="box" v-for="(item,index) in list3" :key="index">
+            <ul>
+              <li>
+                <img :src="gdbh"/>
+                <span>工单编号</span>
+                <p>{{item.cd}}</p>
+              </li>
+              <li>
+                <img :src="jx"/>
+                <span>供应商名称</span>
+                <p>{{item.orgNm}}</p>
+              </li>
+              <li>
+                <img :src="jx"/>
+                <span>经销商名称</span>
+                <p>{{item.custNm}}</p>
+              </li>
+              <li>
+                <img :src="type"/>
+                <span>工作类型</span>
+                <p>{{item.workTypeNm}}</p>
+              </li>
+              <li>
+                <img :src="fb"/>
+                <span>发布日期</span>
+                <p>{{item.bidStart}}</p>
+              </li>
+              <li>
+                <img :src="hbrq"/>
+                <span>汇报日期</span>
+                <p>{{item.bidEnd}}</p>
+              </li>
+            </ul>
+            <div>
+              <Steps :status="item.processStatus"></Steps>
+              <p style="border: 1rpx solid #909090;color: #909090;" @click="gowork(item.workType,item)">查看</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="loginType" v-if="loginType == 3">
+        <reportStatu ></reportStatu>
+      </div>
+      <div class="loginTypeno" v-if="!loginType">
       </div>
       <!--loginType == 3-->
-      <reportStatu v-if="loginType == 3"></reportStatu>
       <bottomBase></bottomBase>
     </div>
     
@@ -255,24 +263,42 @@
       }
     },
     async onLoad(){
+
       this.loginType = wx.getStorageSync('loginType')
     },
     async onShow(){
-      console.log('show');
       this.loginType = wx.getStorageSync('loginType')
-      this.list = []
-      this.list2 = []
-      this.list3 = []
-      this.getAdvertising();
-      switch(this.loginType){
-        case 1:
+      console.log('show ',this.loginType);
+      var _this = this
+      if(this.loginType){
+        console.log("有Type");
+        this.list = []
+        this.list2 = []
+        this.list3 = []
+        this.getAdvertising();
+        if(this.loginType ==1){
           this.getList();
-          break
-        case 2:
+        }else{
           this.getList2();
-          break
-        case 3:
-          break
+        }
+      }else{
+        console.log("我要再次获取");
+        var _this = this
+        var timeset = setInterval(function(){
+          _this.loginType = wx.getStorageSync('loginType')
+          if(_this.loginType){
+            _this.list = []
+            _this.list2 = []
+            _this.list3 = []
+            _this.getAdvertising();
+            if(_this.loginType ==1){
+              _this.getList();
+            }else{
+              _this.getList2();
+            }
+            clearInterval(timeset)
+          }
+        },1000)
       }
     },
     methods:{
@@ -408,162 +434,166 @@
       -webkit-overflow-scrolling: touch;
       padding: 20rpx;
       box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
       #swiper{
-        height: 400rpx;
-        img{
-          width: 100%;
-          height: 100%;
-          border-radius: 12rpx;
-        }
-      }
-      .nav{
-        width: 100%;
-        height: 200rpx;
-        background-color: #FFFFFF;
-        margin-top: 20rpx;
-        border-radius: 12rpx;
-        ul{
-          width: 100%;
-          height: 100%;
-          display: inline-grid;
-          grid-template-columns: repeat(3, 33.33%);
-          li{
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            img{
-              width:88rpx;
-              height: 88rpx;
-              margin-bottom: 10rpx;
-            }
-          }
-        }
-      }
-      .listBox{
-        flex: 1;
-        margin-top: 30rpx;
-        .title{
-          display: flex;
-          justify-content: space-between;
-          padding: 40rpx;
-          box-sizing: border-box;
-          p{
-            font-size: 24rpx;
-            color: #909090;
-            display: flex;
-            align-items: center;
-            &:first-of-type{
-              font-size: 28rpx;
-              color: #303030;
-            }
-          }
-
-          p img{
-            width: 35rpx;
-            height: 30rpx;
-            margin-right: 10rpx;
-            &:last-of-type{
-              margin: 0 0 0 9rpx;
-            }
-          }
-          .titleImg{
-            margin-right: 10rpx !important;
-          }
-          .right{
-            width: 12rpx !important;
-            height: 22rpx !important;
-          }
-        }
-        .box{
-          background-color: #FFFFFF;
-          border-radius: 12rpx;
-          margin-bottom: 28rpx;
-          ul{
-            padding-top: 36rpx;
-            margin: 0 36rpx;
-            li{
-              display: flex;
-              align-items: center;
-              margin-bottom: 20rpx;
-              &:last-of-type{
-                margin-bottom: 0rpx;
-                padding-bottom: 20rpx;
-                border-bottom: 1rpx solid #d0ced8;
-              }
-              img{
-                width: 37rpx;
-                height: 37rpx;
-                margin-right: 13rpx;
-              }
-              span{
-                font-size: 28rpx;
-                color: #303030;
-                flex: 1;
-              }
-              p{
-                font-size: 28rpx;
-                color: #303030;
-              }
-            }
-          }
-          >div{
+          height: 400rpx;
+          img{
             width: 100%;
-            height: 101rpx;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-left: 30rpx;
-            box-sizing: border-box;
-            p{
-              width: 160rpx;
-              height: 60rpx;
+            height: 100%;
+            border-radius: 12rpx;
+          }
+        }
+      .loginType{
+        min-height: calc(100vh - 200rpx - 200rpx - 350rpx);
+        .nav{
+          width: 100%;
+          height: 200rpx;
+          background-color: #FFFFFF;
+          margin-top: 20rpx;
+          border-radius: 12rpx;
+          ul{
+            width: 100%;
+            height: 100%;
+            display: inline-grid;
+            grid-template-columns: repeat(3, 33.33%);
+            li{
+              height: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
-              border-radius: 100rpx;
-              margin-right: 38rpx;
-            }
-            p img{
-              width: 20rpx;
-              height: 20rpx;
-              margin-right: 10rpx;
+              flex-direction: column;
+              img{
+                width:88rpx;
+                height: 88rpx;
+                margin-bottom: 10rpx;
+              }
             }
           }
         }
-        .steps{
-          .stepsDown{
-            padding-right: 25rpx;
+        .listBox{
+          flex: 1;
+          margin-top: 30rpx;
+          .title{
+            display: flex;
+            justify-content: space-between;
+            padding: 40rpx;
+            box-sizing: border-box;
+            p{
+              font-size: 24rpx;
+              color: #909090;
+              display: flex;
+              align-items: center;
+              &:first-of-type{
+                font-size: 28rpx;
+                color: #303030;
+              }
+            }
+
+            p img{
+              width: 35rpx;
+              height: 30rpx;
+              margin-right: 10rpx;
+              &:last-of-type{
+                margin: 0 0 0 9rpx;
+              }
+            }
+            .titleImg{
+              margin-right: 10rpx !important;
+            }
+            .right{
+              width: 12rpx !important;
+              height: 22rpx !important;
+            }
+          }
+          .box{
+            background-color: #FFFFFF;
+            border-radius: 12rpx;
+            margin-bottom: 28rpx;
+            ul{
+              padding-top: 36rpx;
+              margin: 0 36rpx;
+              li{
+                display: flex;
+                align-items: center;
+                margin-bottom: 20rpx;
+                &:last-of-type{
+                  margin-bottom: 0rpx;
+                  padding-bottom: 20rpx;
+                  border-bottom: 1rpx solid #d0ced8;
+                }
+                img{
+                  width: 37rpx;
+                  height: 37rpx;
+                  margin-right: 13rpx;
+                }
+                span{
+                  font-size: 28rpx;
+                  color: #303030;
+                  flex: 1;
+                }
+                p{
+                  font-size: 28rpx;
+                  color: #303030;
+                }
+              }
+            }
+            >div{
+              width: 100%;
+              height: 101rpx;
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              padding-left: 30rpx;
+              box-sizing: border-box;
+              p{
+                width: 160rpx;
+                height: 60rpx;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 100rpx;
+                margin-right: 38rpx;
+              }
+              p img{
+                width: 20rpx;
+                height: 20rpx;
+                margin-right: 10rpx;
+              }
+            }
+          }
+          .steps{
+            .stepsDown{
+              padding-right: 25rpx;
+            }
+          }
+        }
+        .nav2{
+          width: 100%;
+          height: 200rpx;
+          background-color: #FFFFFF;
+          margin-top: 20rpx;
+          border-radius: 12rpx;
+          ul{
+            width: 100%;
+            height: 100%;
+            display: inline-grid;
+            grid-template-columns: repeat(2, 50%);
+            li{
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              img{
+                width:88rpx;
+                height: 88rpx;
+                margin-bottom: 10rpx;
+              }
+            }
           }
         }
       }
-      .nav2{
-        width: 100%;
-        height: 200rpx;
-        background-color: #FFFFFF;
-        margin-top: 20rpx;
-        border-radius: 12rpx;
-        ul{
-          width: 100%;
-          height: 100%;
-          display: inline-grid;
-          grid-template-columns: repeat(2, 50%);
-          li{
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            img{
-              width:88rpx;
-              height: 88rpx;
-              margin-bottom: 10rpx;
-            }
-          }
-        }
+      .loginTypeno{
+        min-height: calc(100vh - 200rpx - 220rpx - 440rpx );
       }
 
     }
