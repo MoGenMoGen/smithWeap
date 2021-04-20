@@ -43,15 +43,15 @@
               <span>史密斯</span>
               <span>工作人员</span>
             </div>
-            <p>{{info.user.name}}</p>
+            <p>{{Smith.name}}</p>
           </li>
           <li>
             <span>联系方式</span>
-            <p>{{info.user.phone}}</p>
+            <p>{{Smith.tel}}</p>
           </li>
           <li>
             <span>史密斯地址</span>
-            <p>{{info.addr}}</p>
+            <p>{{Smith.addr}}</p>
           </li>
         </ul>
       </div>
@@ -68,7 +68,7 @@
               <span>完成时间</span>
             </div>
             <div class="right">
-              <div class="time">
+              <div class="time" :class="{'timeactive':reltime=='史密斯工作人员离开现场'}">
                 <dateRange :value="reltime" @getStart="getDate"></dateRange>
               </div>
               <img :src="rltb" class="rltb"/>
@@ -127,7 +127,6 @@
   import dateRange from "@/components/dateRange";
   import bottomBase from "@/components/bottomBase";
   import modelMask from "@/components/modelMask";
-
   import jt from "@/components/img/箭头.png"
   import wdktb from "@/components/img/无打卡图标.png"
   import rltb from '@/components/img/日历图标.png'
@@ -175,6 +174,12 @@
         reltime:'史密斯工作人员离开现场',
         //工作内容
         workcontent:[],
+        //史密斯工作人员
+        Smith:{
+          name:'',
+          tel:'',
+          addr:''
+        }
       }
     },
     async onLoad(e){
@@ -204,6 +209,11 @@
         this.info.worksReportList.forEach(item=>{
           this.workcontent.push(item.jobCont)
         })
+        this.Smith = {
+          name:data.data.user.name,
+          tel:data.data.user.phone,
+          addt:data.data.addr
+        }
         // this.putinfo.workCont = this.workcontent.join(';');
         this.putinfo={
           orderId: this.id,
@@ -364,7 +374,10 @@
               }
               .time{
                 flex: 1;
-                /*color:#D0CED8;*/
+                font-size: 28rpx;
+              }
+              .timeactive{
+                color:#D0CED8;
               }
               .rltb{
                 width: 30rpx !important;
