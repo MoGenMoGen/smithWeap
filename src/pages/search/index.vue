@@ -96,9 +96,11 @@
         total:0,
         startTm:'',//开始时间
         endTm:'',//结束时间
+        loginType:0,
       }
     },
     async onShow(){
+      this.loginType = wx.getStorageSync('loginType')
       this.searchData = ''
       this.list = []
       this.current = 1
@@ -158,19 +160,36 @@
       },
       //获取数据
       async getList(){
-        const param={
-          current:this.current,
-          size:this.size,
-          endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
-          nm:this.searchData,
+        if(this.loginType ==1){
+          const param={
+            current:this.current,
+            size:this.size,
+            endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+            nm:this.searchData,
+          }
+          let data =await this.api.getlistAll(param)
+          data.data.records.forEach(item=>{
+            item.bidStart = item.bidStart.slice(0,10)
+            item.bidEnd = item.bidEnd.slice(0,10)
+          })
+          this.list.push(...data.data.records)
+          this.total = data.data.total
+        }else if(this.loginType ==2){
+          const param={
+            current:this.current,
+            size:this.size,
+            endDate:this.startTm&&this.endTm ? this.startTm +','+this.endTm : '',
+            nm:this.searchData,
+          }
+          let data =await this.api.listAllPlat(param)
+          data.data.records.forEach(item=>{
+            item.bidStart = item.bidStart.slice(0,10)
+            item.bidEnd = item.bidEnd.slice(0,10)
+          })
+          this.list.push(...data.data.records)
+          this.total = data.data.total
         }
-        let data =await this.api.getlistAll(param)
-        data.data.records.forEach(item=>{
-          item.bidStart = item.bidStart.slice(0,10)
-          item.bidEnd = item.bidEnd.slice(0,10)
-        })
-        this.list.push(...data.data.records)
-        this.total = data.data.total
+       
       }
     },
     components:{
