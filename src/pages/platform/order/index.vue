@@ -3,9 +3,15 @@
     <div class="nav">
       <div class="searchBox">
         <div class="dateBox">
-          <dateRange :value="startTime" @getStart="getDate"></dateRange>
-          ~
-          <date-range :value="endTime" @getStart="getDate2"></date-range>
+          <div class="timechange">
+            <div class="time">
+              <dateRange :value="startTime" @getStart="getDate"></dateRange>
+            </div>
+              <span>~</span>
+            <div class="time">
+              <date-range :value="endTime" @getStart="getDate2"></date-range>
+            </div>
+          </div>
           <img :src="dateIcon" class="icon"/>
         </div>
         <input v-model="nm" placeholder="请输入经销商名称或工单编号"/>
@@ -233,6 +239,24 @@
           border: 1rpx solid #303030;
           border-radius: 12rpx;
           padding: 0 20rpx;
+          .timechange{
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 10rpx;
+            font-size: 24rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            // line-height: 16rpx;
+            color: #303030;
+            opacity: 1;
+            .time{
+              flex: 1;
+              display: flex;
+              justify-content: center;
+            }
+          }
           .icon{
             width: 30rpx;
             height: 32rpx;
