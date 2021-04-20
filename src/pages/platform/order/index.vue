@@ -137,6 +137,15 @@
     async onShow(){
       this.current = 1
       this.list = []
+      this.startTime ='开始时间',
+      this.endTime ='结束时间',
+      this.startTm=''
+      this.endTm=''
+      this.nm = ''
+      this.endDate = ''
+      this.array = [
+          {dictValue:'安装'}
+        ],
       this.getList();
     },
     //上滑获取下一页
