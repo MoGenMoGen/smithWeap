@@ -119,24 +119,32 @@
     methods:{
       changeNav(index){
         if(index == this.currentIndex) return;
-        var _this = this
-        wx.requestSubscribeMessage({
-          tmplIds: ['plCNG98KmuMCaNfc3QbyNqQECnZa-P3ku55UZG_2u_g','wnLaXb9erVNEHv18d7VizAWv9bZqqRcFhuEvoshKNVA'],
-          success (res) {
-            console.log(res);
-            _this.current = 1
-            _this.list = []
-            _this.currentIndex=index
-            _this.getList(index)
-          },
-          fail(res){
-            console.log(res);
-            _this.current = 1
-            _this.list = []
-            _this.currentIndex=index
-            _this.getList(index)
-          }
-        })      
+        if(index == 2){
+          this.current = 1
+          this.list = []
+          this.currentIndex=index
+          this.getList(index)
+        }else{
+          var _this = this
+          wx.requestSubscribeMessage({
+            tmplIds: ['plCNG98KmuMCaNfc3QbyNqQECnZa-P3ku55UZG_2u_g','wnLaXb9erVNEHv18d7VizAWv9bZqqRcFhuEvoshKNVA'],
+            success (res) {
+              console.log(res);
+              _this.current = 1
+              _this.list = []
+              _this.currentIndex=index
+              _this.getList(index)
+            },
+            fail(res){
+              console.log(res);
+              _this.current = 1
+              _this.list = []
+              _this.currentIndex=index
+              _this.getList(index)
+            }
+          })  
+        }
+            
       },
       async getList(index){
         switch (index){
@@ -205,6 +213,9 @@
 
 <style lang="less" scoped>
 #report{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   .nav{
     display: flex;
     align-items: center;
