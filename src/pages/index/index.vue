@@ -176,9 +176,10 @@
       </div>
       <!--loginType == 3-->
       <reportStatu v-if="loginType == 3"></reportStatu>
+      <bottomBase></bottomBase>
     </div>
     
-    <bottomBase></bottomBase>
+    
   </div>
 </template>
 
@@ -407,6 +408,8 @@
       -webkit-overflow-scrolling: touch;
       padding: 20rpx;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
       #swiper{
         height: 400rpx;
         img{
@@ -441,6 +444,7 @@
         }
       }
       .listBox{
+        flex: 1;
         margin-top: 30rpx;
         .title{
           display: flex;
