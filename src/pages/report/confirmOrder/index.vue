@@ -203,7 +203,8 @@
         this.info = data.data
         this.dayList = data.data.worksCompletionVO.imgDay.split(',')
         this.nightList = data.data.worksCompletionVO.imgNight.split(',')
-        if(JSON.stringify(this.info.survBill) === '{}'){
+        // if(JSON.stringify(this.info.survBill) === '{}'){
+        if(!this.info.survBill){
           this.isBill = false
         }else{
           this.isBill = true
@@ -228,7 +229,9 @@
           this.toPage('/pages/report/satisfaction/main?id='+item.survBill.id)
         }else{
           //未填写
-          this.toPage('/pages/report/satisfactionSurvey/main?id='+item.id)
+          // 将签名图片传过去
+          let imgUrl = encodeURIComponent(this.info.worksCompletionVO.custSign)
+          this.toPage('/pages/report/satisfactionSurvey/main?id='+item.id+'&imgUrl='+imgUrl)
         }
       },
       changeTab(index){

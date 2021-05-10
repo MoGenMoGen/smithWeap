@@ -115,6 +115,11 @@
             this.changeModel = !this.changeModel;
             this.isModel = !this.isModel;
             break
+		case 3:
+		  this.type = 3
+		  this.changeModel = !this.changeModel;
+		  this.isModel = !this.isModel;
+		  break
         }
       },
       //将子组件中变化的数据赋值于父组件

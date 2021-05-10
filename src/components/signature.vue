@@ -8,7 +8,9 @@
       @touchend="end"
       @error="error"
       disable-scroll="true"
+      v-if="!signImage"
     ></canvas>
+    <img :src="signImage" v-if="signImage">
     <div class="button_clear" @click="clearClick()">重写</div>
     <div class="button_submit" @click="saveClick()">保存</div>
 
@@ -23,7 +25,6 @@
   export default {
     data(){
       return {
-        signImage : '',
         canvaw:0,
         canvah:0,
         src:`你的背景图片`,
@@ -36,6 +37,10 @@
         type:String,
         default:'default',
         required: false
+      },
+      signImage: {
+        type: String,
+        default: ""
       }
     },
     onLoad () {
@@ -93,6 +98,7 @@
         }
       },
       clearClick() {
+        this.signImage = ''
         content.clearRect(0,0,canvasw,canvash);
         wx.getImageInfo({
           src: this.src,//服务器返回的图片地址

@@ -1,59 +1,10 @@
 {
-  "description": "项目配置文件。",
-  "setting": {
-    "urlCheck": true,
-    "es6": false,
-    "enhance": false,
-    "postcss": true,
-    "preloadBackgroundData": false,
-    "minified": true,
-    "newFeature": true,
-    "coverView": true,
-    "nodeModules": false,
-    "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "useMultiFrameRuntime": true,
-    "useApiHook": true,
-    "useApiHostProcess": false,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    },
-    "enableEngineNative": false,
-    "bundle": false,
-    "useIsolateContext": true,
-    "useCompilerModule": false,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "userConfirmedBundleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": [],
-    "minifyWXSS": true
-  },
-  "miniprogramRoot": "dist/wx/",
-  "compileType": "miniprogram",
-  "appid": "wxd6ce1371cc156c45",
-  "projectname": "%E6%83%B3%E8%89%AF%E7%94%9F%E6%B4%BB%E5%B0%8F%E7%A8%8B%E5%BA%8F",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
+  "setting": {},
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
     "plugin": {
       "list": []
     },
     "game": {
-      "currentL": -1,
       "list": []
     },
     "gamePlugin": {
@@ -107,6 +58,19 @@
           "id": -1,
           "name": "pages/message/list/main",
           "pathName": "pages/message/list/main",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/report/index/main",
+          "pathName": "pages/report/index/main",
+          "query": "id=1377907398978625537",
+          "scene": null
+        },
+        {
+          "name": "pages/report/confirmOrder/main",
+          "pathName": "pages/report/confirmOrder/main",
+          "query": "id=1377907398978625537",
           "scene": null
         }
       ]

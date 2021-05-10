@@ -2,12 +2,12 @@
   <div>
     <!--弹窗的页面-->
     <div class="modalMask" v-if="isModel" @click="tapCancel"></div>
-    <div class="modalDialog" v-if="changeModel" :style="{height:type==1 ? '600rpx' : '400rpx'}" @click.top = ''>
-      <div class="header">
+    <div class="modalDialog" v-if="changeModel" :style="{height:type==3 ? '600rpx' : '400rpx'}" @click.top = ''>
+      <div class="header" v-if="type != 3">
         <p class="tips">提示</p>
         <p>您确认{{type==1?'承接':'拒接'}}此工单？</p>
       </div>
-      <div class="content" v-if="type == 1" >
+      <div class="content" v-if="type == 3" >
         <span>指派</span>
         <div class="swiper">
           <swiper :current="current"
@@ -47,7 +47,7 @@
         type:Boolean,
       },
       type:{
-        default:2,
+        default:2, //1接单，2拒单，3派单
         type:Number,
       }
     },

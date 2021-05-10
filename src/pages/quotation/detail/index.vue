@@ -57,7 +57,11 @@
             <p>{{worksOffer.other}}</p>
           </li>
           <li>
-            <span>利润与税收</span>
+            <span>利润</span>
+            <p>{{worksOffer.profitsTax}}</p>
+          </li>
+          <li>
+            <span>税收</span>
             <p>{{worksOffer.profitsTax}}</p>
           </li>
           <li>

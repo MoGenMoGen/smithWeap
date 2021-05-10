@@ -223,12 +223,20 @@
       },
       //跳转到满意调查详情
       tosatisfactionSurvey(item){
-        if(item.survBill.id) this.toPage('/pages/report/satisfaction/main?id='+item.survBill.id)
+        if(item.survBill.id){
+          //已填写
+          this.toPage('/pages/report/satisfaction/main?id='+item.survBill.id)
+        }else{
+          //未填写
+          // 将签名图片传过去
+          let imgUrl = encodeURIComponent(this.info.worksCompletion2VO.custSign)
+          this.toPage('/pages/report/satisfactionSurvey/main?id='+item.id+'&imgUrl='+imgUrl)
+        }
       }
     },
     onLoad(e){
       this.id = e.id
-      
+
       // let path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+this.appid+'&redirect_uri='+this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
       let path = this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id
       drawQrcode({

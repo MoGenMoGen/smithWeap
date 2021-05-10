@@ -61,7 +61,7 @@
             <img :src="jt" mode="widthFix" v-show="index==currentIndex"  class="img2"/>
           </li>
         </ul>
-        <reports :index="currentIndex" :id="orderId" ></reports>
+        <reports :index="currentIndex" :id="orderId"></reports>
       </div>
     </div>
     <bottomBase></bottomBase>
@@ -129,14 +129,17 @@
         changeModel:false,
         type:1,
         orderId:'',
+        list: []
       }
     },
     onLoad(e){
       this.orderId = e.id
+
     },
     async onShow(){
       // this.currentIndex = 0
       this.getDetail(this.orderId);
+      this.getClockList(this.orderId)
     },
     onUnload(){
       this.currentIndex = 0
@@ -173,7 +176,19 @@
           this.util.aHref(url)
         }
       },
+      async getClockList(id) {
+        let data = await this.api.clockList(id)
+        this.list = data.data
+      },
       changeTab(item,index){
+        // if(this.list.length != 2) {
+        //   wx.showToast({
+        //     title: '请先打卡',
+        //     icon: "none",
+        //     duration: 2000
+        //   })
+        //   return
+        // }
         this.currentIndex=index
       },
     },

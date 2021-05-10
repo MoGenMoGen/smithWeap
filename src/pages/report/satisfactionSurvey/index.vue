@@ -28,7 +28,7 @@
       </div>
       <div class="other">
         <p>客户负责人签字</p>
-        <signature @success='getsign'></signature>
+        <signature @success='getsign' :signImage="sign"></signature>
         <div class="br"></div>
         <div class="phone">
           <span>联系电话</span>
@@ -165,6 +165,7 @@ export default {
   },
   onLoad(e){
     this.id = e.id
+    this.sign = decodeURIComponent(e.imgUrl)
   },
   async onShow(){
     this.getlist()

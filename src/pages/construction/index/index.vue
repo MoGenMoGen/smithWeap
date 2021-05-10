@@ -2,7 +2,7 @@
   <div class="app">
     <div class="nav">
       <div class="searchBox">
-        <div>
+        <!-- <div>
           <div class="section">
             <picker @change="bindPickerChange" :value="index" :range="array" range-key="dictValue">
               <div class="picker">
@@ -11,7 +11,7 @@
               </div>
             </picker>
           </div>
-        </div>
+        </div> -->
         <div class="dateBox">
           <div class="timechange">
             <div class="time">
