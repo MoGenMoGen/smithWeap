@@ -1,4 +1,4 @@
-<import src="/components/steps.vue.wxml" /><template name="0bbdf50d">
+<import src="/components/steps.vue.wxml" /><template name="0292d77a">
   <view id="report" class="_div data-v-6418e488">
     <view class="_div data-v-6418e488 nav">
       <view class="_ul data-v-6418e488">
@@ -32,7 +32,7 @@
               <view class="_p data-v-6418e488">{{item.bidEnd}}</view>
             </view>
           </view>
-          <view class="_div data-v-6418e488"><template data="{{...$root[$kk+'0_'+index], $root}}" is="1544e967"></template>
+          <view class="_div data-v-6418e488"><template data="{{...$root[$kk+'0_'+index], $root}}" is="5a1aa91d"></template>
             <view style="border: 1rpx solid #909090;color: #909090;" bindtap="handleProxy" data-eventid="{{'1_'+index}}" data-comkey="{{$k}}" class="_p data-v-6418e488"> 查看 </view>
           </view>
         </view>

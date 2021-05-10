@@ -4,4 +4,5 @@
   "navigationBarTextStyle":"black",
   "onReachBottomDistance": 150,
   "enablePullDownRefresh": false
+
 }

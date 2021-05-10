@@ -1,10 +1,14 @@
 <import src="/components/dateRange.vue.wxml" />
 <import src="/components/steps.vue.wxml" />
-<import src="/components/bottomBase.vue.wxml" /><template name="6c7f040e">
+<import src="/components/bottomBase.vue.wxml" /><template name="444a922f">
   <view class="_div data-v-97172bf0 app">
     <view class="_div data-v-97172bf0 nav">
       <view class="_div data-v-97172bf0 searchBox">
-        <view class="_div data-v-97172bf0 dateBox"><template bindgetStart="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'0'], $root}}" is="30c0746f"></template> ~ <template bindgetStart="handleProxy" data-eventid="{{'1'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'1'], $root}}" is="30c0746f"></template>
+        <view class="_div data-v-97172bf0 dateBox">
+          <view class="_div data-v-97172bf0 timechange">
+            <view class="_div data-v-97172bf0 time"><template bindgetStart="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'0'], $root}}" is="deb92db6"></template></view> <label class="_span data-v-97172bf0">~</label>
+            <view class="_div data-v-97172bf0 time"><template bindgetStart="handleProxy" data-eventid="{{'1'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'1'], $root}}" is="deb92db6"></template></view>
+          </view>
           <image src="{{dateIcon}}" class="_img data-v-97172bf0 icon"></image>
         </view> <input value="{{nm}}" bindinput="handleProxy" placeholder="请输入经销商名称或工单编号" data-eventid="{{'2'}}" data-comkey="{{$k}}" class="_input data-v-97172bf0" />
       </view>
@@ -39,11 +43,11 @@
               <view class="_p data-v-97172bf0">{{item.bidEnd}}</view>
             </view>
           </view>
-          <view class="_div data-v-97172bf0"><template wx:if="{{orderType == 1}}" data="{{...$root[$kk+'2_'+index], $root}}" is="1544e967"></template>
+          <view class="_div data-v-97172bf0"><template wx:if="{{orderType == 1}}" data="{{...$root[$kk+'2_'+index], $root}}" is="5a1aa91d"></template>
             <view class="_p data-v-97172bf0"> 查看 </view>
           </view>
         </view>
       </view>
-    </view> <template data="{{...$root[$kk+'3'], $root}}" is="eb4913e8"></template>
+    </view> <template data="{{...$root[$kk+'3'], $root}}" is="26d71816"></template>
   </view>
 </template>

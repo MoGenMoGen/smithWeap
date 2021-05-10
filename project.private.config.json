@@ -68,8 +68,8 @@
           "scene": null
         },
         {
-          "name": "pages/report/confirmOrder/main",
-          "pathName": "pages/report/confirmOrder/main",
+          "name": "pages/report/confirmSubmit/main",
+          "pathName": "pages/report/confirmSubmit/main",
           "query": "id=1377907398978625537",
           "scene": null
         }

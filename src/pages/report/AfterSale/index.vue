@@ -85,7 +85,7 @@
               <img :src="del" class="del" @click="delimg(index,2)" />
             </div>
           </div>
-          
+
         </div>
       </div>
       <div class="work bottom">
@@ -171,9 +171,11 @@
         imglist3:[],
         //显示的地址
         relTime:'',
+        list: []
       }
     },
     async onShow(){
+      this.getClockList(this.id)
     },
     methods:{
       showMask(type){
@@ -189,6 +191,11 @@
             this.isModel = !this.isModel;
             break
         }
+      },
+      // 获取签到信息
+      async getClockList(id) {
+        let data = await this.api.clockList(id)
+        this.list = data.data
       },
       //将子组件中变化的数据赋值于父组件
       mask(e){
@@ -274,6 +281,14 @@
       //提交表单
       submit(index){
         if(index == 1) return this.util.back()
+        if(this.list.length != 2) {
+          wx.showToast({
+            title: '请先打卡',
+            icon: "error",
+            duration: 2000
+          })
+          return
+        }
         if(this.pushInfo.completionTm == ''){
           return wx.showToast({
               icon: "none",
@@ -285,7 +300,7 @@
         this.api.postaddCompletion2(this.pushInfo).then(res=>{
           //跳转
            wx.redirectTo({url:'/pages/report/AfterSaleOrder/main?id=' +this.id})
-          // this.toPage('/pages/report/AfterSaleOrder/main?id=' +this.id) 
+          // this.toPage('/pages/report/AfterSaleOrder/main?id=' +this.id)
         })
       },
       //时间选择回调函数
@@ -448,7 +463,7 @@
                 top: -16rpx;
                 right: -16rpx;
                 // z-index: 9999;
-              } 
+              }
             }
           }
           .top{

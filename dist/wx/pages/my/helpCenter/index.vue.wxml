@@ -1,4 +1,4 @@
-<import src="/components/bottomBase.vue.wxml" /><template name="168f606e">
+<import src="/components/bottomBase.vue.wxml" /><template name="2e122510">
   <view class="_div data-v-24835cf9 app">
     <view class="_div data-v-24835cf9 main">
       <view class="_div data-v-24835cf9 mainBox">
@@ -6,6 +6,6 @@
           <rich-text nodes="{{info.content}}" class="_p data-v-24835cf9"></rich-text>
         </view>
       </view>
-    </view> <template data="{{...$root[$kk+'0'], $root}}" is="eb4913e8"></template>
+    </view> <template data="{{...$root[$kk+'0'], $root}}" is="26d71816"></template>
   </view>
 </template>
