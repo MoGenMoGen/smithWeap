@@ -62,15 +62,15 @@
           "scene": null
         },
         {
-          "name": "pages/report/index/main",
-          "pathName": "pages/report/index/main",
-          "query": "id=1377907398978625537",
+          "name": "pages/quotation/apply/main",
+          "pathName": "pages/quotation/apply/main",
+          "query": "id=1377887605496840194",
           "scene": null
         },
         {
-          "name": "pages/report/confirmSubmit/main",
-          "pathName": "pages/report/confirmSubmit/main",
-          "query": "id=1377907398978625537",
+          "name": "pages/quotation/detail/main",
+          "pathName": "pages/quotation/detail/main",
+          "query": "id=1390553083997614082",
           "scene": null
         }
       ]

@@ -181,14 +181,14 @@
         this.list = data.data
       },
       changeTab(item,index){
-        if(this.list.length != 2) {
-          wx.showToast({
-            title: '请先打卡',
-            icon: "error",
-            duration: 2000
-          })
-          return
-        }
+        // if(this.list.length != 2) {
+        //   wx.showToast({
+        //     title: '请先打卡',
+        //     icon: "error",
+        //     duration: 2000
+        //   })
+        //   return
+        // }
         this.currentIndex=index
       },
     },

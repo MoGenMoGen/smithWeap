@@ -514,6 +514,18 @@ class reg{
     }
     return 'ok'
   }
+  // 判断图片,pdf,doc
+  checkImgType(name){
+  	if (/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(name) ) {
+  	   return  1;
+  	}else if (/\.(pdf|PDF)$/.test(name) ) {
+  	   return  2;
+  	}else if (/\.(doc|docx|DOC|DOCX)$/.test(name) ) {
+  	   return  3;
+  	} else {
+      return 4
+    }
+  }
 }
 class App{
   //调用本地java方法

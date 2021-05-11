@@ -173,7 +173,7 @@ function login(data) {
         title: e.msg,
         duration: 2000
       });
-      
+
     });
   })
 
@@ -840,6 +840,14 @@ class api {
     listAllPlat(data){
       return new Promise(resolve =>{
         get("/blade-works/worksorder/listAllPlat",data).then(res=>{
+          resolve(res)
+        })
+      })
+    }
+    // 货物清点-产品清单
+    worksgoodsList() {
+      return new Promise(resolve =>{
+        get("/blade-works/worksgoods/tlist").then(res=>{
           resolve(res)
         })
       })

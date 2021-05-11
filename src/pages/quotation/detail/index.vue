@@ -31,6 +31,14 @@
             <span>工作内容</span>
             <p>{{info.workCont}}</p>
           </li>
+          <li v-if="info.backStageAttach.length!=0">
+            <span>附件</span>
+            <block v-for="(item, index) in info.backStageAttach" :key="index">
+              <img :src="item.url" mode="heightFix" v-if="item.type==1" /> <!--图片-->
+              <img :src="pdf" mode="heightFix" v-if="item.type==2" /> <!--pdf-->
+              <img :src="word" mode="heightFix" v-if="item.type==3" /> <!--doc-->
+            </block>
+          </li>
         </ul>
       </div>
       <div class="infoBox box" v-if="isapply">
@@ -58,11 +66,11 @@
           </li>
           <li>
             <span>利润</span>
-            <p>{{worksOffer.profitsTax}}</p>
+            <p>{{worksOffer.profits}}</p>
           </li>
           <li>
             <span>税收</span>
-            <p>{{worksOffer.profitsTax}}</p>
+            <p>{{worksOffer.tax}}</p>
           </li>
           <li>
             <span>报价总金额</span>
@@ -76,7 +84,7 @@
             <span>附件上传</span>
             <div class="imgs" v-if="worksOffer.attach">
               <div v-for="(item,index) in imgUrls" :key="index" @click="viewImg(item,imgUrls)">
-                <image :src="item" mode="heightFix"  />
+                <img :src="item" mode="heightFix"/>
               </div>
             </div>
             <!-- <img :src="worksOffer.fj" mode="width"/> -->
@@ -101,7 +109,9 @@
   import bottomBase from "@/components/bottomBase";
 
   import fjsc from "@/components/img/附件上传图标.png"
-  import fj from "@/components/img/附件.png"
+  import fj from "@/components/img/附件.png";
+  import pdf from "@/components/img/pdf.png";
+  import word from "@/components/img/word.png";
   export default {
     data(){
       return{
@@ -112,7 +122,7 @@
         },
         imgUrls:[],
         //是否报价
-        isapply:true,
+        isapply:true
       }
     },
     methods:{
@@ -139,9 +149,20 @@
       let id = item.id
       //发送请求获取报单详情
       const res = await this.api.infoOffer({orderId:id})
+      let topRes = await this.api.infoAfterWork({orderId:id})
+      let attach = topRes.data.attach.split(",")
+      let backStageAttach = []
+      attach.forEach(item => {
+        let data = {
+          url:item,
+          type: this.reg.checkImgType(item)
+        }
+        backStageAttach.push(data)
+      })
       this.info = res.data
       this.info.bidStart = this.info.bidStart.substring(0,10)
       this.info.bidEnd = this.info.bidEnd.substring(0,10)
+      this.info.backStageAttach = backStageAttach
       let data = res.data.worksOffer
       // console.log(JSON.stringify(res.data.worksOffer));
       if(JSON.stringify(res.data.worksOffer) === '{}'){
@@ -163,7 +184,9 @@
         this.worksOffer.laborCost= this.addCommas(data.laborCost)
         this.worksOffer.travelCost= this.addCommas(data.travelCost)
         this.worksOffer.other= this.addCommas(data.other)
-        this.worksOffer.profitsTax= this.addCommas(data.profitsTax)
+        // this.worksOffer.profitsTax= this.addCommas(data.profitsTax)
+        this.worksOffer.profits= this.addCommas(data.profits)
+        this.worksOffer.tax= this.addCommas(data.tax)
         this.worksOffer.amount= this.addCommas(data.amount)
         this.worksOffer.discountAmount= this.addCommas(data.discountAmount)
         this.worksOffer.attach = data.attach

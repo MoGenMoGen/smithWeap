@@ -56,8 +56,12 @@
             <input type="number" v-model="pushInfo.other" placeholder="请输入其他报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
-            <span>利润与税收</span>
-            <input type="number" v-model="pushInfo.profitsTax" placeholder="请输入利润与税收报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+            <span>利润</span>
+            <input type="number" v-model="pushInfo.profits" placeholder="请输入利润报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
+          </li>
+          <li>
+            <span>税收</span>
+            <input type="number" v-model="pushInfo.tax" placeholder="请输入税收报价金额" placeholder-style="color: #D0CED8;font-size:28rpx;">
           </li>
           <li>
             <span>报价总金额</span>
@@ -124,11 +128,13 @@
           laborCost:'',
           travelCost:'',
           other:'',
-          profitsTax:'',
+          // profitsTax:'',
           amount:'',
           discountAmount:'',
           attach:'',
-          rmks:''
+          rmks:'',
+          profits: '',
+          tax: ''
         },
         //附件图片
         imgUrls:[],
@@ -215,11 +221,13 @@
           laborCost:'',
           travelCost:'',
           other:'',
-          profitsTax:'',
+          // profitsTax:'',
           amount:'',
           discountAmount:'',
           attach:'',
-          rmks:''
+          rmks:'',
+          profits: '',
+          tax: ''
         }
         this.imgUrls = []
       }
@@ -250,7 +258,9 @@
             newVal.laborCost,
             newVal.travelCost,
             newVal.other,
-            newVal.profitsTax
+            newVal.profits,
+            newVal.tax,
+            // newVal.profitsTax
           ]
           var flag = false
           if(this.Money ==[]){

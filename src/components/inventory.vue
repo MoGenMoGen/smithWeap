@@ -65,7 +65,12 @@
       </div>
       <ul v-if="type==1">
         <li>
-          <input v-model="submitInfo.nm" placeholder="请输入新增产品名称"/>
+          <!-- <input v-model="submitInfo.nm" placeholder="请输入新增产品名称"/> -->
+          <picker @change="bindGoodChange" :value="goodIndex" :range="goodArray" range-key="nm" style="flex:1;text-align: left">
+            <p class="picker">
+              {{goodArray[goodIndex].nm}}<span v-if="goodArray[goodIndex].spec">({{goodArray[goodIndex].spec}})</span>
+            </p>
+          </picker>
         </li>
         <li>
           <span>单位</span>
@@ -127,11 +132,13 @@
         change:false,
         isModel:false,
         changeModel:false,
-        submitInfo:{
-          nm:'',
-        },
+        // submitInfo:{
+        //   nm:'',
+        // },
         index:0,
         array: [],
+        goodIndex: 0,
+        goodArray: [],
         type:1,//1 新增产品接口 2提交
         imgList:[],//整体图片库
       }
@@ -144,11 +151,13 @@
       console.log('onload')
       if(this.id =="") return ;
       this.getData(this.id)
+      this.getList()
     },
     mounted(){
       console.log('mounted',this.id)
       if(this.id =="") return ;
       this.getData(this.id)
+      this.getList()
     },
     onUnload(){
       this.info = {}
@@ -165,6 +174,18 @@
         wx.previewImage({
           current: url, // 当前显示图片的http链接
           urls: list // 需要预览的图片http链接列表
+        })
+      },
+      async getList() {
+        let res = await this.api.worksgoodsList()
+        this.goodArray = []
+        this.array.forEach((item, index) => {
+          if(res.data[0].unit == item){
+            this.index = index
+          }
+        })
+        res.data.forEach(item => {
+          this.goodArray.push(item)
         })
       },
       async getData(id){
@@ -219,6 +240,14 @@
         console.log('picker发送选择改变，携带值为', e.mp.detail.value)
         this.index = e.mp.detail.value
       },
+      bindGoodChange(e) {
+        this.goodIndex = e.mp.detail.value
+        this.array.forEach((item, index) => {
+          if(this.goodArray[this.goodIndex].unit == item){
+            this.index = index
+          }
+        })
+      },
       //  弹框取消
       tapCancel() {
         console.log("取消");
@@ -235,7 +264,7 @@
           let param ={
             orderId: this.id,
             billId: this.info.id,
-            nm: this.submitInfo.nm,
+            nm: this.goodArray[this.goodIndex].nm,
             unit: this.array[this.index],
           }
           // console.log(param);
@@ -259,6 +288,7 @@
               unpackCheck: item.unpackCheck,
               install: item.install,
               rmks: item.rmks,
+              spec: item.spec
             }
             goodslist.push(data)
           });
@@ -310,6 +340,7 @@
             unpackCheck: item.unpackCheck,
             install: item.install,
             rmks: item.rmks,
+            spec: item.spec
           }
           goodslist.push(data)
         });
