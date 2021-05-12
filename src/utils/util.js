@@ -522,9 +522,7 @@ class reg{
   	   return  2;
   	}else if (/\.(doc|docx|DOC|DOCX)$/.test(name) ) {
   	   return  3;
-  	} else {
-      return 4
-    }
+  	}
   }
 }
 class App{

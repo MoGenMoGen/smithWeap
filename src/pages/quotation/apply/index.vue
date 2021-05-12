@@ -269,8 +269,9 @@
       const res = await this.api.infoOffer({orderId:id})
       // 获取处理附件
       let topRes = await this.api.infoAfterWork({orderId:id})
-      let attach = topRes.data.attach.split(",")
       let backStageAttach = []
+      let attach =[]
+      if(topRes.data.attach) attach = topRes.data.attach.split(",")
       attach.forEach(item => {
         let data = {
           url:item,
