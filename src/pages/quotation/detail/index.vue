@@ -33,11 +33,13 @@
           </li>
           <li v-if="info.backStageAttach.length!=0">
             <span>附件</span>
-            <block v-for="(item, index) in info.backStageAttach" :key="index">
-              <img :src="item.url" mode="heightFix" v-if="item.type==1" /> <!--图片-->
-              <img :src="pdf" mode="heightFix" v-if="item.type==2" /> <!--pdf-->
-              <img :src="word" mode="heightFix" v-if="item.type==3" /> <!--doc-->
-            </block>
+            <div style="display: flex;flex: 1;flex-wrap: wrap;padding-top: 20rpx;">
+              <block v-for="(item, index) in info.backStageAttach" :key="index">
+                <img :src="item.url" mode="heigthFix" style="height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==1" @click="viewImg(item.url,item.url.split(','))" /> <!--图片-->
+                <img :src="pdf" style="width: 54rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==3" @click="openFile(item.url)"/> <!--pdf-->
+                <img :src="word" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==2" @click="openFile(item.url)"/> <!--doc-->
+              </block>
+            </div>
           </li>
         </ul>
       </div>
@@ -116,6 +118,8 @@
     data(){
       return{
         fjsc,
+        pdf,
+        word,
         info:{
         },
         worksOffer:{
@@ -131,6 +135,22 @@
         wx.previewImage({
           current: url, // 当前显示图片的http链接
           urls: list // 需要预览的图片http链接列表
+        })
+      },
+      // 打开文档
+      openFile(url) {
+        console.log(url)
+        wx.downloadFile({
+          url: url,
+          success: function (res) {
+            const filePath = res.tempFilePath
+            wx.openDocument({
+              filePath: filePath,
+              success: function (res) {
+                console.log('打开文档成功')
+              }
+            })
+          }
         })
       },
       toPage(url){
@@ -149,6 +169,7 @@
       let id = item.id
       //发送请求获取报单详情
       const res = await this.api.infoOffer({orderId:id})
+      // 获取处理附件
       let topRes = await this.api.infoAfterWork({orderId:id})
       let attach = topRes.data.attach.split(",")
       let backStageAttach = []
