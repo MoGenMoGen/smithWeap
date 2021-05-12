@@ -33,47 +33,23 @@
           </li>
           <li v-if="info.backStageAttach.length != 0">
             <span>附件</span>
-            <div
-              style="
-                display: flex;
-                flex: 1;
-                flex-wrap: wrap;
-                padding-top: 20rpx;
-              "
-            >
+            <div style="display: flex; flex: 1; flex-wrap: wrap; padding-top: 20rpx;">
               <block v-for="(item, index) in info.backStageAttach" :key="index">
-                <img
-                  :src="item.url"
-                  mode="heigthFix"
-                  style="
-                    height: 70rpx;
-                    margin-right: 20rpx;
-                    margin-bottom: 20rpx;
-                  "
+                <img :src="item.url" mode="heigthFix" style="height: 70rpx; margin-right: 20rpx; margin-bottom: 20rpx;"
                   v-if="item.type == 1"
                   @click="viewImg(item.url, item.url.split(','))"
                 />
                 <!--图片-->
                 <img
                   :src="pdf"
-                  style="
-                    width: 54rpx;
-                    height: 70rpx;
-                    margin-right: 20rpx;
-                    margin-bottom: 20rpx;
-                  "
+                  style="width: 54rpx; height:70rpx; margin-right: 20rpx; margin-bottom:20rpx;"
                   v-if="item.type == 3"
                   @click="openFile(item.url)"
                 />
                 <!--pdf-->
                 <img
                   :src="word"
-                  style="
-                    width: 59rpx;
-                    height: 70rpx;
-                    margin-right: 20rpx;
-                    margin-bottom: 20rpx;
-                  "
+                  style="width: 59rpx; height: 70rpx; margin-right: 20rpx; margin-bottom: 20rpx;"
                   v-if="item.type == 2"
                   @click="openFile(item.url)"
                 />
@@ -152,129 +128,118 @@
 </template>
 
 <script>
-  import bottomBase from "@/components/bottomBase";
-
-  import fjsc from "@/components/img/附件上传图标.png"
-  import fj from "@/components/img/附件.png";
-  import pdf from "@/components/img/pdf.png";
-  import word from "@/components/img/word.png";
-  export default {
-    data(){
-      return{
-        fjsc,
-        pdf,
-        word,
-        info:{
-        },
-        worksOffer:{
-        },
-        imgUrls:[],
-        //是否报价
-        isapply:true
-      }
-    },
-    methods:{
-      //图片预览
-      viewImg(url,list){
-        wx.previewImage({
-          current: url, // 当前显示图片的http链接
-          urls: list // 需要预览的图片http链接列表
-        })
-      },
-      // 打开文档
-      openFile(url) {
-        console.log(url)
-        wx.downloadFile({
-          url: url,
-          success: function (res) {
-            const filePath = res.tempFilePath
-            wx.openDocument({
-              filePath: filePath,
-              success: function (res) {
-                console.log('打开文档成功')
-              }
-            })
-          }
-        })
-      },
-      toPage(url){
-        if(url){
-          this.util.aHref(url)
-        }
-      },
-      addCommas(val){
-        return '¥' + this.util.addCommas(val)
-
-      }
-    },
-    async onLoad(item) {
-      // this.info = null
-      // this.worksOffer = null
-      // this.imgUrls = []
-      let id = item.id;
-      //发送请求获取报单详情
-      const res = await this.api.infoOffer({orderId:id})
-      // 获取处理附件
-      let topRes = await this.api.infoAfterWork({orderId:id})
-      let backStageAttach = []
-      let attach =[]
-      if(topRes.data.attach) attach = topRes.data.attach.split(",")
-      attach.forEach(item => {
-        let data = {
-          url: item,
-          type: this.reg.checkImgType(item),
-        };
-        backStageAttach.push(data);
+import bottomBase from "@/components/bottomBase";
+import fjsc from "@/components/img/附件上传图标.png";
+import fj from "@/components/img/附件.png";
+import pdf from "@/components/img/pdf.png";
+import word from "@/components/img/word.png";
+export default {
+  data() {
+    return {
+      fjsc,
+      pdf,
+      word,
+      info: {},
+      worksOffer: {},
+      imgUrls: [],
+      //是否报价
+      isapply: true,
+    };
+  },
+  methods: {
+    //图片预览
+    viewImg(url, list) {
+      wx.previewImage({
+        current: url, // 当前显示图片的http链接
+        urls: list, // 需要预览的图片http链接列表
       });
-      this.info = res.data;
-      this.info.bidStart = this.info.bidStart.substring(0, 10);
-      this.info.bidEnd = this.info.bidEnd.substring(0, 10);
-      this.info.backStageAttach = backStageAttach;
-      let data = res.data.worksOffer;
-      // console.log(JSON.stringify(res.data.worksOffer));
-      if (JSON.stringify(res.data.worksOffer) === "{}") {
-        this.isapply = false;
-        // this.worksOffer.materialCost = 0
-        // this.worksOffer.deviceCost= 0
-        // this.worksOffer.laborCost= 0
-        // this.worksOffer.travelCost= 0
-        // this.worksOffer.other= 0
-        // this.worksOffer.profitsTax= 0
-        // this.worksOffer.amount= 0
-        // this.worksOffer.discountAmount= 0
-        // this.worksOffer.attach = ''
-        // this.worksOffer.rmks= ''
-      } else {
-        this.isapply = true;
-        this.worksOffer.materialCost = this.addCommas(data.materialCost);
-        this.worksOffer.deviceCost = this.addCommas(data.deviceCost);
-        this.worksOffer.laborCost = this.addCommas(data.laborCost);
-        this.worksOffer.travelCost = this.addCommas(data.travelCost);
-        this.worksOffer.other = this.addCommas(data.other);
-        // this.worksOffer.profitsTax= this.addCommas(data.profitsTax)
-        this.worksOffer.profits = this.addCommas(data.profits);
-        this.worksOffer.tax = this.addCommas(data.tax);
-        this.worksOffer.amount = this.addCommas(data.amount);
-        this.worksOffer.discountAmount = this.addCommas(data.discountAmount);
-        this.worksOffer.attach = data.attach;
-        this.worksOffer.rmks = data.rmks;
+    },
+    // 打开文档
+    openFile(url) {
+      console.log(url);
+      wx.downloadFile({
+        url: url,
+        success: function (res) {
+          const filePath = res.tempFilePath;
+          wx.openDocument({
+            filePath: filePath,
+            success: function (res) {
+              console.log("打开文档成功");
+            },
+          });
+        },
+      });
+    },
+    toPage(url) {
+      if (url) {
+        this.util.aHref(url);
       }
-
-      //图片库
-      this.imgUrls = res.data.worksOffer.attach.split(",");
     },
     addCommas(val) {
       return "¥" + this.util.addCommas(val);
     },
   },
+  async onLoad(item) {
+    // this.info = null
+    // this.worksOffer = null
+    // this.imgUrls = []
+    let id = item.id;
+    //发送请求获取报单详情
+    const res = await this.api.infoOffer({ orderId: id });
+    // 获取处理附件
+    let topRes = await this.api.infoAfterWork({ orderId: id });
+    let backStageAttach = [];
+    let attach = [];
+    if (topRes.data.attach) attach = topRes.data.attach.split(",");
+    attach.forEach((item) => {
+      let data = {
+        url: item,
+        type: this.reg.checkImgType(item),
+      };
+      backStageAttach.push(data);
+    });
+    this.info = res.data;
+    this.info.bidStart = this.info.bidStart.substring(0, 10);
+    this.info.bidEnd = this.info.bidEnd.substring(0, 10);
+    this.info.backStageAttach = backStageAttach;
+    let data = res.data.worksOffer;
+    // console.log(JSON.stringify(res.data.worksOffer));
+    if (JSON.stringify(res.data.worksOffer) === "{}") {
+      this.isapply = false;
+      // this.worksOffer.materialCost = 0
+      // this.worksOffer.deviceCost= 0
+      // this.worksOffer.laborCost= 0
+      // this.worksOffer.travelCost= 0
+      // this.worksOffer.other= 0
+      // this.worksOffer.profitsTax= 0
+      // this.worksOffer.amount= 0
+      // this.worksOffer.discountAmount= 0
+      // this.worksOffer.attach = ''
+      // this.worksOffer.rmks= ''
+    } else {
+      this.isapply = true;
+      this.worksOffer.materialCost = this.addCommas(data.materialCost);
+      this.worksOffer.deviceCost = this.addCommas(data.deviceCost);
+      this.worksOffer.laborCost = this.addCommas(data.laborCost);
+      this.worksOffer.travelCost = this.addCommas(data.travelCost);
+      this.worksOffer.other = this.addCommas(data.other);
+      // this.worksOffer.profitsTax= this.addCommas(data.profitsTax)
+      this.worksOffer.profits = this.addCommas(data.profits);
+      this.worksOffer.tax = this.addCommas(data.tax);
+      this.worksOffer.amount = this.addCommas(data.amount);
+      this.worksOffer.discountAmount = this.addCommas(data.discountAmount);
+      this.worksOffer.attach = data.attach;
+      this.worksOffer.rmks = data.rmks;
+    }
 
+    //图片库
+    this.imgUrls = res.data.worksOffer.attach.split(",");
+  },
   components: {
     bottomBase,
   },
 };
 </script>
-<style>
-</style>
 <style scoped lang="less">
 @import url("../../../css/common.less");
 .app {
