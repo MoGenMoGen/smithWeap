@@ -13,9 +13,9 @@ const appid = 'wxd6ce1371cc156c45'
 const wxHostUrl = 'https://saf.ae-smith.com'
 const tenantId = '000000'
 
-function get(url, data, header,loading) {
+function get(url, data, header, loading) {
   // console.log(url)
-  if(loading){
+  if (loading) {
     wx.showLoading({
       title: "加载中"
     });
@@ -29,11 +29,11 @@ function get(url, data, header,loading) {
       }
     }
   }
-  if(wx.getStorageSync('token')){
+  if (wx.getStorageSync('token')) {
     // console.log('=====================================')
     header = header ? header : {}
-    Object.assign(header,{
-      'Blade-Auth':'bearer '+ wx.getStorageSync('token')
+    Object.assign(header, {
+      'Blade-Auth': 'bearer ' + wx.getStorageSync('token')
     })
     // console.log(header)
   }
@@ -47,15 +47,15 @@ function get(url, data, header,loading) {
           "Content-Type": "application/json",
         },
       url: config.serverURL + url,
-      success: function(res) {
+      success: function (res) {
         wx.hideLoading();
         if (res.data.code == 200 || res.data.code == 400) {
           resolve(res.data);
-        } else if(res.data.code == 401){
+        } else if (res.data.code == 401) {
           wx.removeStorageSync('token')
           getToken()
-        }else {
-          if(res.data.error_description){
+        } else {
+          if (res.data.error_description) {
             wx.showToast({
               icon: "none",
               title: JSON.stringify(res.data),
@@ -65,7 +65,7 @@ function get(url, data, header,loading) {
           // reject(res.data)
         }
       },
-      fail: function(err) {
+      fail: function (err) {
         wx.showToast({
           icon: "none",
           title: JSON.stringify(err),
@@ -73,19 +73,19 @@ function get(url, data, header,loading) {
         });
         reject(err);
       },
-      complete: function() {}
+      complete: function () { }
     });
   });
   return promise;
 }
 
 
-function post(url, data,header) {
-  if(wx.getStorageSync('token')){
+function post(url, data, header) {
+  if (wx.getStorageSync('token')) {
     // console.log('=====================================')
     header = header ? header : {}
-    Object.assign(header,{
-      'Blade-Auth':'bearer '+ wx.getStorageSync('token')
+    Object.assign(header, {
+      'Blade-Auth': 'bearer ' + wx.getStorageSync('token')
     })
     // console.log(header)
   }
@@ -98,11 +98,11 @@ function post(url, data,header) {
       header,
       method: "post",
       url: config.serverURL + url,
-      success: function(res) {
+      success: function (res) {
         wx.hideLoading();
         // console.log(res)
-        if (res.data.code == 200 || !res.data.code || url.indexOf('bindAndLogin')!=-1) {
-          if(url.indexOf('bindAndLogin')==-1){
+        if (res.data.code == 200 || !res.data.code || url.indexOf('bindAndLogin') != -1) {
+          if (url.indexOf('bindAndLogin') == -1) {
             wx.showToast({
               title: '操作成功',
               icon: 'success',
@@ -110,11 +110,11 @@ function post(url, data,header) {
             })
           }
           resolve(res.data);
-        }  else if(res.data.code == 401){
+        } else if (res.data.code == 401) {
           wx.removeStorageSync('token')
           getToken()
-        }else {
-          if(res.data.error_description || res.data.msg){
+        } else {
+          if (res.data.error_description || res.data.msg) {
             wx.showToast({
               icon: "none",
               title: res.data.error_description || res.data.msg,
@@ -124,7 +124,7 @@ function post(url, data,header) {
           // reject(res.data.msg)
         }
       },
-      fail: function(err) {
+      fail: function (err) {
         wx.showToast({
           icon: "none",
           title: JSON.stringify(err),
@@ -132,7 +132,7 @@ function post(url, data,header) {
         });
         // reject(err)
       },
-      complete: function() {}
+      complete: function () { }
     });
   });
   return promise;
@@ -143,31 +143,31 @@ function login(data) {
     "Authorization": "Basic c3dvcmQ6c3dvcmRfc2VjcmV0"
   };
   return new Promise((resolve, reject) => {
-    if(wx.getStorageSync('token')){
+    if (wx.getStorageSync('token')) {
       resolve(wx.getStorageSync('token'));
       return
     }
     // console.log('login')
     // console.log(data)
     data.tenantId = tenantId
-    post("/blade-wxMa/access/"+appid+"/login2", data, header).then(res => {
-      if(res.error_code == 400){
+    post("/blade-wxMa/access/" + appid + "/login2", data, header).then(res => {
+      if (res.error_code == 400) {
         wx.reLaunch({
           url: '/pages/login/main'
         })
         return
       }
-      console.log('res',res);
-      wx.setStorageSync("token",res.access_token);
+      console.log('res', res);
+      wx.setStorageSync("token", res.access_token);
       console.log('保存token')
       // store.store.commit('token',res.data.token)
       console.log('设置token时间')
-      wx.setStorageSync("tokenTime",new Date());
+      wx.setStorageSync("tokenTime", new Date());
       console.log('保存登录者类别')
-      wx.setStorageSync("loginType",res.loginType);
-      wx.setStorageSync("loginInfo",res);
+      wx.setStorageSync("loginType", res.loginType);
+      wx.setStorageSync("loginInfo", res);
       resolve();
-    }).catch(e=>{
+    }).catch(e => {
       wx.showToast({
         icon: "none",
         title: e.msg,
@@ -180,28 +180,28 @@ function login(data) {
 }
 function getToken2() {
   return new Promise(resolve => {
-    if( !wx.getStorageSync('token')){
+    if (!wx.getStorageSync('token')) {
       wx.showLoading({
         title: "加载中"
       });
-      let timer = setInterval(()=>{
-        if(wx.getStorageSync('token')){
+      let timer = setInterval(() => {
+        if (wx.getStorageSync('token')) {
           wx.hideLoading();
           resolve(wx.getStorageSync('token'))
           clearInterval(timer)
         }
-      },100)
-    }else {
+      }, 100)
+    } else {
       resolve(wx.getStorageSync('token'))
     }
   })
 
 
 }
-function getToken(){
+function getToken() {
   console.log('获取token')
   return new Promise(resolve => {
-    if(wx.getStorageSync('token')){
+    if (wx.getStorageSync('token')) {
       resolve(wx.getStorageSync('token'));
       return
     }
@@ -211,7 +211,7 @@ function getToken(){
           let param = {
             code: res.code
           };
-          login(param).then(res=>{
+          login(param).then(res => {
             resolve(res)
           })
         }
@@ -229,148 +229,148 @@ class api {
     };
     return new Promise((resolve, reject) => {
       data.tenantId = tenantId
-      post("/blade-wxMa/access/"+appid+"/login2",data,header).then(res=>{
-        if(res.error_code == 400){
+      post("/blade-wxMa/access/" + appid + "/login2", data, header).then(res => {
+        if (res.error_code == 400) {
           wx.reLaunch({
             url: '/pages/login/main'
           })
           return
         }
-        wx.setStorageSync("token",res.access_token);
+        wx.setStorageSync("token", res.access_token);
         console.log('api获取到了type');
-        wx.setStorageSync("loginType",res.loginType);
-        wx.setStorageSync("loginInfo",res);
+        wx.setStorageSync("loginType", res.loginType);
+        wx.setStorageSync("loginInfo", res);
         console.log('登录')
         console.log(wx.getStorageSync("loginInfo"))
         console.log('api设置token时间')
-        wx.setStorageSync("tokenTime",new Date());
+        wx.setStorageSync("tokenTime", new Date());
         resolve(res.data.token);
       })
     });
   }
   //账号登陆（非小程序登录）
-  login2(data){
+  login2(data) {
     let header = {
       "Content-Type": "application/x-www-form-urlencoded",
       "Authorization": "Basic c3dvcmQ6c3dvcmRfc2VjcmV0"
     };
     return new Promise(((resolve, reject) => {
-      post('/blade-wxMa/access/'+appid+'/bindAndLogin',data,header).then(res=>{
+      post('/blade-wxMa/access/' + appid + '/bindAndLogin', data, header).then(res => {
         resolve(res)
       })
     }))
   }
   //施工汇报(待汇报)
-  listToReport(data){
+  listToReport(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/listToReport',data).then(res=>{
+      get('/blade-works/worksorder/listToReport', data).then(res => {
         resolve(res)
       })
     })
   }
   //施工汇报(待审核)
-  listToAudit(data){
+  listToAudit(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/listToAudit',data).then(res=>{
+      get('/blade-works/worksorder/listToAudit', data).then(res => {
         resolve(res)
       })
     })
   }
   //施工汇报(已完工)
-  listToComplete(data){
+  listToComplete(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/listToComplete',data).then(res=>{
+      get('/blade-works/worksorder/listToComplete', data).then(res => {
         resolve(res)
       })
     })
   }
   //获取接单报价列表
-  listOffer(data){
+  listOffer(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/listOffer',data).then(res=>{
+      get('/blade-works/worksorder/listOffer', data).then(res => {
         resolve(res)
       })
     })
   }
   //获取接单施工列表
-  listAfterWork(data){
+  listAfterWork(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/listAfterWork',data).then(res=>{
+      get('/blade-works/worksorder/listAfterWork', data).then(res => {
         resolve(res)
       })
     })
   }
   //获取接单施工详情
-  infoAfterWork(data){
+  infoAfterWork(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/infoAfterWork',data).then(res=>{
+      get('/blade-works/worksorder/infoAfterWork', data).then(res => {
         resolve(res)
       })
     })
   }
   //获取工单报价详情
-  infoOffer(data){
+  infoOffer(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/infoOffer',data).then(res=>{
+      get('/blade-works/worksorder/infoOffer', data).then(res => {
         resolve(res)
       })
     })
   }
   //工单报价接口
-  addOffer(data){
-    return new Promise(resolve=>{
-      post("/blade-works/worksoffer/addOffer",data).then(res=>{
+  addOffer(data) {
+    return new Promise(resolve => {
+      post("/blade-works/worksoffer/addOffer", data).then(res => {
         resolve(res);
       })
     })
   }
   //数据字典
-  getDictionary(data){
+  getDictionary(data) {
     return new Promise(resolve => {
-      get('/blade-system/dict-biz/listByPcd',data).then(res=>{
+      get('/blade-system/dict-biz/listByPcd', data).then(res => {
         resolve(res)
       })
     })
   }
   //工单详情
-  getInfoWork(data){
+  getInfoWork(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksorder/infoWork?orderId='+data).then(res=>{
+      get('/blade-works/worksorder/infoWork?orderId=' + data).then(res => {
         resolve(res)
       })
     })
   }
   //打卡-列表
-  clockList(data){
+  clockList(data) {
     return new Promise(resolve => {
-      get('/blade-works/worksclockin/listPC?orderId='+data).then(res=>{
+      get('/blade-works/worksclockin/listPC?orderId=' + data).then(res => {
         resolve(res)
       })
     })
   }
   //打卡-类型
-  clockType(data){
+  clockType(data) {
     return new Promise(resolve => {
-      get('/blade-system/dict-biz/listByPcd?cd='+data).then(res=>{
+      get('/blade-system/dict-biz/listByPcd?cd=' + data).then(res => {
         resolve(res)
       })
     })
   }
   //打卡-新增
-  newClock(data){
+  newClock(data) {
     return new Promise(resolve => {
-      post('/blade-works/worksclockin/add',data).then(res=>{
+      post('/blade-works/worksclockin/add', data).then(res => {
         resolve(res)
       })
     })
   }
   //图片选择
-  chooseImages(type,max) {
+  chooseImages(type, max) {
     wx.setStorage({
-      key:"ifClose",
-      data:'no'
+      key: "ifClose",
+      data: 'no'
     })
-    let promise = new Promise((resolve,reject)=> {
+    let promise = new Promise((resolve, reject) => {
       let that = this
       wx.chooseImage({
         count: 1,           //一次最多可以选择的图片张数
@@ -396,8 +396,8 @@ class api {
     return promise
   }
   //上传操作
-  async upLoad(imgPath){
-    let token = 'bearer '+ wx.getStorageSync('token')
+  async upLoad(imgPath) {
+    let token = 'bearer ' + wx.getStorageSync('token')
     // console.log(1,imgPath)
     return new Promise((resolve, reject) => {
       let that = this
@@ -408,450 +408,450 @@ class api {
         name: 'file',
         header: {
           "Content-Type": "multipart/form-data",
-          'Blade-Auth':token
+          'Blade-Auth': token
         },
-        success: function(res) {
+        success: function (res) {
           // console.log('================')
           // console.log(JSON.parse(res.data).data)
           let img = JSON.parse(res.data).data
           resolve(img)
         },
-        fail: function(res) {
+        fail: function (res) {
           wx.showModal({
             title: '错误提示',
             content: res.msg,
             showCancel: false,
-            success: function(res) {
+            success: function (res) {
             }
           })
         },
-        complete: function() {
+        complete: function () {
           wx.hideLoading();
         }
       });
     })
   }
   //获取调查问卷详情
-  getsurvconfig(){
-    return new Promise(resolve=>{
-      get("/blade-surv/survconfig/info").then(res=>{
+  getsurvconfig() {
+    return new Promise(resolve => {
+      get("/blade-surv/survconfig/info").then(res => {
         resolve(res.data);
       })
     })
   }
   //获取选择题答案
-  getlistByPcd(){
-    return new Promise(resolve=>{
-      get("/blade-system/dict-biz/listByPcd",{cd:"quesAnswer"}).then(res=>{
+  getlistByPcd() {
+    return new Promise(resolve => {
+      get("/blade-system/dict-biz/listByPcd", { cd: "quesAnswer" }).then(res => {
         resolve(res.data);
       })
     })
   }
   //调查问卷新增
-  AddSurvbill(data){
-    return new Promise(resolve=>{
-      post("/blade-surv/survbill/add",data).then(res=>{
+  AddSurvbill(data) {
+    return new Promise(resolve => {
+      post("/blade-surv/survbill/add", data).then(res => {
         resolve(res.data);
       })
     })
   }
   //附件上传接口
-  putFileAttach(data){
-    return new Promise(resolve=>{
-      post("/blade-resource/oss/endpoint/put-file-attach",data).then(res=>{
+  putFileAttach(data) {
+    return new Promise(resolve => {
+      post("/blade-resource/oss/endpoint/put-file-attach", data).then(res => {
         resolve(res.data);
       })
     })
   }
   //接受接单接口
-  orderTake(data){
+  orderTake(data) {
 
-    return new Promise(resolve=>{
-      post("/blade-works/worksorder/orderTake?orderId="+data.orderId+'&constructionManager='+data.constructionManager).then(res=>{
+    return new Promise(resolve => {
+      post("/blade-works/worksorder/orderTake?orderId=" + data.orderId + '&constructionManager=' + data.constructionManager).then(res => {
         resolve(res);
       })
     })
   }
   //拒绝接单接口
-  orderRefused(data){
-    return new Promise(resolve=>{
-      post("/blade-works/worksorder/orderRefused?orderId="+data.orderId).then(res=>{
+  orderRefused(data) {
+    return new Promise(resolve => {
+      post("/blade-works/worksorder/orderRefused?orderId=" + data.orderId).then(res => {
         resolve(res);
       })
     })
   }
   //获取接单指派列表
-  listAssigned(){
-    return new Promise(resolve=>{
-      get("/blade-works/worksorder/listAssigned").then(res=>{
+  listAssigned() {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/listAssigned").then(res => {
         resolve(res);
       })
     })
   }
   //交底报告详情
-  getConfession(id){
+  getConfession(id) {
     return new Promise(resolve => {
-      get("/blade-works/worksdisclosure/info?orderId="+id).then(res=>{
+      get("/blade-works/worksdisclosure/info?orderId=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //交底报告保存
-  saveConfession(data){
+  saveConfession(data) {
     return new Promise(resolve => {
-      post("/blade-works/worksdisclosure/keep",data).then(res=>{
+      post("/blade-works/worksdisclosure/keep", data).then(res => {
         resolve(res)
       })
     })
   }
   //交底报告提交
-  addConfession(data){
+  addConfession(data) {
     return new Promise(resolve => {
-      post("/blade-works/worksdisclosure/refer",data).then(res=>{
+      post("/blade-works/worksdisclosure/refer", data).then(res => {
         resolve(res)
       })
     })
   }
   //异常报告列表接口
-  getExceptionList(id){
-    return new Promise(resolve =>{
-      get("/blade-works/worksexception/listByOrder?orderId="+id).then(res=>{
+  getExceptionList(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksexception/listByOrder?orderId=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //异常报告新增
-  addException(data){
+  addException(data) {
     return new Promise(resolve => {
-      post("/blade-works/worksexception/add",data).then(res=>{
+      post("/blade-works/worksexception/add", data).then(res => {
         resolve(res)
       })
     })
   }
   //异常报告详情
-  getExceptionDtl(id){
-    return new Promise(resolve =>{
-      get("/blade-works/worksexception/info?id="+id).then(res=>{
+  getExceptionDtl(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksexception/info?id=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //异常报告修改
-  editException(data){
+  editException(data) {
     return new Promise(resolve => {
-      post("/blade-works/worksexception/alter",data).then(res=>{
+      post("/blade-works/worksexception/alter", data).then(res => {
         resolve(res)
       })
     })
   }
   //货物清点-详情
-  getInventoryDtl(id){
-    return new Promise(resolve =>{
-      get("/blade-works/worksgoodsbill/info?orderId="+id).then(res=>{
+  getInventoryDtl(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksgoodsbill/info?orderId=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //完工确认单(安装)-详情
-  getInstallDtl(id){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/infoComplete?orderId="+id).then(res=>{
+  getInstallDtl(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/infoComplete?orderId=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //完工确认单(维修)-详情
-  getServiceDtl(id){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/infoComplete2?orderId="+id).then(res=>{
+  getServiceDtl(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/infoComplete2?orderId=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //每日汇报-列表接口
-  getlistByOrder(id){
-    return new Promise(resolve =>{
-      get("/blade-works/worksreport/listByOrder?orderId="+id).then(res=>{
+  getlistByOrder(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksreport/listByOrder?orderId=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //每日汇报-详情接口
-  getReportinfo(id){
-    return new Promise(resolve =>{
-      get("/blade-works/worksreport/info?id="+id).then(res=>{
+  getReportinfo(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksreport/info?id=" + id).then(res => {
         resolve(res)
       })
     })
   }
   //每日汇报-新增接口
-  addReport(data){
+  addReport(data) {
     return new Promise(resolve => {
-      post("/blade-works/worksreport/add",data).then(res=>{
+      post("/blade-works/worksreport/add", data).then(res => {
         resolve(res)
       })
     })
   }
   //每日汇报-修改接口
-  alterReport(data){
+  alterReport(data) {
     return new Promise(resolve => {
-      post("/blade-works/worksreport/alter",data).then(res=>{
+      post("/blade-works/worksreport/alter", data).then(res => {
         resolve(res)
       })
     })
   }
   //完工确认单(维修)-提交接口
-  postaddCompletion(data){
+  postaddCompletion(data) {
     return new Promise(resolve => {
-      post("/blade-works/workscompletion/addCompletion",data).then(res=>{
+      post("/blade-works/workscompletion/addCompletion", data).then(res => {
         resolve(res)
       })
     })
   }
   //完工确认单(维修)-提交接口
-  postaddCompletion2(data){
+  postaddCompletion2(data) {
     return new Promise(resolve => {
-      post("/blade-works/workscompletion2/addCompletion2",data).then(res=>{
+      post("/blade-works/workscompletion2/addCompletion2", data).then(res => {
         resolve(res)
       })
     })
   }
   //获取广告轮播图
-  listAdsByPos(data){
-    return new Promise(resolve =>{
-      get("/open/advertinfo/listAdsByPos",data).then(res=>{
+  listAdsByPos(data) {
+    return new Promise(resolve => {
+      get("/open/advertinfo/listAdsByPos", data).then(res => {
         resolve(res)
       })
     })
   }
   //获取施工汇报-所有列表
-  getlistAll(data){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/listAll",data).then(res=>{
+  getlistAll(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/listAll", data).then(res => {
         resolve(res)
       })
     })
   }
   //报价单列表-个人中心
-  listOfferToMy(data){
-    return new Promise(resolve =>{
-      get("/blade-works/worksorder/listOfferToMy",data).then(res=>{
+  listOfferToMy(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/listOfferToMy", data).then(res => {
         resolve(res)
       })
     })
   }
   //获取个人信息
-  getUser(data){
-      return new Promise(resolve => {
-        get('/blade-user/infoUser',data).then(res=>{
-          resolve(res)
-        })
-      })
-    }
-    //修改密码
-    changePassword(data){
-      let  header = {
-        "Content-Type": "application/x-www-form-urlencoded",
-
-      };
-      return new Promise(resolve => {
-        post('/blade-user/updatePassword',data,header).then(res=>{
-          resolve(res)
-        })
-      })
-    }
-    //获取消息列表
-    getMessageList(data){
-      return new Promise(resolve => {
-        get('/blade-msg/msgrecords/msglist',data).then(res=>{
-          resolve(res)
-        })
-      })
-    }
-    //获取消息详情
-    getMessageDetail(data){
-      return new Promise(resolve => {
-        get("/blade-msg/msgrecords/readMymsg",data).then(res=>{
-          resolve(res)
-        })
-      })
-    }
-  //消息未计统计
-  msgNoRead(){
+  getUser(data) {
     return new Promise(resolve => {
-      get("/blade-msg/msgrecords/countMsg").then(res=>{
+      get('/blade-user/infoUser', data).then(res => {
         resolve(res)
       })
     })
   }
-    //获取金额统计列表
-    getPorecordsList(data){
-      return new Promise(resolve =>{
-        get("/blade-po/porecords/listStatistical",data).then(res=>{
-          resolve(res)
-        })
+  //修改密码
+  changePassword(data) {
+    let header = {
+      "Content-Type": "application/x-www-form-urlencoded",
+
+    };
+    return new Promise(resolve => {
+      post('/blade-user/updatePassword', data, header).then(res => {
+        resolve(res)
       })
-    }
-    //获取统计数量
-    getCountNum(data){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/countNum",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取消息列表
+  getMessageList(data) {
+    return new Promise(resolve => {
+      get('/blade-msg/msgrecords/msglist', data).then(res => {
+        resolve(res)
       })
-    }
-    //更换头像
-    changeAvatar(data){
-      return new Promise(resolve => {
-        post("/blade-user/updatePhoto",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取消息详情
+  getMessageDetail(data) {
+    return new Promise(resolve => {
+      get("/blade-msg/msgrecords/readMymsg", data).then(res => {
+        resolve(res)
       })
-    }
-    //平台方 - 进行工单/施工确认工单
-    getWorkOrder(data){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/listOngoing",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //消息未计统计
+  msgNoRead() {
+    return new Promise(resolve => {
+      get("/blade-msg/msgrecords/countMsg").then(res => {
+        resolve(res)
       })
-    }
-    //平台方 - 完成工单
-    getCompleteOrder(data){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/listFinish",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取金额统计列表
+  getPorecordsList(data) {
+    return new Promise(resolve => {
+      get("/blade-po/porecords/listStatistical", data).then(res => {
+        resolve(res)
       })
-    }
-    //平台方 - 帮助中心详情
-    getHelpCenter(data){
-      return new Promise(resolve => {
-        get("/blade-desk/notice/info?id=1355434981060444162",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取统计数量
+  getCountNum(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/countNum", data).then(res => {
+        resolve(res)
       })
-    }
-    //平台方-获取统计数量
-    getCountNum2(data){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/countNumByPlatform",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //更换头像
+  changeAvatar(data) {
+    return new Promise(resolve => {
+      post("/blade-user/updatePhoto", data).then(res => {
+        resolve(res)
       })
-    }
-    //货物清点-增加产品单位列表接口
-    worksgoodstype(type){
-      return new Promise(resolve =>{
-        get("/blade-system/dict-biz/listByPcd?cd="+type).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //平台方 - 进行工单/施工确认工单
+  getWorkOrder(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/listOngoing", data).then(res => {
+        resolve(res)
       })
-    }
-    //货物清点-增加产品接口
-    worksgoodsdetailadd(data){
-      return new Promise(resolve => {
-        post('/blade-works/worksgoodsdetail/add',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //平台方 - 完成工单
+  getCompleteOrder(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/listFinish", data).then(res => {
+        resolve(res)
       })
-    }
-    //货物清点-保存按钮
-    keepBillADetail(data){
-      return new Promise(resolve => {
-        post('/blade-works/worksgoodsbill/keepBillADetail',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //平台方 - 帮助中心详情
+  getHelpCenter(data) {
+    return new Promise(resolve => {
+      get("/blade-desk/notice/info?id=1355434981060444162", data).then(res => {
+        resolve(res)
       })
-    }
-    //货物清点-提交按钮
-    addBillADetail(data){
-      return new Promise(resolve => {
-        post('/blade-works/worksgoodsbill/addBillADetail',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //平台方-获取统计数量
+  getCountNum2(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/countNumByPlatform", data).then(res => {
+        resolve(res)
       })
-    }
-    //调查问卷-已填写查询
-    survbillinfo(id){
-      return new Promise(resolve =>{
-        get("/blade-surv/survbill/info?id="+id).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //货物清点-增加产品单位列表接口
+  worksgoodstype(type) {
+    return new Promise(resolve => {
+      get("/blade-system/dict-biz/listByPcd?cd=" + type).then(res => {
+        resolve(res)
       })
-    }
-    //完工确认单（安装）-售后审核接口
-    workscompletionapprovePC(data){
-      return new Promise(resolve => {
-        post('/blade-works/workscompletion/approvePC',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //货物清点-增加产品接口
+  worksgoodsdetailadd(data) {
+    return new Promise(resolve => {
+      post('/blade-works/worksgoodsdetail/add', data).then(res => {
+        resolve(res)
       })
-    }
-    //完工确认单（维修）-售后审核接口
-    workscompletion2approvePC(data){
-      return new Promise(resolve => {
-        post('/blade-works/workscompletion2/approvePC',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //货物清点-保存按钮
+  keepBillADetail(data) {
+    return new Promise(resolve => {
+      post('/blade-works/worksgoodsbill/keepBillADetail', data).then(res => {
+        resolve(res)
       })
-    }
-    //完工确认单（安装）-客户审核接口
-    workscompletioncustAudit(data){
-      return new Promise(resolve => {
-        post('/blade-works/workscompletion/custAudit',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //货物清点-提交按钮
+  addBillADetail(data) {
+    return new Promise(resolve => {
+      post('/blade-works/worksgoodsbill/addBillADetail', data).then(res => {
+        resolve(res)
       })
-    }
-    //完工确认单（维修）-客户审核接口
-    workscompletion2custAudit(data){
-      return new Promise(resolve => {
-        post('/blade-works/workscompletion2/custAudit',data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //调查问卷-已填写查询
+  survbillinfo(id) {
+    return new Promise(resolve => {
+      get("/blade-surv/survbill/info?id=" + id).then(res => {
+        resolve(res)
       })
-    }
-    //获取二维码-安装
-    getQRcode(data){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/getQRcode",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //完工确认单（安装）-售后审核接口
+  workscompletionapprovePC(data) {
+    return new Promise(resolve => {
+      post('/blade-works/workscompletion/approvePC', data).then(res => {
+        resolve(res)
       })
-    }
-    // 完工确认单（安装）-待客户审核详情
-    infoCustAudit(id){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/infoCustAudit?orderId="+id).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //完工确认单（维修）-售后审核接口
+  workscompletion2approvePC(data) {
+    return new Promise(resolve => {
+      post('/blade-works/workscompletion2/approvePC', data).then(res => {
+        resolve(res)
       })
-    }
-    //  完工确认单（维修）-待客户审核详情
-    infoCustAudit2(id){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/infoCustAudit2?orderId="+id).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //完工确认单（安装）-客户审核接口
+  workscompletioncustAudit(data) {
+    return new Promise(resolve => {
+      post('/blade-works/workscompletion/custAudit', data).then(res => {
+        resolve(res)
       })
-    }
-    //平台方- 查询工单
-    listAllPlat(data){
-      return new Promise(resolve =>{
-        get("/blade-works/worksorder/listAllPlat",data).then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //完工确认单（维修）-客户审核接口
+  workscompletion2custAudit(data) {
+    return new Promise(resolve => {
+      post('/blade-works/workscompletion2/custAudit', data).then(res => {
+        resolve(res)
       })
-    }
-    // 货物清点-产品清单
-    worksgoodsList() {
-      return new Promise(resolve =>{
-        get("/blade-works/worksgoods/tlist").then(res=>{
-          resolve(res)
-        })
+    })
+  }
+  //获取二维码-安装
+  getQRcode(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/getQRcode", data).then(res => {
+        resolve(res)
       })
-    }
+    })
+  }
+  // 完工确认单（安装）-待客户审核详情
+  infoCustAudit(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/infoCustAudit?orderId=" + id).then(res => {
+        resolve(res)
+      })
+    })
+  }
+  //  完工确认单（维修）-待客户审核详情
+  infoCustAudit2(id) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/infoCustAudit2?orderId=" + id).then(res => {
+        resolve(res)
+      })
+    })
+  }
+  //平台方- 查询工单
+  listAllPlat(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/listAllPlat", data).then(res => {
+        resolve(res)
+      })
+    })
+  }
+  // 货物清点-产品清单
+  worksgoodsList() {
+    return new Promise(resolve => {
+      get("/blade-works/worksgoods/tlist").then(res => {
+        resolve(res)
+      })
+    })
+  }
 }
 
-export { api,wxHostUrl,appid };
+export { api, wxHostUrl, appid };
