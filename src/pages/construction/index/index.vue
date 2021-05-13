@@ -208,99 +208,16 @@ export default {
     },
     async getList() {
       console.log("dddd");
-      // const param = {
-      //   current: this.current,
-      //   endDate:
-      //     this.startTm && this.endTm ? this.startTm + "," + this.endTm : "",
-      //   size: this.size,
-      //   workType: this.workType,
-      //   orderStatus: this.currentIndex + 2,
-      // };
-      // console.log(param);
-      // let data = await this.api.listAfterWork(param);
-      let data = { data: {} };
-      data.data = {
-        records: [
-          {
-            id: "1377887605496840194",
-            createUser: "1123598821738675201",
-            createDept: "1367004410106707970",
-            createTime: "2021-04-02 15:36:20",
-            updateUser: "1377887277115781122",
-            updateTime: "2021-04-15 13:18:57",
-            status: 1,
-            isDeleted: 0,
-            cd: "W2104001",
-            cdNum: 1,
-            userId: "1367005553528504321",
-            jobNo: "CS20210402001",
-            projId: "1377099184716644353",
-            custNm: "李丽丽",
-            arrivalDt: "2021-04-02",
-            workType: 2,
-            workCont: "测试维修",
-            attach: "",
-            bidStatus: 1,
-            bidStart: "2021-04-02 03:35:48",
-            bidEnd: "2021-04-10 03:35:55",
-            orgIds:
-              "1366996781682753538,1367004066740011010,1374189566835896322",
-            custContact: "李丽丽",
-            custMob: "13456789087",
-            custAddr: "宁波镇海329创业社区",
-            orgId: "1367004066740011010",
-            orderStatus: 2,
-            orderTm: "2021-04-02 15:57:08",
-            processStatus: 2,
-            processTm: "2021-04-15 13:18:57",
-            quotedPrice: "114000.00",
-            settlePrice: null,
-            constructionManager: "1377887277115781122",
-            planedStart: "2021-04-03 12:00:00",
-            actualStart: "",
-            planedEnd: "2021-04-08 12:00:00",
-            actualEnd: "",
-            problemFeedback: "Y",
-            uninstalledProduct: "Y",
-            satisficing: "",
-            rmks: "",
-            managerUserId: -1,
-            managerUserNm: "",
-            confirmStatus: -1,
-            confirmTm: "",
-            userName: "",
-            managerName: "",
-            date: "",
-            worksOfferStatusVo: {},
-            worksOffer: {},
-            workTypeNm: "维修",
-            orderProcessList: [],
-            user: {},
-            worksReportList: [],
-            addr: "",
-            worksCompletionVO: {},
-            worksCompletion2VO: {},
-            auditNm: "",
-            projNm: "",
-            constructionManagerNm: "",
-            survBill: {},
-            processStatusNm: "施工汇报",
-            orgNm: "",
-            providersOrgNm: "",
-            orderStatusNm: "待接单",
-          },
-        ],
-        total: 12,
-        size: 10,
-        current: 1,
-        orders: [],
-        optimizeCountSql: true,
-        hitCount: false,
-        countId: "",
-        maxLimit: -1,
-        searchCount: true,
-        pages: 2,
+      const param = {
+        current: this.current,
+        endDate:
+          this.startTm && this.endTm ? this.startTm + "," + this.endTm : "",
+        size: this.size,
+        workType: this.workType,
+        orderStatus: this.currentIndex + 2,
       };
+      console.log(param);
+      let data = await this.api.listAfterWork(param);
       console.log("data.data", data.data);
       data.data.records.forEach((item) => {
         item.bidStart = item.bidStart.slice(0, 10);
