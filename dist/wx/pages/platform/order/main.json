@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText":"工单",
-  "navigationBarBackgroundColor":"#FFFFFF",
-  "navigationBarTextStyle":"black",
-  "onReachBottomDistance": 150,
-  "enablePullDownRefresh": false
-}
