@@ -514,7 +514,7 @@ class reg{
     }
     return 'ok'
   }
-  // 判断图片,pdf,doc
+  // 判断文件格式
   checkImgType(name){
   	if (/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(name) ) {
   	   return  1;
@@ -522,8 +522,16 @@ class reg{
   	   return  2;
   	}else if (/\.(doc|DOC)$/.test(name) ) {
   	   return  3;
-  	} else if (/\.(docx|DOCX)$/.test(name)) {
+  	}else if (/\.(docx|DOCX)$/.test(name)) {
       return 4;
+    }else if (/\.(xls|XLS)$/.test(name)) {
+      return 5;
+    }else if (/\.(xlsx|XLSX)$/.test(name)) {
+      return 6;
+    }else if (/\.(ppt|PPT)$/.test(name)) {
+      return 7;
+    }else if (/\.(pptx|PPTX)$/.test(name)) {
+      return 8;
     }
   }
 }

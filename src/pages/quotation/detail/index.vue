@@ -39,6 +39,10 @@
                 <img :src="pdf" style="width: 54rpx; height:70rpx; margin-right: 20rpx; margin-bottom:20rpx;" v-if="item.type == 2" @click="openFile(item.url,item.type)" /><!--pdf-->
                 <img :src="word" style="width: 59rpx; height: 70rpx; margin-right: 20rpx; margin-bottom: 20rpx;" v-if="item.type == 3" @click="openFile(item.url,item.type)" /><!--doc-->
                 <img :src="word" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==4" @click="openFile(item.url,item.type)"/> <!--docx-->
+                <img :src="xls" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==5" @click="openFile(item.url,item.type)"/> <!--xls-->
+                <img :src="xls" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==6" @click="openFile(item.url,item.type)"/> <!--xlsx-->
+                <img :src="ppt" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==7" @click="openFile(item.url,item.type)"/> <!--ppt-->
+                <img :src="ppt" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==8" @click="openFile(item.url,item.type)"/> <!--pptx-->
               </block>
             </div>
           </li>
@@ -114,18 +118,22 @@
   import fj from "@/components/img/附件.png";
   import pdf from "@/components/img/pdf.png";
   import word from "@/components/img/word.png";
+  import xls from "@/components/img/xls.png";
+  import ppt from "@/components/img/ppt.png";
   export default {
     data() {
       return {
         fjsc,
         pdf,
         word,
+        xls,
+        ppt,
         info: {},
         worksOffer: {},
         imgUrls: [],
         //是否报价
         isapply: true,
-        fileType:['pdf','doc','docx']
+        fileType:['pdf','doc','docx','xls','xlsx','ppt','pptx']
       };
     },
     methods: {
