@@ -36,8 +36,9 @@
             <div style="display: flex;flex: 1;flex-wrap: wrap;padding-top: 20rpx;">
               <block v-for="(item, index) in info.backStageAttach" :key="index">
                 <img :src="item.url" mode="heigthFix" style="height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==1" @click="viewImg(item.url,item.url.split(','))" /> <!--图片-->
-                <img :src="pdf" style="width: 54rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==3" @click="openFile(item.url)"/> <!--pdf-->
-                <img :src="word" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==2" @click="openFile(item.url)"/> <!--doc-->
+                <img :src="pdf" style="width: 54rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==2" @click="openFile(item.url,item.type)"/> <!--pdf-->
+                <img :src="word" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==3" @click="openFile(item.url,item.type)"/> <!--doc-->
+                <img :src="word" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==4" @click="openFile(item.url,item.type)"/> <!--docx-->
               </block>
             </div>
           </li>
@@ -153,7 +154,8 @@
         //附件图片
         imgUrls:[],
         //旧金额
-        Money:[]
+        Money:[],
+        fileType:['pdf','doc','docx']
       }
     },
     methods:{
@@ -165,14 +167,16 @@
         })
       },
       // 打开文档
-      openFile(url) {
-        console.log(url)
+      openFile(url,type) {
+        let self = this
+        console.log(url,this.fileType[type-2],typeof(this.fileType[type-2]))
         wx.downloadFile({
           url: url,
           success: function (res) {
             const filePath = res.tempFilePath
             wx.openDocument({
               filePath: filePath,
+              fileType: self.fileType[type-2],
               success: function (res) {
                 console.log('打开文档成功')
               }

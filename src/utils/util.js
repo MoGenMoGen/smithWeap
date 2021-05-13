@@ -520,9 +520,11 @@ class reg{
   	   return  1;
   	}else if (/\.(pdf|PDF)$/.test(name) ) {
   	   return  2;
-  	}else if (/\.(doc|docx|DOC|DOCX)$/.test(name) ) {
+  	}else if (/\.(doc|DOC)$/.test(name) ) {
   	   return  3;
-  	}
+  	} else if (/\.(docx|DOCX)$/.test(name)) {
+      return 4;
+    }
   }
 }
 class App{
