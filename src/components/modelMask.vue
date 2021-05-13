@@ -2,13 +2,13 @@
   <div>
     <!--弹窗的页面-->
     <div class="modalMask" v-if="isModel" @click="tapCancel"></div>
-    <div class="modalDialog" v-if="changeModel" :style="{height:type==3 ? '600rpx' : '400rpx'}" @click.top=''>
+    <div class="modalDialog" v-if="changeModel" :style="{height:type==3 ? '500rpx' : '400rpx'}" @click.top=''>
       <div class="header" v-if="type != 3">
         <p class="tips">提示</p>
         <p>您确认{{type==1?'承接':'拒接'}}此工单？</p>
       </div>
       <div class="content" v-if="type == 3">
-        <span>指派</span>
+        <span>派单</span>
         <div class="swiper">
           <swiper :current="current" vertical="true" previous-margin="30rpx" next-margin="30rpx"
             @change="swiperChangeBig" style="height:120rpx;width: 100%;">
@@ -119,7 +119,7 @@
   .modalDialog {
     box-sizing: border-box;
     width: 100%;
-    height: 600rpx;
+    height: 500rpx;
     overflow: hidden;
     position: fixed;
     bottom: 0;
@@ -151,20 +151,25 @@
     .content {
       flex: 1;
       box-sizing: border-box;
-      display: flex;
-      padding: 10rpx 53rpx;
+      // display: flex;
+      // padding: 10rpx 53rpx;
       font-size: 32rpx;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
+      // align-items: center;
+      // justify-content: center;
+      // border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
 
       span {
         font-size: 32rpx;
         color: #000000;
+        display: block;
+        padding-top: 38rpx;
+    padding-bottom: 42rpx;
+      border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
       }
 
       .swiper {
-        flex: 1;
+        padding-top:22rpx;
+        // flex: 1;
 
         .swiperBox {
           p {

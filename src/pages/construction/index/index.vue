@@ -14,7 +14,7 @@
     </div>
     <div class="nav">
       <div class="searchBox">
-        <div>
+        <div v-if="currentIndex!=1">
           <div class="section">
             <picker
               @change="bindPickerChange"
@@ -163,7 +163,6 @@ export default {
     },
   },
   async onShow() {
-    this.changeNav(0);
     this.current = 1;
     this.list = [];
     this.index = 0;
@@ -172,9 +171,10 @@ export default {
     this.workType = "";
     this.startTm = "";
     this.endTm = "";
-    // this.getList();
+    this.getList();
     this.array = [{ dictValue: "全部", dictKey: "" }];
     this.getDictionary();
+
   },
   onReachBottom() {
     if (this.list.length >= this.total) {

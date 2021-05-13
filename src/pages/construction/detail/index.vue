@@ -160,6 +160,7 @@ export default {
     },
   },
   async onLoad(item) {
+     Object.assign(this.$data, this.$options.data.call(this));
     console.log(item);
     this.currentIndex = Number(item.currentIndex); //接单状态下标，待接单、已接单、已拒单
     const res = await this.api.infoAfterWork({ orderId: item.id });
