@@ -463,11 +463,27 @@ class api {
       })
     })
   }
-  //接受接单接口
+  //接单派单接口
   orderTake(data) {
 
     return new Promise(resolve => {
       post("/blade-works/worksorder/orderTake?orderId=" + data.orderId + '&constructionManager=' + data.constructionManager).then(res => {
+        resolve(res);
+      })
+    })
+  }
+  // 接单接口
+  orderPick(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksorder/orderPick?orderId=" + data.orderId).then(res => {
+        resolve(res);
+      })
+    })
+  }
+  // 派单接口
+  orderSend(data){
+    return new Promise(resolve => {
+      post("/blade-works/worksorder/orderSend?orderId=" + data.orderId + '&constructionManager=' + data.constructionManager).then(res => {
         resolve(res);
       })
     })

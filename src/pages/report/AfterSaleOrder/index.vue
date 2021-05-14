@@ -15,6 +15,14 @@
             <span>项目人员</span>
             <p>{{info.userName}}</p>
           </li>
+          <li v-if="info.constructionManagerNm">
+            <span>指派人员</span>
+            <p>{{info.constructionManagerNm}}</p>
+          </li>
+          <li v-if="info.orderPickerNm">
+            <span>供应商负责人</span>
+            <p>{{info.orderPickerNm}}</p>
+          </li>
           <li>
             <span>工单编号</span>
             <p>{{info.cd}}</p>
@@ -376,7 +384,7 @@
       this.options = ''
       let path = this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id
       // let path = 'http://192.168.0.37:8085/views/smith/AfterSale.html?id='+this.id
-     
+
       console.log(this.wxHostUrl)
       drawQrcode({
         width: 100,

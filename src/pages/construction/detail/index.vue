@@ -131,20 +131,31 @@ export default {
     //将子组件中变化的数据赋值于父组件
     mask(item) {
       // console.log(item);
+      // 点击了取消为false
       if (item.cancel) {
         if (this.type == 1) {
+          // 接单
           const param = {
-            orderId: this.info.id,
-            constructionManager: item.constructionManager,
+            orderId: this.info.id
           };
-          this.api.orderTake(param);
-        } else {
+          console.log(param)
+          this.api.orderPick(param)
+        } else if(this.type == 2) {
+          // 拒单
           const param = {
             orderId: this.info.id,
           };
           this.api.orderRefused(param);
+        } else if (this.type == 3) {
+          // 派单
+          const param = {
+            orderId: this.info.id,
+            constructionManager: item.constructionManager,
+          };
+          this.api.orderSend(param);
         }
-        wx.redirectTo({ url: "/pages/construction/index/main" });
+        // wx.redirectTo({ url: "/pages/construction/index/main?type="+this.type});
+        wx.navigateBack()
       } else {
         this.changeModel = item.changeModel;
         this.isModel = item.isModel;
@@ -154,16 +165,20 @@ export default {
       if (url) {
         this.util.aHref(url);
       }
-    },
-    async getlist() {
-      this.api.infoAfterWork();
-    },
+    }
   },
   async onLoad(item) {
      Object.assign(this.$data, this.$options.data.call(this));
-    console.log(item);
-    this.currentIndex = Number(item.currentIndex); //接单状态下标，待接单、已接单、已拒单
     const res = await this.api.infoAfterWork({ orderId: item.id });
+    if(item.currentIndex){
+      this.currentIndex = item.currentIndex; //接单状态下标，待接单、已接单、已拒单
+    } else if(res.data.orderStatus==2) {
+      this.currentIndex = 0
+    } else if(res.data.orderStatus==3||1) {
+      this.currentIndex = 1
+    } else if(res.data.orderStatus ===4) {
+      this.currentIndex = 2
+    }
     this.info = res.data;
     this.info.bidStart = this.info.bidStart.slice(0, 10);
     this.info.bidEnd = this.info.bidEnd.slice(0, 10);

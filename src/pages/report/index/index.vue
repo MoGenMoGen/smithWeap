@@ -16,6 +16,10 @@
             <p>{{info.userName}}</p>
           </li>
           <li>
+            <span>指派人员</span>
+            <p>{{info.constructionManagerNm}}</p>
+          </li>
+          <li>
             <span>工单编号</span>
             <p>{{info.cd}}</p>
           </li>
@@ -181,14 +185,14 @@
         this.list = data.data
       },
       changeTab(item,index){
-        // if(this.list.length != 2) {
-        //   wx.showToast({
-        //     title: '请先打卡',
-        //     icon: "error",
-        //     duration: 2000
-        //   })
-        //   return
-        // }
+        if(this.list.length != 2) {
+          wx.showToast({
+            title: '请先打卡',
+            icon: "error",
+            duration: 2000
+          })
+          return
+        }
         this.currentIndex=index
       },
     },

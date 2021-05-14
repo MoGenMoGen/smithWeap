@@ -14,7 +14,7 @@
     </div>
     <div class="nav">
       <div class="searchBox">
-        <div v-if="currentIndex!=1">
+        <div>
           <div class="section">
             <picker
               @change="bindPickerChange"
@@ -82,15 +82,15 @@
             </li>
             <li v-if="currentIndex != 0">
               <!-- <img :src="currentIndex == 1 ? orderdate : rejectdate" /> -->
-              <img :src="dateimgurl" />
+              <img :src="dateimgurl"/>
 
               <span>{{ currentIndex == 1 ? "接单" : "拒单" }}日期</span>
               <p>{{ item.orderTm }}</p>
             </li>
           </ul>
-          <div>
+          <div v-if="currentIndex != 2">
             <!-- <p
-               @click="toDetail('/pages/construction/detail/main?id=' + item.id)" 
+               @click="toDetail('/pages/construction/detail/main?id=' + item.id)"
             > -->
             <p>{{ currentIndex == 0 ? "查看" : "指派" }}</p>
           </div>
@@ -154,6 +154,7 @@ export default {
       index: 0,
       startTm: "", //开始时间
       endTm: "", //结束时间
+      // typeId: 0
     };
   },
   computed: {
@@ -162,17 +163,28 @@ export default {
       return rejectdate;
     },
   },
+  async onLoad(options) {
+    // this.typeId = options.type
+  },
   async onShow() {
     this.current = 1;
     this.list = [];
     this.index = 0;
+    this.currentIndex = 0;
     this.startTime = "开始时间";
     this.endTime = "结束时间";
     this.workType = "";
     this.startTm = "";
     this.endTm = "";
-    this.getList();
     this.array = [{ dictValue: "全部", dictKey: "" }];
+    // if(this.typeId == 1){
+    //   this.changeNav(1)
+    // } else if (this.typeId == 2) {
+    //   this.changeNav(2)
+    // } else {
+    //   this.changeNav(0)
+    // }
+    this.getList();
     this.getDictionary();
 
   },
@@ -210,8 +222,7 @@ export default {
       console.log("dddd");
       const param = {
         current: this.current,
-        endDate:
-          this.startTm && this.endTm ? this.startTm + "," + this.endTm : "",
+        endDate: this.startTm && this.endTm ? this.startTm + "," + this.endTm : "",
         size: this.size,
         workType: this.workType,
         orderStatus: this.currentIndex + 2,

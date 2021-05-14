@@ -75,6 +75,13 @@
           const emit = {
             changeModel: this.changeModel,
             isModel: this.isModel,
+            cancel: true
+          }
+          this.$emit('tapCancel', emit)
+        } else if(this.type == 3) {
+          const emit = {
+            changeModel: this.changeModel,
+            isModel: this.isModel,
             cancel: true,
             constructionManager: this.eventList[this.current].id
           }
