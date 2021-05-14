@@ -33,16 +33,16 @@
           </li>
           <li v-if="info.backStageAttach.length!=0">
             <span>附件</span>
-            <div style="display: flex;flex: 1;flex-wrap: wrap;padding-top: 20rpx;">
+            <div style="display: flex;flex: 1;flex-wrap: wrap;padding-top: 20rpx;align-items: center;">
               <block v-for="(item, index) in info.backStageAttach" :key="index">
                 <img :src="item.url" mode="heigthFix" style="height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==1" @click="viewImg(item.url,item.url.split(','))" /> <!--图片-->
                 <img :src="pdf" style="width: 54rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==2" @click="openFile(item.url,item.type)"/> <!--pdf-->
                 <img :src="word" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==3" @click="openFile(item.url,item.type)"/> <!--doc-->
                 <img :src="word" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==4" @click="openFile(item.url,item.type)"/> <!--docx-->
-                <img :src="xls" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==5" @click="openFile(item.url,item.type)"/> <!--xls-->
-                <img :src="xls" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==6" @click="openFile(item.url,item.type)"/> <!--xlsx-->
-                <img :src="ppt" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==7" @click="openFile(item.url,item.type)"/> <!--ppt-->
-                <img :src="ppt" style="width: 59rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==8" @click="openFile(item.url,item.type)"/> <!--pptx-->
+                <img :src="xls" style="width: 57rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==5" @click="openFile(item.url,item.type)"/> <!--xls-->
+                <img :src="xls" style="width: 57rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==6" @click="openFile(item.url,item.type)"/> <!--xlsx-->
+                <img :src="ppt" style="width: 60rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==7" @click="openFile(item.url,item.type)"/> <!--ppt-->
+                <img :src="ppt" style="width: 60rpx;height: 70rpx;margin-right: 20rpx;margin-bottom: 20rpx;" v-if="item.type==8" @click="openFile(item.url,item.type)"/> <!--pptx-->
               </block>
             </div>
           </li>
