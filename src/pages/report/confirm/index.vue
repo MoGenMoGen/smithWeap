@@ -101,7 +101,7 @@
           </li>
           <li>
             <span>提交时间</span>
-            <p>{{info.worksCompletionVO.createTime}}</p>
+            <p>{{info.worksCompletionVO.createTime?info.worksCompletionVO.createTime:''}}</p>
           </li>
         </ul>
       </div>
@@ -256,6 +256,7 @@
       }
     },
     onLoad(e){
+      Object.assign(this.$data, this.$options.data())
       this.type = e.type
       this.orderId = e.id
       this.nametype = wx.getStorageSync('loginType')
@@ -272,18 +273,20 @@
       })
     },
     async onShow(){
-      this.getData();
+      await this.getData();
     },
     methods:{
       async getData(){
         let data = await this.api.getInstallDtl(this.orderId)
+        if(!data.data.worksCompletionVO) {
+          data.data.worksCompletionVO.createTime = data.data.worksCompletionVO.createTime.slice(0,10)
+          data.data.worksCompletionVO.auditTm = data.data.worksCompletionVO.auditTm.slice(0,10)
+          this.dayList = data.data.worksCompletionVO.imgDay.split(',')
+          this.nightList = data.data.worksCompletionVO.imgNight.split(',')
+        }
         data.data.bidStart = data.data.bidStart.slice(0,10)
         data.data.bidEnd = data.data.bidEnd.slice(0,10)
-        data.data.worksCompletionVO.createTime = data.data.worksCompletionVO.createTime.slice(0,10)
-        data.data.worksCompletionVO.auditTm = data.data.worksCompletionVO.auditTm.slice(0,10)
         this.info = data.data
-        this.dayList = data.data.worksCompletionVO.imgDay.split(',')
-        this.nightList = data.data.worksCompletionVO.imgNight.split(',')
       },
       showMask(type){
         switch(type){
