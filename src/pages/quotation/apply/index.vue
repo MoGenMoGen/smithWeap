@@ -176,6 +176,7 @@
       },
       // 打开文档
       openFile(url,type) {
+        wx.showLoading()
         let self = this
         console.log(url,this.fileType[type-2],typeof(this.fileType[type-2]))
         wx.downloadFile({
@@ -186,6 +187,7 @@
               filePath: filePath,
               fileType: self.fileType[type-2],
               success: function (res) {
+                wx.hideLoading()
                 console.log('打开文档成功')
               }
             })
