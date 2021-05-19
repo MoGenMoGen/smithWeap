@@ -278,7 +278,7 @@
     methods:{
       async getData(){
         let data = await this.api.getInstallDtl(this.orderId)
-        if(!data.data.worksCompletionVO) {
+        if(JSON.stringify(data.data.worksCompletionVO)!='{}') {
           data.data.worksCompletionVO.createTime = data.data.worksCompletionVO.createTime.slice(0,10)
           data.data.worksCompletionVO.auditTm = data.data.worksCompletionVO.auditTm.slice(0,10)
           this.dayList = data.data.worksCompletionVO.imgDay.split(',')
