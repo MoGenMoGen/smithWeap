@@ -334,6 +334,11 @@ export default {
         font-family: PingFang SC;
         font-weight: 400;
       }
+	  img{
+	    width: 306rpx;
+	    height: 172rpx;
+	    padding: 10rpx 0 0 68rpx;
+	  }
       .br{
         margin: 32rpx 14rpx 0 12rpx;
         height: 0;
