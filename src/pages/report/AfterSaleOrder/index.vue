@@ -372,7 +372,8 @@
         }
         // console.log(param);
         this.api.workscompletion2custAudit(param).then(res=>{
-          this.toPage('/pages/report/satisfactionSurvey/main?id='+this.id)
+          let imgUrl = encodeURIComponent(this.custSign)
+          this.toPage('/pages/report/satisfactionSurvey/main?id='+this.id+'&imgUrl='+imgUrl)
         })
       }
 

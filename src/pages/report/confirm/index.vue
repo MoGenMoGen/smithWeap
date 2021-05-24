@@ -384,7 +384,8 @@
         }
         // console.log(param);
         this.api.workscompletioncustAudit(param).then(res=>{
-          this.toPage('/pages/report/satisfactionSurvey/main?id='+this.orderId)
+          let imgUrl = encodeURIComponent(this.custSign)
+          this.toPage('/pages/report/satisfactionSurvey/main?id='+this.orderId +'&imgUrl='+imgUrl)
         })
       }
     },

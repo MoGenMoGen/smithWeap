@@ -28,7 +28,8 @@
       </div>
       <div class="other">
         <p>客户负责人签字</p>
-        <signature @success='getsign' :signImage="sign"></signature>
+        <!-- <signature @success='getsign' :signImage="sign"></signature> -->
+        <img :src="sign" alt="">
         <div class="br"></div>
         <div class="phone">
           <span>联系电话</span>
