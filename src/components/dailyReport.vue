@@ -189,20 +189,21 @@
           }
           let param = this.info
           param.orderId = this.id
-          this.api.addReport(param)
-          //基本操作
-          this.changeModel = !this.changeModel;
-          this.isModel = !this.isModel;
-          this.getlist(this.id)//重新获取列表
+          this.api.addReport(param).then(res => {
+            //基本操作
+            this.changeModel = !this.changeModel;
+            this.isModel = !this.isModel;
+            this.getlist(this.id)//重新获取列表
+          })
         }else if(this.type ==2){ //修改
           //修改
           let param = this.info
-          this.api.alterReport(param)
-          //基本操作
-          this.changeModel = !this.changeModel;
-          this.isModel = !this.isModel;
-          this.getlist(this.id)//重新获取列表
-
+          this.api.alterReport(param).then(res => {
+            //基本操作
+            this.changeModel = !this.changeModel;
+            this.isModel = !this.isModel;
+            this.getlist(this.id)//重新获取列表
+          })
         }
         // //基本操作
         // this.changeModel = !this.changeModel;

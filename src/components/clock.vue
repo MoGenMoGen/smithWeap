@@ -80,16 +80,18 @@
       }
     },
     onShow(){
-      console.log('onShow')
+      console.log('onshow')
       if(this.id =='') return ;
       this.getList(this.id)
     },
-    onLoad(){
-      if(this.id =='') return ;
-      this.getList(this.id)
+    async onLoad(){
+      // console.log('onLoad')
+      // if(this.id =='') return ;
+      // this.getList(this.id)
+      // if(this.id =='') return ;
+      // this.getList(this.id)
     },
     async mounted(){
-      console.log('mounted')
       if(this.id =='') return ;
       this.getList(this.id)
     },
@@ -111,6 +113,11 @@
         this.list.forEach(item=>{
           item.imgUrl = item.imgUrl.split(",")
         })
+      }
+    },
+    watch:{
+      id(val,oldVal){
+        this.getList(val)
       }
     }
   }

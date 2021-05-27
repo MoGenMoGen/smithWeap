@@ -15,9 +15,13 @@
             <span>项目人员</span>
             <p>{{info.userName}}</p>
           </li>
-          <li>
+          <li v-if="info.constructionManagerNm">
             <span>指派人员</span>
             <p>{{info.constructionManagerNm}}</p>
+          </li>
+          <li v-if="info.orderPickerNm">
+            <span>供应商负责人</span>
+            <p>{{info.orderPickerNm}}</p>
           </li>
           <li>
             <span>工单编号</span>
@@ -137,6 +141,7 @@
       }
     },
     onLoad(e){
+      Object.assign(this.$data, this.$options.data())
       this.orderId = e.id
 
     },
@@ -185,7 +190,7 @@
         this.list = data.data
       },
       changeTab(item,index){
-        if(this.list.length != 2) {
+        if(!(this.list.length != 0 && this.list.length%2==0)) {
           wx.showToast({
             title: '请先打卡',
             icon: "error",

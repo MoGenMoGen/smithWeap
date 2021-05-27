@@ -186,8 +186,8 @@
       <!--loginType == 3-->
       <bottomBase></bottomBase>
     </div>
-    
-    
+
+
   </div>
 </template>
 
@@ -263,7 +263,6 @@
       }
     },
     async onLoad(){
-
       this.loginType = wx.getStorageSync('loginType')
     },
     async onShow(){

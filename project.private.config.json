@@ -72,6 +72,12 @@
           "pathName": "pages/quotation/detail/main",
           "query": "id=1390553083997614082",
           "scene": null
+        },
+        {
+          "name": "pages/report/AfterSaleOrder/main",
+          "pathName": "pages/report/AfterSaleOrder/main",
+          "query": "id=1390553083997614082",
+          "scene": null
         }
       ]
     }

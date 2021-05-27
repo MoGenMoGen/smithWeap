@@ -84,8 +84,13 @@
               <!-- <img :src="currentIndex == 1 ? orderdate : rejectdate" /> -->
               <img :src="dateimgurl"/>
 
-              <span>{{ currentIndex == 1 ? "接单" : "拒单" }}日期</span>
+              <span>{{ currentIndex == 1 ? "接单" : currentIndex==2?"拒单":"派单" }}日期</span>
               <p>{{ item.orderTm }}</p>
+            </li>
+            <li v-if="item.constructionManagerNm">
+              <img :src="cw" />
+              <span>指派人员</span>
+              <p>{{ item.constructionManagerNm }}</p>
             </li>
           </ul>
           <div v-if="currentIndex != 2">
@@ -117,6 +122,7 @@ import dateIcon from "@/components/img/日历图标.png";
 import down from "@/components/img/向下.png";
 import rejectdate from "@/components/img/rejectdate.png";
 import orderdate from "@/components/img/orderdate.png";
+import cw from "@/components/img/constructionWorkers.png";
 
 export default {
   data() {
@@ -131,6 +137,7 @@ export default {
       right,
       dateIcon,
       down,
+      cw,
       startTime: "开始时间",
       endTime: "结束时间",
       current: 1,
@@ -147,6 +154,9 @@ export default {
         {
           nm: "已拒单",
         },
+        {
+          nm: "已派单",
+        },
       ],
       //接单列表
       list: [],
@@ -160,6 +170,7 @@ export default {
   computed: {
     dateimgurl() {
       if (this.currentIndex == 1) return orderdate;
+      else if (this.currentIndex == 3) return fb;
       return rejectdate;
     },
   },

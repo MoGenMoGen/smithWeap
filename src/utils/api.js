@@ -389,7 +389,7 @@ class api {
           console.log(err)
         },
         complete: function () {
-
+          wx.hideLoading();
         }
       })
     })
@@ -411,6 +411,9 @@ class api {
           'Blade-Auth': token
         },
         success: function (res) {
+          wx.showLoading({
+            title: '上传中...'
+          })
           // console.log('================')
           // console.log(JSON.parse(res.data).data)
           let img = JSON.parse(res.data).data
@@ -497,9 +500,9 @@ class api {
     })
   }
   //获取接单指派列表
-  listAssigned() {
+  listAssigned(keyWord) {
     return new Promise(resolve => {
-      get("/blade-works/worksorder/listAssigned").then(res => {
+      get("/blade-works/worksorder/listAssigned?keyWord=" + keyWord).then(res => {
         resolve(res);
       })
     })

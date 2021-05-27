@@ -105,6 +105,7 @@
       }
     },
     async onShow(){
+      Object.assign(this.$data, this.$options.data())
       this.changeNav(0)
     },
     methods:{
