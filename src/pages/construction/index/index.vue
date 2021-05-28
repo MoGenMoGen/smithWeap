@@ -80,14 +80,22 @@
               <span>截止日期</span>
               <p>{{ item.bidEnd }}</p>
             </li>
-            <li v-if="currentIndex != 0">
-              <!-- <img :src="currentIndex == 1 ? orderdate : rejectdate" /> -->
+            <li v-if="currentIndex == 1">
               <img :src="dateimgurl"/>
-
-              <span>{{ currentIndex == 1 ? "接单" : currentIndex==2?"拒单":"派单" }}日期</span>
+              <span>接单日期</span>
               <p>{{ item.orderTm }}</p>
             </li>
-            <li v-if="item.constructionManagerNm">
+            <li v-if="currentIndex ==2">
+              <img :src="dateimgurl"/>
+              <span>拒单日期</span>
+              <p>{{ item.refuseTime }}</p>
+            </li>
+            <li v-if="currentIndex ==3">
+              <img :src="dateimgurl"/>
+              <span>派单日期</span>
+              <p>{{ item.dispatchTime }}</p>
+            </li>
+            <li v-if="currentIndex ==3">
               <img :src="cw" />
               <span>指派人员</span>
               <p>{{ item.constructionManagerNm }}</p>
@@ -155,7 +163,7 @@ export default {
           nm: "已拒单",
         },
         {
-          nm: "已派单",
+          nm: "已指派",
         },
       ],
       //接单列表

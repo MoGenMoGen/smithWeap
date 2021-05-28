@@ -272,10 +272,17 @@
       },
       //上传图片
       async toPhoto(){
-        let imgUrl = await this.api.chooseImages()
-        let data = await this.api.upLoad(imgUrl[0])
-        this.imgList.push(data.link)
-        this.info.imgUrl = this.imgList.join(',');
+        this.api.chooseImages().then(res => {
+          wx.showLoading({
+            title: '上传中...'
+          })
+          this.api.upLoad(res[0]).then(data => {
+            wx.hideLoading()
+            this.imgList.push(data.link)
+            this.info.imgUrl = this.imgList.join(',')
+          })
+        })
+
         // console.log(this.info);
         // console.log(this.imgList);
       },

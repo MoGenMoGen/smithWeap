@@ -117,6 +117,12 @@
         this.current = e.mp.detail.current
         // console.log(this.current);
       },
+      getAssign(data) {
+        this.api.listAssigned(data).then(res => {
+          this.eventList = res.data
+          this.current = 0
+        })
+      },
       pickChange(e) {
         this.current = e.mp.detail.value[0]
         console.log(this.current)
@@ -124,33 +130,31 @@
       getSearch(e) {
         this.searchWord = e.mp.detail.value
         if(this.searchWord=="") {
-          console.log('删光了')
+          this.getAssign('')
         }
       },
       search() {
         this.api.listAssigned(this.searchWord).then(res => {
           if(res.data.length>0){
             this.eventList = res.data
+            this.current=0
           } else {
             wx.showToast({
               title: '未搜索到相关人员',
               icon: 'none',
               duration: 2000
             })
-            this.searchWord = ""
           }
         })
       }
     },
     async created() {
       this.eventList = []
-      const res = await this.api.listAssigned('')
-      this.eventList = res.data
+      this.getAssign('')
     },
     async onShow(){
       Object.assign(this.$data, this.$options.data())
-      const res = await this.api.listAssigned('')
-      this.eventList = res.data
+      this.getAssign('')
     }
   };
 </script>

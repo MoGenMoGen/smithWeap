@@ -377,10 +377,6 @@ class api {
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: type || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
-
-          wx.showLoading({
-            title: '上传中...',
-          })
           let img = res.tempFilePaths
           resolve(img)
           // that.upLoad(res.tempFilePaths[0])
@@ -389,7 +385,6 @@ class api {
           console.log(err)
         },
         complete: function () {
-          wx.hideLoading();
         }
       })
     })
@@ -411,9 +406,6 @@ class api {
           'Blade-Auth': token
         },
         success: function (res) {
-          wx.showLoading({
-            title: '上传中...'
-          })
           // console.log('================')
           // console.log(JSON.parse(res.data).data)
           let img = JSON.parse(res.data).data
@@ -429,7 +421,7 @@ class api {
           })
         },
         complete: function () {
-          wx.hideLoading();
+
         }
       });
     })

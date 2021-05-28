@@ -71,10 +71,17 @@
             <span>计划完工时间</span>
             <p>{{ info.planedEnd }}</p>
           </li>
-
-          <li v-if="currentIndex != 0">
-            <span>{{ currentIndex == 1 ? "接单时间" : "拒单时间" }}</span>
+          <li v-if="currentIndex == 1">
+            <span>接单时间</span>
             <p>{{ info.orderTm }}</p>
+          </li>
+          <li v-if="currentIndex ==2">
+            <span>拒单时间</span>
+            <p>{{ info.refuseTime }}</p>
+          </li>
+          <li v-if="currentIndex == 3">
+            <span>派单时间</span>
+            <p>{{ info.dispatchTime }}</p>
           </li>
         </ul>
       </div>
@@ -175,13 +182,15 @@ export default {
      Object.assign(this.$data, this.$options.data.call(this));
     const res = await this.api.infoAfterWork({ orderId: item.id });
     if(item.currentIndex){
-      this.currentIndex = item.currentIndex; //接单状态下标，待接单、已接单、已拒单
+      this.currentIndex = item.currentIndex; //接单状态下标，待接单、已接单、已拒单、已指派
     } else if(res.data.orderStatus==2) {
       this.currentIndex = 0
-    } else if(res.data.orderStatus==3||1) {
+    } else if(res.data.orderStatus==3) {
       this.currentIndex = 1
     } else if(res.data.orderStatus ===4) {
       this.currentIndex = 2
+    }else if(res.data.orderStatus ===5) {
+      this.currentIndex = 3
     }
     this.info = res.data;
     this.info.bidStart = this.info.bidStart.slice(0, 10);
