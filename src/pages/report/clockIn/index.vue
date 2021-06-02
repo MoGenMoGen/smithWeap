@@ -163,9 +163,18 @@
         })
       },
       async toPhoto(){
-        let imgUrl = await this.api.chooseImages()
-        let data = await this.api.upLoad(imgUrl[0])
-        this.imageList.push(data.link)
+        // let imgUrl = await this.api.chooseImages()
+        // let data = await this.api.upLoad(imgUrl[0])
+        // this.imageList.push(data.link)
+        this.api.chooseImages().then(res => {
+          wx.showLoading({
+            title: '上传中...'
+          })
+          this.api.upLoad(res[0]).then(data => {
+            wx.hideLoading()
+            this.imageList.push(data.link)
+          })
+        })
         // for(let i =0; i < imgUrl.length ;i++){
         //   let img = await this.api.upLoad(imgUrl[i])
         //   // this.image.push(img)
