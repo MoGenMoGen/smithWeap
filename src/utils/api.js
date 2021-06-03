@@ -340,6 +340,22 @@ class api {
       })
     })
   }
+  // 接单报价未读数量
+  getNumNotRead() {
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/numNotRead').then(res => {
+        resolve(res)
+      })
+    })
+  }
+  // 接单施工未读数量
+  getNumNotAccept() {
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/numNotAccept').then(res => {
+        resolve(res)
+      })
+    })
+  }
   //打卡-列表
   clockList(data) {
     return new Promise(resolve => {

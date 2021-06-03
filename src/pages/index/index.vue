@@ -16,7 +16,8 @@
       <div class="loginType" v-if="loginType == 1">
         <div class="nav">
           <ul>
-            <li v-for="(item,index) in navList" :key="index" @click="toPages(item.path,index)">
+            <li v-for="(item,index) in navList" :key="index" @click="toPages(item.path,index)" class="nav-tip">
+              <span v-if="item.total&&index!=2" :class="[item.total>99?'tip-m':'tip-s']">{{item.total>99?'99+':item.total}}</span>
               <img :src="item.imgUrl"/>
               <p>
                 {{item.nm}}
@@ -232,15 +233,18 @@
           {
             nm:'接单报价',
             imgUrl:bj,
-            path:'/pages/quotation/index/main'
+            path:'/pages/quotation/index/main',
+            total: 0
           },{
             nm:'接单施工',
             imgUrl:sg,
             path:'/pages/construction/index/main',
+            total: 0
           },{
             nm:'施工汇报',
             imgUrl:hb,
             path:'/pages/report/reportStatus/main',
+            total: 0
           }
         ],
         navList2:[
@@ -277,6 +281,7 @@
         this.getAdvertising();
         if(this.loginType ==1){
           this.getList();
+          this.getNum()
         }else{
           this.getList2();
         }
@@ -407,6 +412,14 @@
           this.swiperList.push(...(item.imgUrl).split(','))
         });
       },
+      getNum() {
+        this.api.getNumNotRead().then(res => {
+          this.navList[0].total = res.data
+        })
+        this.api.getNumNotAccept().then(res => {
+          this.navList[1].total = res.data
+        })
+      }
     },
     components:{
       headerBase,
@@ -464,6 +477,30 @@
                 width:88rpx;
                 height: 88rpx;
                 margin-bottom: 10rpx;
+              }
+            }
+            .nav-tip {
+              position: relative;
+              span {
+                position: absolute;
+                right: 56rpx;
+                top:30rpx;
+                border-radius: 50%;
+                line-height: 30rpx;
+                background: #FA5151;
+                color: #ffffff;
+                font-size: 18rpx;
+                text-align: center;
+                border: 1rpx solid #fff;
+              }
+              .tip-s{
+                width: 30rpx;
+                height: 30rpx;
+              }
+              .tip-m{
+                right: 40rpx;
+                border-radius: 30rpx;
+                padding: 0 6rpx;
               }
             }
           }
