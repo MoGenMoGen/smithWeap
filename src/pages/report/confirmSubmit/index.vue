@@ -76,6 +76,14 @@
           </li>
           <li>
             <div class="left">
+              <span>完工结算金额</span>
+            </div>
+            <div class="right">
+              <input type="number" placeholder="请输入完工结算金额" v-model="putinfo.settlePrice" class="rmks">
+            </div>
+          </li>
+          <li>
+            <div class="left">
               <span>备注</span>
             </div>
             <div class="right">
@@ -163,6 +171,7 @@
           rmks: '',
           imgDay: '',
           imgNight: '',
+          settlePrice: ''
         },
         //白天照片
         dayList:[],
@@ -233,6 +242,7 @@
           rmks: '',
           imgDay: '',
           imgNight: '',
+          settlePrice: ''
         }
         // console.log(this.info)
       },

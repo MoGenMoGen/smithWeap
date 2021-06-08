@@ -627,7 +627,7 @@ class api {
       })
     })
   }
-  //完工确认单(维修)-提交接口
+  //完工确认单(安装)-提交接口
   postaddCompletion(data) {
     return new Promise(resolve => {
       post("/blade-works/workscompletion/addCompletion", data).then(res => {

@@ -108,6 +108,10 @@
           <dateRange :value="relTime" @getStart="getDate"></dateRange>
           <!-- <input v-model="pushInfo.completionTm" type="text" placeholder="请输入时间"> -->
         </div>
+        <div class="time">
+          <span>完工结算金额</span>
+          <input v-model="pushInfo.settlePrice" type="number" placeholder="请输入完工结算金额">
+        </div>
       </div>
       <div class="question">
         <div class="title">问题反馈：(描述并附带现场照片)</div>
@@ -251,6 +255,7 @@
           completionDesc:'',//完成描述
           completionTm:'',//完成时间
           feedback:'',//问题反馈
+          settlePrice: ''
         }
         this.relTime = '请选择完成时间'
         this.imglist1 = []
