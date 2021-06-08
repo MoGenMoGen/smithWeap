@@ -122,9 +122,12 @@
         wx.canvasToTempFilePath({
           canvasId: 'firstCanvas',
           success:function(res) {
-            that.signImage = res.tempFilePath;
+            // that.signImage = res.tempFilePath;
+            that.api.upLoad(res.tempFilePath).then(res => {
+              that.$emit("success",res.link);
+            })
             // console.log(that.signImage);
-            that.$emit("success",that.signImage);
+
           }
         },this)
       },
