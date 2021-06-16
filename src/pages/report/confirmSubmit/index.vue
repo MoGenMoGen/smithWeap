@@ -74,14 +74,14 @@
               <img :src="rltb" class="rltb"/>
             </div>
           </li>
-          <li>
+          <!-- <li>
             <div class="left">
               <span>完工结算金额</span>
             </div>
             <div class="right">
               <input type="number" placeholder="请输入完工结算金额" v-model="putinfo.settlePrice" class="rmks">
             </div>
-          </li>
+          </li> -->
           <li>
             <div class="left">
               <span>备注</span>
@@ -171,7 +171,7 @@
           rmks: '',
           imgDay: '',
           imgNight: '',
-          settlePrice: ''
+          // settlePrice: ''
         },
         //白天照片
         dayList:[],
@@ -242,7 +242,7 @@
           rmks: '',
           imgDay: '',
           imgNight: '',
-          settlePrice: ''
+          // settlePrice: ''
         }
         // console.log(this.info)
       },
@@ -284,6 +284,20 @@
             return wx.showToast({
               icon: "none",
               title: '请选择时间',
+              duration: 2000
+            });
+          }
+          if(this.putinfo.imgNight==''){
+            return wx.showToast({
+              icon: "none",
+              title: '请选择完工照片(晚上照片)',
+              duration: 2000
+            });
+          }
+          if(this.putinfo.imgDay==''){
+            return wx.showToast({
+              icon: "none",
+              title: '请选择完工照片(白天照片)',
               duration: 2000
             });
           }

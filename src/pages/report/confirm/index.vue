@@ -47,10 +47,10 @@
             <span>工作内容</span>
             <p>{{info.workCont}}</p>
           </li>
-          <li>
+          <!-- <li>
             <span>工作内容</span>
             <p>{{info.settlePrice}}</p>
-          </li>
+          </li> -->
           <li>
             <span>客户联系人</span>
             <p>{{info.custContact}}</p>
