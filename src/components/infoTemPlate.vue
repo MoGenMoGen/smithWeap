@@ -30,7 +30,8 @@
         <span>外包装情况</span>
         <div class="check">
           <span v-for="(item,index) in items2" :key="index" @click="choose(2,index)">
-            <img :src="xz" alt="" v-if="item.checked">
+            <img :src="jx" v-if="items1[1].checked">
+            <img :src="xz" alt="" v-else-if="item.checked">
             <img :src="wxz" alt="" v-else>
             {{item.name}}
           </span>
@@ -40,7 +41,8 @@
         <span>开箱/亮灯</span>
         <div class="check">
           <span v-for="(item,index) in items3" :key="index" @click="choose(3,index)">
-            <img :src="xz" alt="" v-if="item.checked">
+            <img :src="jx" v-if="items1[1].checked">
+            <img :src="xz" alt="" v-else-if="item.checked">
             <img :src="wxz" alt="" v-else>
             {{item.name}}
           </span>
@@ -50,7 +52,8 @@
         <span>是否安装</span>
         <div class="check">
           <span v-for="(item,index) in items4" :key="index" @click="choose(4,index)">
-            <img :src="xz" alt="" v-if="item.checked">
+            <img :src="jx" v-if="items1[1].checked">
+            <img :src="xz" alt="" v-else-if="item.checked">
             <img :src="wxz" alt="" v-else>
             {{item.name}}
           </span>
@@ -67,6 +70,7 @@
   import Radios from "./radios";
   import xz from '@/components/img/选中绿.png'
   import wxz from '@/components/img/未选中.png'
+  import jx from '@/components/img/disabled.png'
   export default {
     components: {Radios},
     props:{
@@ -83,6 +87,7 @@
       return{
         xz,
         wxz,
+        jx,
         info2:{},
         items1: [
           {value:true, name: '是', checked: false},
@@ -119,20 +124,38 @@
             item.checked = false
           });
           this.items1[index].checked = true
+          if(this.items1[1].checked) {
+            this.items2.forEach(item => {
+              item.checked = false
+            });
+            this.items3.forEach(item => {
+              item.checked = false
+            });
+            this.items4.forEach(item => {
+              item.checked = false
+            });
+          } else if (this.items1[0].checked) {
+            this.items2[0].checked = true
+            this.items3[0].checked = true
+            this.items4[0].checked = true
+          }
           this.info2.aog = index + 1
         }else if(item ==2){
+          if(this.items1[1].checked) return
           this.items2.forEach(item => {
             item.checked = false
           });
           this.items2[index].checked = true
           this.info2.packing = index + 1
         }else if(item ==3){
+          if(this.items1[1].checked) return
           this.items3.forEach(item => {
             item.checked = false
           });
           this.items3[index].checked = true
           this.info2.unpackCheck = index + 1
         }else if(item ==4){
+          if(this.items1[1].checked) return
           this.items4.forEach(item => {
             item.checked = false
           });
