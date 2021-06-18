@@ -192,6 +192,7 @@
       }
     },
     async onLoad(e){
+      Object.assign(this.$data, this.$options.data())
       this.id = e.id
       this.reltime = '史密斯工作人员离开现场'
       //获取参数信息

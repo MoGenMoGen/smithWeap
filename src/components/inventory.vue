@@ -310,6 +310,14 @@
       },
       //提交
       submit(){
+        if(this.info.goodsArriveDt == '请选择产品到货日期' || this.info.staffArriveDt == '请选择人员到场日期'){
+           wx.showToast({
+              icon: "none",
+              title: '请填写日期',
+              duration: 2000
+            });
+          return
+        }
         this.type = 2
         this.changeModel = !this.changeModel;
         this.isModel = !this.isModel;
