@@ -414,7 +414,7 @@ class api {
       let that = this
       //上传文件
       wx.uploadFile({
-        url: hostUrl + '/blade-resource/oss/endpoint/put-file-attach',
+        url: hostUrl + '/blade-resource/oss/endpoint/put-file-attach?code=minio',
         filePath: imgPath,
         name: 'file',
         header: {
