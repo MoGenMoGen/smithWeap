@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <p @click="toPage('/pages/login/main')">测试跳转登录页面</p>
+    <!-- <p @click="toPage('/pages/login/main')">测试跳转登录页面</p> -->
     <bottomBase></bottomBase>
   </div>
 </template>
