@@ -121,6 +121,7 @@
         let that = this;
         wx.canvasToTempFilePath({
           canvasId: 'firstCanvas',
+          fileType: 'jpg',
           success:function(res) {
             // that.signImage = res.tempFilePath;
             that.api.upLoad(res.tempFilePath).then(res => {
