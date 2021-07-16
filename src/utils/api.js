@@ -879,6 +879,14 @@ class api {
       })
     })
   }
+  // 项目经理工单列表
+  pmList() {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/projPage").then(res => {
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api, wxHostUrl, appid };

@@ -419,6 +419,12 @@
         this.api.getNumNotAccept().then(res => {
           this.navList[1].total = res.data
         })
+      },
+      // 获取项目经理工单列表
+      getPmList() {
+        this.api.pmList().then(res => {
+          console.log(res)
+        })
       }
     },
     components:{
