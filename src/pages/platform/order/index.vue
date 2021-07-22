@@ -116,10 +116,12 @@
         endDate:'',
         startTm:'',//开始时间
         endTm:'',//结束时间
+        roleName: ''
       }
     },
     async onLoad(e){
       console.log(e)
+      this.roleName = wx.getStorageSync('loginInfo').role_name
       this.orderType = e.type
       switch(this.orderType){
         case '1':
@@ -180,13 +182,24 @@
         }
         switch(this.orderType){
           case '1':
-            let data =await this.api.getWorkOrder(param)
-            data.data.records.forEach(item=>{
-              item.bidStart = item.bidStart.slice(0,10)
-              item.bidEnd = item.bidEnd.slice(0,10)
-            })
-            this.list.push(...data.data.records)
-            this.total = data.data.total
+            if(this.roleName=='项目经理') {
+              this.api.pmList(param).then(res=> {
+                res.data.records.forEach(item=>{
+                  item.bidStart = item.bidStart.slice(0,10)
+                  item.bidEnd = item.bidEnd.slice(0,10)
+                })
+                this.list.push(...res.data.records)
+                this.total = res.data.total
+              })
+            } else {
+              let data =await this.api.getWorkOrder(param)
+              data.data.records.forEach(item=>{
+                item.bidStart = item.bidStart.slice(0,10)
+                item.bidEnd = item.bidEnd.slice(0,10)
+              })
+              this.list.push(...data.data.records)
+              this.total = data.data.total
+            }
             break
           case '2':
             let data2 =await this.api.getCompleteOrder(param)

@@ -880,9 +880,9 @@ class api {
     })
   }
   // 项目经理工单列表
-  pmList() {
+  pmList(data) {
     return new Promise(resolve => {
-      get("/blade-works/worksorder/projPage").then(res => {
+      get("/blade-works/worksorder/projPage",data).then(res => {
         resolve(res)
       })
     })

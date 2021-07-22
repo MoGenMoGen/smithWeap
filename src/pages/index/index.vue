@@ -132,7 +132,7 @@
           <div class="title">
             <p>
               <img :src="logo2" mode="widthFix"  class="titleImg"/>
-              施工确认
+              {{roleName=='项目经理'?'进行工单':'施工确认'}}
             </p>
             <p @click="toPage('/pages/platform/order/main?type=1')">
               查看更多
@@ -264,12 +264,15 @@
         list2:[],
         list3:[],//施工确认列表
         loginType:2,//1:供应商 2：平台方 3：供应商指派
+        roleName: ''
       }
     },
     async onLoad(){
       this.loginType = wx.getStorageSync('loginType')
+      this.roleName = wx.getStorageSync('loginInfo').role_name
     },
     async onShow(){
+      this.roleName = wx.getStorageSync('loginInfo').role_name
       this.loginType = wx.getStorageSync('loginType')
       console.log('show ',this.loginType);
       var _this = this
@@ -284,6 +287,9 @@
           this.getNum()
         }else{
           this.getList2();
+          if(this.roleName=='项目经理') {
+            this.getPmList()
+          }
         }
       }else{
         console.log("我要再次获取");
@@ -299,6 +305,9 @@
               _this.getList();
             }else{
               _this.getList2();
+              if(this.roleName=='项目经理') {
+                _this.getPmList()
+              }
             }
             clearInterval(timeset)
           }
@@ -422,8 +431,15 @@
       },
       // 获取项目经理工单列表
       getPmList() {
-        this.api.pmList().then(res => {
-          console.log(res)
+        this.api.pmList({
+          current: 1,
+          size: 3
+        }).then(res => {
+          res.data.records.forEach(item=> {
+            item.bidStart = item.bidStart.slice(0,10)
+            item.bidEnd = item.bidEnd.slice(0,10)
+          })
+          this.list3 = res.data.records
         })
       }
     },
