@@ -75,7 +75,7 @@
         <div class="picture">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist1" :key="index"  >
-              <img :src="item" mode="heightFix"/>
+              <img :src="item" mode="heightFix" @click="viewImg(item,imgList1)"/>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
         <div class="picture">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist2" :key="index"  >
-              <img :src="item" mode="heightFix"/>
+              <img :src="item" mode="heightFix" @click="viewImg(item,imgList2)"/>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
         <div class="picture" style="padding-top: 80rpx;">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist3" :key="index"  >
-              <img :src="item" mode="heightFix"/>
+              <img :src="item" mode="heightFix" @click="viewImg(item,imgList3)"/>
             </div>
           </div>
         </div>
@@ -210,6 +210,9 @@
         if(url){
           this.util.aHref(url)
         }
+      },
+      viewImg(url,imgList) {
+        this.util.viewImg(url,imgList)
       },
       changeTab(item,index){
         // this.currentIndex=index

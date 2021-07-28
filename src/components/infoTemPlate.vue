@@ -1,7 +1,7 @@
 <template>
   <div class="infoTemplate">
     <ul v-if="!change">
-      <li>{{info.nm}}<span v-if="info.spec">({{info.spec}})</span></li>
+      <li><p>{{info.nm}}<span v-if="info.spec" style="width: auto;">({{info.spec}})</span></p></li>
       <li><span>单位：{{info.unit}}</span><p>应到数量：{{info.num}}</p></li>
       <li><span>实际数量</span><p>{{info.realNum}}</p></li>
       <li><span>缺货数量</span><p >{{info.num-info.realNum}}</p></li>
@@ -12,7 +12,7 @@
       <li><span>备注</span><p>{{info.rmks}}</p></li>
     </ul>
     <ul class="info-box" v-if="change">
-      <li>{{info.nm}}<span v-if="info.spec">({{info.spec}})</span></li>
+      <li><p>{{info.nm}}<span v-if="info.spec" style="width: auto;">({{info.spec}})</span></p></li>
       <li><span>单位：{{info.unit}}</span><p>应到数量：<input v-model="info2.num"/></p></li>
       <li><span>实际数量</span><p><input v-model="info2.realNum"/></p></li>
       <li><span>缺货数量</span><p :class="{red:info2.num - info2.realNum}">{{info2.num - info2.realNum}}</p></li>

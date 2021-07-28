@@ -37,7 +37,7 @@
               <img class="right" :src="right"/>
             </p>
           </div>
-          <div class="box" v-for="(item,index) in list" :key="index">
+          <div class="box" v-for="(item,index) in list" :key="index" v-if="list.length>0">
             <ul>
               <li>
                 <img :src="jx"/>
@@ -71,6 +71,10 @@
               </p>
             </div>
           </div>
+          <div v-if="list.length==0" class="box box2">
+            <img :src="noOrder">
+            暂无报价单
+          </div>
         </div>
         <!--接单施工-->
         <div class="listBox">
@@ -84,7 +88,7 @@
               <img class="right" :src="right"/>
             </p>
           </div>
-          <div class="box" v-for="(item,index) in list2" :key="index">
+          <div class="box" v-for="(item,index) in list2" :key="index" v-if="list2.length>0">
             <ul>
               <li>
                 <img :src="jx"/>
@@ -113,6 +117,10 @@
               </p>
             </div>
           </div>
+          <div v-if="list2.length==0" class="box box2">
+            <img :src="noOrder">
+            暂无施工单
+          </div>
         </div>
       </div>
       <div class="loginType" v-if="loginType == 2">
@@ -139,7 +147,7 @@
               <img class="right" :src="right"/>
             </p>
           </div>
-          <div class="box" v-for="(item,index) in list3" :key="index">
+          <div class="box" v-for="(item,index) in list3" :key="index" v-if="list3.length>0">
             <ul>
               <li>
                 <img :src="gdbh"/>
@@ -177,6 +185,10 @@
               <p style="border: 1rpx solid #909090;color: #909090;" @click="gowork(item.workType,item)">查看</p>
             </div>
           </div>
+          <div v-if="list3.length==0" class="box box2">
+            <img :src="noOrder">
+            暂无工单
+          </div>
         </div>
       </div>
       <div class="loginType" v-if="loginType == 3">
@@ -212,6 +224,7 @@
   import wcgdtb from "@/components/img/完成工单图标.png"
   import gdbh from "@/components/img/工单编号.png"
   import hbrq from "@/components/img/汇报日期.png"
+  import noOrder from "@/components/img/暂无工单.png"
   export default {
     data(){
       return{
@@ -225,6 +238,7 @@
         right,
         gdbh,
         hbrq,
+        noOrder,
         swiperList:[],
         current:1,
         size:2,
@@ -286,9 +300,10 @@
           this.getList();
           this.getNum()
         }else{
-          this.getList2();
           if(this.roleName=='项目经理') {
             this.getPmList()
+          } else {
+            this.getList2();
           }
         }
       }else{
@@ -296,6 +311,7 @@
         var _this = this
         var timeset = setInterval(function(){
           _this.loginType = wx.getStorageSync('loginType')
+          _this.roleName = wx.getStorageSync('loginInfo').role_name
           if(_this.loginType){
             _this.list = []
             _this.list2 = []
@@ -303,10 +319,12 @@
             _this.getAdvertising();
             if(_this.loginType ==1){
               _this.getList();
+              _this.getNum()
             }else{
-              _this.getList2();
               if(this.roleName=='项目经理') {
                 _this.getPmList()
+              } else {
+                _this.getList2();
               }
             }
             clearInterval(timeset)
@@ -616,6 +634,21 @@
                 height: 20rpx;
                 margin-right: 10rpx;
               }
+            }
+          }
+          .box2 {
+            padding: 40rpx;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 28rpx;
+            color: #909090;
+            img {
+              width: 113rpx;
+              height: 69rpx;
+              margin-bottom: 10rpx;
             }
           }
           .steps{

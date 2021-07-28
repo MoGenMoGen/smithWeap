@@ -64,13 +64,13 @@
       <div class="imgBox">
         <ul>
           <li>完工照片(白天照片)</li>
-          <li><img v-for="(item,index) in dayList" :key="index" :src="item" mode="width"/></li>
+          <li><img v-for="(item,index) in dayList" :key="index" :src="item" mode="width" @click="viewImg(url,dayList)"/></li>
         </ul>
       </div>
       <div class="imgBox">
         <ul>
           <li>完工照片(晚上照片)</li>
-          <li><img v-for="(item,index) in nightList" :key="index" :src="item" mode="width"/></li>
+          <li><img v-for="(item,index) in nightList" :key="index" :src="item" mode="width" @click="viewImg(url,nightList)"/></li>
         </ul>
       </div>
       <div class="navBox">
@@ -200,6 +200,9 @@
         if(url){
           this.util.aHref(url)
         }
+      },
+      viewImg(url,imgList) {
+        this.util.viewImg(url,imgList)
       },
       async getData(){
         let data = await this.api.getInstallDtl(this.id)

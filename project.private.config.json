@@ -78,6 +78,12 @@
           "pathName": "pages/report/AfterSaleOrder/main",
           "query": "id=1390553083997614082",
           "scene": null
+        },
+        {
+          "name": "pages/login/main",
+          "pathName": "pages/login/main",
+          "query": "",
+          "scene": null
         }
       ]
     }

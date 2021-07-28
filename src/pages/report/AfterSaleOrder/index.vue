@@ -79,7 +79,7 @@
         <div class="picture">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist1" :key="index"  >
-              <img :src="item" mode="heightFix"/>
+              <img :src="item" mode="heightFix" @click="viewImg(item,imglist1)"/>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
         <div class="picture">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist2" :key="index"  >
-              <img :src="item" mode="heightFix"/>
+              <img :src="item" mode="heightFix" @click="viewImg(item,imglist2)"/>
             </div>
           </div>
 
@@ -116,7 +116,7 @@
         <div class="picture" style="padding-top: 80rpx;">
           <div class="imgbox">
             <div class="imgs" v-for="(item,index) in imglist3" :key="index"  >
-              <img :src="item" mode="heightFix"/>
+              <img :src="item" mode="heightFix" @click="viewImg(item,imglist3)"/>
             </div>
           </div>
         </div>
@@ -192,13 +192,13 @@
           <signature @success='getsign'></signature>
         </div>
       </div>
-      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletion2VO.audit==1">
+      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletion2VO.audit==1&&roleName!='项目经理'">
         <p>审核意见</p>
         <div class="textarea">
           <textarea placeholder="请输入建议..." v-model="options" name="" id="" cols="30" rows="10"></textarea>
         </div>
       </div>
-      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletion2VO.audit ==1)  &&sure !=1 && info.worksCompletion2VO.audit<=3">
+      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletion2VO.audit ==1&&roleName!='项目经理')  &&sure !=1 && info.worksCompletion2VO.audit<=3">
         <ul>
           <li class="icon">
             <p>
@@ -211,7 +211,7 @@
       <!--<div @click="toPage('/pages/report/custaffirm/AfterSale/main?id='+info.id)">我要审核</div>-->
     </div>
     <bottomBase></bottomBase>
-    <div class="button" v-if="nametype ==2 &&info.worksCompletion2VO.audit==1">
+    <div class="button" v-if="nametype ==2 &&info.worksCompletion2VO.audit==1&&roleName!='项目经理'">
       <div class="btn1" @click="submit(1)">不通过</div>
       <div class="btn2" @click="submit(2)">通过</div>
     </div>
@@ -278,6 +278,8 @@
         //客户签名
         custSign:'',
         myQrcode:'',
+        // 角色
+        roleName: ''
       }
     },
 
@@ -289,6 +291,9 @@
         if(url){
           this.util.aHref(url)
         }
+      },
+      viewImg(url,imgList) {
+        this.util.viewImg(url,imgList)
       },
       changeTab(item,index){
         if(index == 0){
@@ -385,6 +390,7 @@
     onLoad(e){
       this.id = e.id
       this.nametype = wx.getStorageSync('loginType')
+      this.roleName = wx.getStorageSync('loginInfo').role_name
       this.sure = e.sure
       this.options = ''
       let path = this.wxHostUrl+'/views/smith/AfterSale.html?id='+this.id

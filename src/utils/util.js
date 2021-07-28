@@ -394,6 +394,13 @@ class util{
     let choices = max - min + 1;
     return Math.floor(Math.random() * choices + min);
   }
+  //小程序图片预览
+  viewImg(url, list) {
+    wx.previewImage({
+      current: url, // 当前显示图片的http链接
+      urls: list // 需要预览的图片http链接列表
+    })
+  }
 }
 class reg{
   //验证是否有空值

@@ -71,7 +71,7 @@
           <li>
             <div class="imglist">
               <div class="imgs" v-for="(item,index) in dayList" :key="index" :src="item" >
-                <img :src="item" mode="heightFix"/>
+                <img :src="item" mode="heightFix" @click="viewImg(item,dayList)"/>
               </div>
             </div>
           </li>
@@ -83,7 +83,7 @@
           <li>
             <div class="imglist">
               <div class="imgs" v-for="(item,index) in nightList" :key="index"  >
-                <img :src="item" mode="heightFix"/>
+                <img :src="item" mode="heightFix" @click="viewImg(item,nightList)"/>
               </div>
             </div>
           </li>
@@ -318,6 +318,9 @@
         if(url){
           this.util.aHref(url)
         }
+      },
+      viewImg(url,imgList) {
+        this.util.viewImg(url,imgList)
       },
       changeTab(index){
         if(index == 0){
