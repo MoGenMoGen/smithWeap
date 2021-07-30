@@ -767,6 +767,14 @@ class api {
       })
     })
   }
+  //平台方-项目经理-获取统计数量
+  getCountNum3(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/countNumPlatform", data).then(res => {
+        resolve(res)
+      })
+    })
+  }
   //货物清点-增加产品单位列表接口
   worksgoodstype(type) {
     return new Promise(resolve => {

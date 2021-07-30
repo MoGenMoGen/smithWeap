@@ -109,6 +109,7 @@
             path:'/pages/my/amount/main',
           }
         ],
+        roleName: '' //角色
       }
     },
     async onLoad(){
@@ -116,6 +117,7 @@
     },
     async onShow(){
       this.loginType = wx.getStorageSync('loginType')
+      this.roleName = wx.getStorageSync('loginInfo').role_name
       switch(this.loginType){
         case 1:
           this.coreList = [
@@ -237,9 +239,15 @@
             this.navList[2].num = data2.data.orderFinish
             break
           case 2:
-            let data3 = await this.api.getCountNum2();
-            this.navList[0].num = data3.data.order
-            this.navList[1].num = data3.data.orderFinish
+            if(this.roleName=='项目经理') {
+              let data3 = await this.api.getCountNum3();
+              this.navList[0].num = data3.data.order
+              this.navList[1].num = data3.data.orderFinish
+            } else {
+              let data3 = await this.api.getCountNum2();
+              this.navList[0].num = data3.data.order
+              this.navList[1].num = data3.data.orderFinish
+            }
             break
           case 3:
             let data4 = await this.api.getCountNum2();

@@ -321,7 +321,7 @@
               _this.getList();
               _this.getNum()
             }else{
-              if(this.roleName=='项目经理') {
+              if(_this.roleName=='项目经理') {
                 _this.getPmList()
               } else {
                 _this.getList2();
@@ -449,10 +449,7 @@
       },
       // 获取项目经理工单列表
       getPmList() {
-        this.api.pmList({
-          current: 1,
-          size: 3
-        }).then(res => {
+        this.api.pmList({current: this.current,size: 3}).then(res =>{
           res.data.records.forEach(item=> {
             item.bidStart = item.bidStart.slice(0,10)
             item.bidEnd = item.bidEnd.slice(0,10)
