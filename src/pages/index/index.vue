@@ -300,6 +300,7 @@
           this.getList();
           this.getNum()
         }else{
+          console.log(this.roleName)
           if(this.roleName=='项目经理') {
             this.getPmList()
           } else {

@@ -91,6 +91,8 @@
               }else{
                 wx.setStorageSync("token",res.access_token);
                 wx.setStorageSync("loginType",res.loginType);
+                wx.setStorageSync("loginInfo", res);
+                wx.setStorageSync("tokenTime", new Date());
                 wx.hideLoading()
                 wx.showToast({
                   title: '登录成功',
