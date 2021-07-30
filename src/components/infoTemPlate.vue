@@ -119,6 +119,7 @@
     methods:{
       //选择
       choose(item,index){
+        console.log(item,index)
         if(item ==1){
           this.items1.forEach(item => {
             item.checked = false
@@ -139,7 +140,17 @@
             this.items3[0].checked = true
             this.items4[0].checked = true
           }
-          this.info2.aog = index + 1
+          if(index==0){
+            this.info2.aog = index + 1
+            this.info2.packing = index + 1
+            this.info2.unpackCheck = index + 1
+            this.info2.install = index + 1
+          } else {
+            this.info2.aog = 1
+            this.info2.packing = 1
+            this.info2.unpackCheck = 1
+            this.info2.install = 1
+          }
         }else if(item ==2){
           if(this.items1[1].checked) return
           this.items2.forEach(item => {

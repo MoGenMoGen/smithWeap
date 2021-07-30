@@ -300,6 +300,7 @@
             imgUrl: this.info.imgUrl,
             worksGoodsDetailList:goodslist,
           }
+          // console.log(param)
           await this.api.addBillADetail(param)
           this.getData(this.id)
           wx.hideLoading()
