@@ -192,13 +192,13 @@
           <signature @success='getsign'></signature>
         </div>
       </div>
-      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletion2VO.audit==1&&roleName!='项目经理'">
+      <div class="infoBox options" v-if="nametype==2 &&info.worksCompletion2VO.audit==1&&roleName!='项目经理'&&roleName!='销售经理'">
         <p>审核意见</p>
         <div class="textarea">
           <textarea placeholder="请输入建议..." v-model="options" name="" id="" cols="30" rows="10"></textarea>
         </div>
       </div>
-      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletion2VO.audit ==1&&roleName!='项目经理')  &&sure !=1 && info.worksCompletion2VO.audit<=3">
+      <div class="infoBox review" v-if="!(nametype ==2 &&info.worksCompletion2VO.audit ==1&&roleName!='项目经理'&&roleName!='销售经理')  &&sure !=1 && info.worksCompletion2VO.audit<=3">
         <ul>
           <li class="icon">
             <p>
@@ -211,7 +211,7 @@
       <!--<div @click="toPage('/pages/report/custaffirm/AfterSale/main?id='+info.id)">我要审核</div>-->
     </div>
     <bottomBase></bottomBase>
-    <div class="button" v-if="nametype ==2 &&info.worksCompletion2VO.audit==1&&roleName!='项目经理'">
+    <div class="button" v-if="nametype ==2 &&info.worksCompletion2VO.audit==1&&roleName!='项目经理'&&roleName!='销售经理'">
       <div class="btn1" @click="submit(1)">不通过</div>
       <div class="btn2" @click="submit(2)">通过</div>
     </div>

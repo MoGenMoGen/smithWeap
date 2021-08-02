@@ -303,6 +303,8 @@
           console.log(this.roleName)
           if(this.roleName=='项目经理') {
             this.getPmList()
+          } else if (this.roleName=='销售经理') {
+            this.getSaleList()
           } else {
             this.getList2();
           }
@@ -324,6 +326,8 @@
             }else{
               if(_this.roleName=='项目经理') {
                 _this.getPmList()
+              } else if (_this.roleName=='销售经理') {
+                _this.getSaleList()
               } else {
                 _this.getList2();
               }
@@ -451,6 +455,16 @@
       // 获取项目经理工单列表
       getPmList() {
         this.api.pmList({current: this.current,size: 3}).then(res =>{
+          res.data.records.forEach(item=> {
+            item.bidStart = item.bidStart.slice(0,10)
+            item.bidEnd = item.bidEnd.slice(0,10)
+          })
+          this.list3 = res.data.records
+        })
+      }
+      // 获取销售经理工单列表
+      getSaleList() {
+        this.api.saleList({current: this.current,size: 3}).then(res =>{
           res.data.records.forEach(item=> {
             item.bidStart = item.bidStart.slice(0,10)
             item.bidEnd = item.bidEnd.slice(0,10)

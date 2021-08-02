@@ -895,6 +895,14 @@ class api {
       })
     })
   }
+  // 销售经理工单列表
+  saleList(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/salePage",data).then(res => {
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api, wxHostUrl, appid };

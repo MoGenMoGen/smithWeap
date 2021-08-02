@@ -191,6 +191,15 @@
                 this.list.push(...res.data.records)
                 this.total = res.data.total
               })
+            } else if(this.roleName=='销售经理') {
+              this.api.saleList(param).then(res=> {
+                res.data.records.forEach(item=>{
+                  item.bidStart = item.bidStart.slice(0,10)
+                  item.bidEnd = item.bidEnd.slice(0,10)
+                })
+                this.list.push(...res.data.records)
+                this.total = res.data.total
+              })
             } else {
               let data =await this.api.getWorkOrder(param)
               data.data.records.forEach(item=>{
