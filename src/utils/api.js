@@ -751,6 +751,14 @@ class api {
       })
     })
   }
+  //平台方- 项目经理 - 完成工单
+  getProjCompleteOrder(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/listProjFinish", data).then(res => {
+        resolve(res)
+      })
+    })
+  }
   //平台方 - 帮助中心详情
   getHelpCenter(data) {
     return new Promise(resolve => {

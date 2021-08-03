@@ -268,6 +268,7 @@
             unit: this.array[this.index],
           }
           // console.log(param);
+          this.keep()
           await this.api.worksgoodsdetailadd(param)
           this.api.getInventoryDtl(this.id).then(res=>{
             this.info.worksGoodsDetailList = res.data.worksGoodsDetailList
@@ -326,14 +327,14 @@
       //保存
       keep(){
         console.log(this.info);
-        if(this.info.goodsArriveDt == '请选择产品到货日期' || this.info.staffArriveDt == '请选择人员到场日期'){
-           wx.showToast({
-              icon: "none",
-              title: '请填写日期',
-              duration: 2000
-            });
-          return
-        }
+        // if(this.info.goodsArriveDt == '请选择产品到货日期' || this.info.staffArriveDt == '请选择人员到场日期'){
+        //    wx.showToast({
+        //       icon: "none",
+        //       title: '请填写日期',
+        //       duration: 2000
+        //     });
+        //   return
+        // }
         //处理参数
         let goodslist = []
         this.info.worksGoodsDetailList.forEach(item => {
@@ -356,8 +357,8 @@
         let param = {
           id: this.info.id ,
           orderId: this.info.orderId,
-          staffArriveDt: this.info.staffArriveDt,
-          goodsArriveDt: this.info.goodsArriveDt,
+          // staffArriveDt: this.info.staffArriveDt,
+          // goodsArriveDt: this.info.goodsArriveDt,
           imgUrl: this.info.imgUrl,
           worksGoodsDetailList:goodslist,
         }

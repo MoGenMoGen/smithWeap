@@ -461,7 +461,7 @@
           })
           this.list3 = res.data.records
         })
-      }
+      },
       // 获取销售经理工单列表
       getSaleList() {
         this.api.saleList({current: this.current,size: 3}).then(res =>{
