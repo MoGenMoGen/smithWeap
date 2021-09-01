@@ -47,7 +47,7 @@
     </div>
     <ul class="ulBox" v-if="!change">
       <li><span>现场工作人员</span><p>{{info.fieldStaffNm}}</p></li>
-      <li><span>提交时间</span><p>{{info.createTime}}</p></li>
+      <li><span>提交时间</span><p>{{info.confirmTm}}</p></li>
     </ul>
     <ul class="ulBox ul2" v-if="info.signTm">
       <li><span>客户负责人签字</span><img :src="info.custSign"/></li>
@@ -216,7 +216,7 @@
           }else{
             this.imgList = this.info.imgUrl.split(',')
           }
-          this.info.createTime = this.info.createTime.substring(0,10)
+          this.info.confirmTm = this.info.confirmTm.substring(0,10)
           // console.log(this.imgList);
         }else{
           this.change = true

@@ -17,7 +17,7 @@
         <div class="nav">
           <ul>
             <li v-for="(item,index) in navList" :key="index" @click="toPages(item.path,index)" class="nav-tip">
-              <span v-if="item.total&&index!=2" :class="[item.total>99?'tip-m':'tip-s']">{{item.total>99?'99+':item.total}}</span>
+              <span v-if="item.total" :class="[item.total>99?'tip-m':'tip-s']">{{item.total>99?'99+':item.total}}</span>
               <img :src="item.imgUrl"/>
               <p>
                 {{item.nm}}
@@ -450,6 +450,9 @@
         })
         this.api.getNumNotAccept().then(res => {
           this.navList[1].total = res.data
+        })
+        this.api.getNumAccept().then(res => {
+          this.navList[2].total = res.data
         })
       },
       // 获取项目经理工单列表

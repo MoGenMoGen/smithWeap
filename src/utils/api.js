@@ -356,6 +356,14 @@ class api {
       })
     })
   }
+  // 施工汇报数量
+  getNumAccept() {
+    return new Promise(resolve => {
+      get('/blade-works/worksorder/numAccept').then(res => {
+        resolve(res)
+      })
+    })
+  }
   //打卡-列表
   clockList(data) {
     return new Promise(resolve => {

@@ -87,7 +87,7 @@
           },{
             nm:'已完工',
             num:0,
-            path:'/pages/report/reportStatus/main'
+            path:'/pages/report/completed/main'
           }
         ],
         coreList:[
@@ -155,7 +155,7 @@
             },{
               nm:'已完工',
               num:0,
-              path:'/pages/report/reportStatus/main'
+              path:'/pages/report/completed/main'
             }
           ]
           break
