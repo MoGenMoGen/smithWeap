@@ -919,6 +919,22 @@ class api {
       })
     })
   }
+  // 评分
+  rate(data) {
+    return new Promise(resolve => {
+      post("/blade-works/worksorder/getStar",data).then(res => {
+        resolve(res)
+      })
+    })
+  }
+  // 获取评分
+  getRate(data) {
+    return new Promise(resolve => {
+      get("/blade-works/worksorder/returnStar",data).then(res => {
+        resolve(res)
+      })
+    })
+  }
 }
 
 export { api, wxHostUrl, appid };

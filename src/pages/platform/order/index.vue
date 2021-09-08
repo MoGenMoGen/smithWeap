@@ -22,7 +22,7 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in list" :key="index" @click="gowork(item.workType,item)">
+        <div class="box" v-for="(item,index) in list" :key="index">
           <ul>
             <li>
               <img :src="gdbh"/>
@@ -57,12 +57,49 @@
           </ul>
           <div>
             <steps :status="item.processStatus" v-if="orderType == 1"></steps>
-            <p>
+            <p v-if="orderType == 2&&roleName=='项目经理'&&item.projState!=1" @click="showRate(item.id)">
+              评分
+            </p>
+            <p v-if="orderType == 2&&roleName=='项目经理'&&item.projState==1" @click="showRateInfo(item.id)" style="border-color: #E51937;color: #E51937;">
+              已评分
+            </p>
+            <p v-if="orderType == 2&&roleName=='销售经理'&&item.saleState!=1" @click="showRate(item.id)">
+              评分
+            </p>
+            <p v-if="orderType == 2&&roleName=='销售经理'&&item.saleState==1" @click="showRateInfo(item.id)" style="border-color: #E51937;color: #E51937;">
+              已评分
+            </p>
+            <p @click="gowork(item.workType,item)">
               查看
             </p>
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="showRateBox" class="mask" catchtouchmove='ture'></div>
+    <div v-if="showRateBox" class="rate-box">
+      <div class="rate-top">
+        <div><span>评分</span><van-rate :value="value" @change="onChange" /></div>
+        <textarea placeholder="填写评语" v-model="rmk"></textarea>
+      </div>
+      <div class="rate-bottom">
+        <div @click="showRateBox=false">取消</div>
+        <div style="color: #E51937;" @click="confirm">确定</div>
+      </div>
+    </div>
+    <div v-if="showRateDetail" class="mask" catchtouchmove='ture' @click="showRateDetail=false"></div>
+    <div v-if="showRateDetail" class="rate-box2" @click="showRateDetail=false">
+      <div v-if="scoreInfo.projState==1" class="rate-box2-item">
+        <span>项目经理</span>
+        <div><span>评分</span><van-rate :value="scoreInfo.projScore" readonly/></div>
+        <span>{{scoreInfo.projRmks}}</span>
+      </div>
+      <div v-if="scoreInfo.saleState==1" class="rate-box2-item">
+        <span>销售经理</span>
+        <div><span>评分</span><van-rate :value="scoreInfo.saleScore" readonly/></div>
+        <span>{{scoreInfo.saleRmks}}</span>
+      </div>
+      <div v-if="scoreInfo.projState==1&&scoreInfo.saleState==1"><span>综合评分</span><van-rate :value="scoreInfo.scores" readonly allow-half="true"/></div>
     </div>
     <bottomBase></bottomBase>
   </div>
@@ -116,7 +153,13 @@
         endDate:'',
         startTm:'',//开始时间
         endTm:'',//结束时间
-        roleName: ''
+        roleName: '',
+        showRateBox: false,
+        showRateDetail: false,
+        value: 0, //当前评分分值
+        id: '', //当前评分的工单id
+        rmk: '', //当前评分的工单评语
+        scoreInfo: {} //评分详情
       }
     },
     async onLoad(e){
@@ -234,6 +277,34 @@
         this.endTm = e
         this.endTime = e
       },
+      showRate(id) {
+        this.showRateBox = true
+        this.value = 0
+        this.id = id
+        this.rmk = ''
+      },
+      onChange(e) {
+        this.value = e.mp.detail
+      },
+      confirm() {
+        let data = {
+          id: this.id ,
+          score: this.value,
+          rmk: this.rmk
+        }
+        this.api.rate(data).then(res => {
+          this.showRateBox = false
+          this.current = 1
+          this.list = []
+          this.getList()
+        })
+      },
+      showRateInfo(id) {
+        this.showRateDetail = true
+        this.api.getRate({id:id}).then(res => {
+          this.scoreInfo = res.data
+        })
+      }
     },
     components:{
       Steps,
@@ -373,6 +444,93 @@
               border-radius: 100rpx;
               margin-right: 38rpx;
             }
+          }
+        }
+      }
+    }
+    .mask {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: rgba(0,0,0,.4);
+    }
+    .rate-box {
+      display: flex;
+      flex-direction: column;
+      width: 640rpx;
+      border-radius: 20rpx;
+      background-color: #fff;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 101;
+      .rate-top {
+        width: 100%;
+        padding: 50rpx;
+        box-sizing: border-box;
+        font-size: 28rpx;
+        div {
+          display: flex;
+          align-items: center;
+          span {
+            margin-right: 30rpx;
+          }
+        }
+        textarea {
+          width: 100%;
+          height: 306rpx;
+          background-color: #E5E5E5;
+          padding: 20rpx;
+          box-sizing: border-box;
+          margin-top: 20rpx;
+          font-size: 24rpx;
+          border-radius: 4rpx;
+        }
+      }
+      .rate-bottom {
+        width: 100%;
+        border-top: 1px solid #E5E5E5;
+        display: flex;
+        div {
+          width: 50%;
+          height: 112rpx;
+          font-size: 32rpx;
+          color: #000000;
+          text-align: center;
+          line-height: 112rpx;
+        }
+        div:first-child {
+          border-right: 1px solid #E5E5E5;
+        }
+      }
+    }
+    .rate-box2 {
+      width: 640rpx;
+      padding: 40rpx 50rpx;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      border-radius: 20rpx;
+      background-color: #fff;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 101;
+      .rate-box2-item {
+        font-size: 28rpx;
+        color: #000;
+        margin-bottom: 50rpx;
+        div {
+          margin: 20rpx 0;
+          display: flex;
+          align-items: center;
+          span {
+            margin-right: 30rpx;
           }
         }
       }

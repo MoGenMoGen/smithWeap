@@ -3,5 +3,8 @@
   "navigationBarBackgroundColor":"#FFFFFF",
   "navigationBarTextStyle":"black",
   "onReachBottomDistance": 150,
-  "enablePullDownRefresh": false
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+      "van-rate": "/static/vant/rate/index"
+    }
 }
