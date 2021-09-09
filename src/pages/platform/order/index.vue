@@ -267,6 +267,8 @@
 
       },
       toSearch(){
+        this.current = 1
+        this.list = []
         this.getList();
       },
       getDate(e){
