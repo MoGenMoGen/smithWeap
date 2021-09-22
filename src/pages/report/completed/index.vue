@@ -31,7 +31,7 @@
     </div>
     <div class="main">
       <div class="listBox">
-        <div class="box" v-for="(item,index) in list" :key="index" @click="toPage('/pages/report/confirmOrder/main?id='+item.id)">
+        <div class="box" v-for="(item,index) in list" :key="index">
           <ul>
             <li>
               <img :src="gd"/>
