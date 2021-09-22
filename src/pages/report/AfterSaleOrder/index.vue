@@ -115,7 +115,7 @@
         </div>
         <div class="picture" style="padding-top: 80rpx;">
           <div class="imgbox">
-            <div class="imgs" v-for="(item,index) in imglist3" :key="index"  >
+            <div class="imgs" v-if="imglist3.length>0" v-for="(item,index) in imglist3" :key="index"  >
               <img :src="item" mode="heightFix" @click="viewImg(item,imglist3)"/>
             </div>
           </div>
