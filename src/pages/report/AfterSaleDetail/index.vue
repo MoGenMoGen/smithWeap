@@ -229,7 +229,11 @@
         // console.log(this.pushInfo);
         this.imglist1 = this.pushInfo.imgBefore.split(',')
         this.imglist2 = this.pushInfo.imgAfter.split(',')
-        this.imglist3 = this.pushInfo.feedbackImg.split(',')
+        if(this.pushInfo.feedbackImg) {
+          this.imglist3 = this.pushInfo.feedbackImg.split(',')
+        } else {
+          this.imglist3 = []
+        }
         // console.log(this.info);
       },
       //跳转到满意调查详情

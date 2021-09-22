@@ -313,7 +313,11 @@
         // console.log(this.pushInfo);
         this.imglist1 = this.pushInfo.imgBefore.split(',')
         this.imglist2 = this.pushInfo.imgAfter.split(',')
-        this.imglist3 = this.pushInfo.feedbackImg.split(',')
+        if(this.pushInfo.feedbackImg) {
+          this.imglist3 = this.pushInfo.feedbackImg.split(',')
+        } else {
+          this.imglist3 = []
+        }
         // let param = {
         //   appid:'wx5d71635ece5968bd',
         //   id:this.id,
