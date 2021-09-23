@@ -3,6 +3,6 @@
   "navigationBarBackgroundColor":"#FFFFFF",
   "navigationBarTextStyle":"black",
   "navigationStyle": "custom",
-  "onReachBottomDistance": 150,
+  "onReachBottomDistance": 250,
   "enablePullDownRefresh": false
 }

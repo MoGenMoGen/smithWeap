@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <headerBase></headerBase>
-    <div class="main">
+    <div class="main" v-if="loginType != 3">
       <!--轮播图-->
       <swiper class="valueSwiper" id="swiper" :style="swiperStyle" indicator-dots="true" indicator-color="white" indicator-active-color="rgba(229, 25, 55, 1)">
         <block v-for="(item,index) in swiperList" :key="index" >
@@ -191,23 +191,77 @@
           </div>
         </div>
       </div>
-      <div class="loginType" v-if="loginType == 3">
-        <reportStatu ></reportStatu>
-      </div>
       <div class="loginTypeno" v-if="!loginType">
       </div>
       <!--loginType == 3-->
       <bottomBase></bottomBase>
     </div>
-
-
+    <scroll-view scroll-y="true" @scrolltolower="tolower" class="main" style="flex: 1;" v-if="loginType==3">
+      <!--轮播图-->
+      <swiper class="valueSwiper" id="swiper" :style="swiperStyle" indicator-dots="true" indicator-color="white" indicator-active-color="rgba(229, 25, 55, 1)">
+        <block v-for="(item,index) in swiperList" :key="index" >
+          <swiper-item>
+            <!-- <img :src="item" mode="aspectFill" @load="imgH"> -->
+            <img :src="item" mode="aspectFill" >
+          </swiper-item>
+        </block>
+      </swiper>
+      <div class="loginType">
+        <div class="nav3">
+          <ul>
+            <li v-for="(item,index) in navList3" :key="index" :class="{active:currentIndex==index}" @click="changeNav(index)">
+              {{item.nm}}
+            </li>
+          </ul>
+        </div>
+        <div class="listBox">
+          <div class="box" v-for="(item,index) in list4" :key="index">
+            <ul>
+              <li>
+                <img :src="gdbh"/>
+                <span>工单编号</span>
+                <p>{{item.cd}}</p>
+              </li>
+              <li>
+                <img :src="jx"/>
+                <span>经销商名称</span>
+                <p>{{item.custNm}}</p>
+              </li>
+              <li>
+                <img :src="type"/>
+                <span>工作类型</span>
+                <p>{{item.workTypeNm}}</p>
+              </li>
+              <li>
+                <img :src="fb"/>
+                <span>发布日期</span>
+                <p>{{item.bidStart}}</p>
+              </li>
+              <li>
+                <img :src="jz"/>
+                <span>截止日期</span>
+                <p>{{item.bidEnd}}</p>
+              </li>
+            </ul>
+            <div>
+              <!--阶段性进度条-->
+              <Steps :status="item.processStatus"></Steps>
+              <p style="border: 1rpx solid #909090;color: #909090;" @click="toDetail(currentIndex,item.id,item.workType)">
+                查看
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <bottomBase></bottomBase>
+    </scroll-view>
   </div>
 </template>
 
 <script>
   import headerBase from "@/components/headerBase";
   import bottomBase from "@/components/bottomBase";
-  import reportStatu from "@/components/reportStatu";
+  // import reportStatu from "@/components/reportStatu";
   import Steps from "@/components/steps";
   import bj from "@/components/img/接单报价图标.png"
   import sg from "@/components/img/接单施工图标.png"
@@ -272,13 +326,26 @@
             path:'/pages/platform/order/main?type=2',
           }
         ],
+        navList3:[
+          {
+            nm:'待汇报',
+          },{
+            nm:'待审核',
+          },{
+            nm:'已完工'
+          }
+        ],
         infoNm:'接单报价',
         info2Nm:'接单施工',
         list:[],
         list2:[],
         list3:[],//施工确认列表
+        list4:[], //供应商指派
         loginType:2,//1:供应商 2：平台方 3：供应商指派
-        roleName: ''
+        roleName: '',
+        currentIndex: 0,
+        size2: 10,
+        total: 0,
       }
     },
     async onLoad(){
@@ -286,6 +353,9 @@
       this.roleName = wx.getStorageSync('loginInfo').role_name
     },
     async onShow(){
+      this.current=1
+      this.list4 = []
+      this.currentIndex=0
       this.roleName = wx.getStorageSync('loginInfo').role_name
       this.loginType = wx.getStorageSync('loginType')
       console.log('show ',this.loginType);
@@ -299,7 +369,7 @@
         if(this.loginType ==1){
           this.getList();
           this.getNum()
-        }else{
+        }else if(this.loginType==2){
           console.log(this.roleName)
           if(this.roleName=='项目经理') {
             this.getPmList()
@@ -308,6 +378,8 @@
           } else {
             this.getList2();
           }
+        } else if (this.loginType==3) {
+          this.getList3(0);
         }
       }else{
         console.log("我要再次获取");
@@ -323,14 +395,17 @@
             if(_this.loginType ==1){
               _this.getList();
               _this.getNum()
-            }else{
-              if(_this.roleName=='项目经理') {
-                _this.getPmList()
-              } else if (_this.roleName=='销售经理') {
-                _this.getSaleList()
+            }else if(this.loginType==2){
+              console.log(this.roleName)
+              if(this.roleName=='项目经理') {
+                this.getPmList()
+              } else if (this.roleName=='销售经理') {
+                this.getSaleList()
               } else {
-                _this.getList2();
+                this.getList2();
               }
+            } else if (this.loginType==3) {
+              this.getList3(0);
             }
             clearInterval(timeset)
           }
@@ -338,6 +413,15 @@
       }
     },
     methods:{
+      tolower(){
+        if(this.list4.length>=this.total){
+          return
+        }
+        if(this.list4.length<this.total){
+          this.current++
+          this.getList3(this.currentIndex)
+        }
+      },
       toPage(url){
         if(url){
           this.util.aHref(url)
@@ -398,6 +482,34 @@
           this.swiperStyle = "height:" + swiperH;
         }).exec();
       },
+      changeNav(index){
+        if(index == this.currentIndex) return;
+        if(index == 2){
+          this.current = 1
+          this.list4 = []
+          this.currentIndex=index
+          this.getList3(index)
+        }else{
+          var _this = this
+          wx.requestSubscribeMessage({
+            tmplIds: ['plCNG98KmuMCaNfc3QbyNqQECnZa-P3ku55UZG_2u_g','wnLaXb9erVNEHv18d7VizAWv9bZqqRcFhuEvoshKNVA'],
+            success (res) {
+              console.log(res);
+              _this.current = 1
+              _this.list4 = []
+              _this.currentIndex=index
+              _this.getList3(index)
+            },
+            fail(res){
+              console.log(res);
+              _this.current = 1
+              _this.list4 = []
+              _this.currentIndex=index
+              _this.getList3(index)
+            }
+          })
+        }
+      },
       //获取首页接单报价列表和接单施工列表
       async getList(){
         // this.list = []
@@ -432,6 +544,40 @@
           item.bidEnd = item.bidEnd.slice(0,10)
         })
         this.list3 = data.data.records
+      },
+      async getList3(index){
+        switch (index){
+          case 0:
+            const param={
+              current:this.current,
+              size:this.size2
+            }
+            let data =await this.api.listToReport(param)
+            data.data.records.forEach(item=>{
+              item.bidStart = item.bidStart.slice(0,10)
+              item.bidEnd = item.bidEnd.slice(0,10)
+            })
+            this.list4.push(...data.data.records)
+            this.total = data.data.total
+            break
+          case 1:
+            const param2={
+              current:this.current,
+              size:this.size2
+            }
+            let data2 =await this.api.listToAudit(param2)
+            data2.data.records.forEach(item=>{
+              item.bidStart = item.bidStart.slice(0,10)
+              item.bidEnd = item.bidEnd.slice(0,10)
+            })
+            this.list4.push(...data2.data.records)
+            this.total = data2.data.total
+            break
+          case 2:
+            this.toPage('/pages/report/completed/main')
+            this.currentIndex = 0
+            break
+        }
       },
       async getAdvertising(){
         let paramimg = {
@@ -474,12 +620,31 @@
           })
           this.list3 = res.data.records
         })
-      }
+      },
+      //跳转详情页
+      toDetail(val,id,type){
+        switch (val){
+          case 0:
+            if(type ==1 || type ==3){
+              this.toPage('/pages/report/index/main?id='+id)
+            }else if(type ==2){
+              this.toPage('/pages/report/AfterSale/main?id='+id)
+            }
+            break
+          case 1:
+            if(type ==1 || type ==3){
+              this.toPage('/pages/report/confirm/main?id='+id +'&type='+type)
+            }else if(type ==2){
+              this.toPage('/pages/report/AfterSaleOrder/main?id='+id)
+            }
+            break
+        }
+      },
     },
     components:{
       headerBase,
       bottomBase,
-      reportStatu,
+      // reportStatu,
       Steps
     }
   }
@@ -497,6 +662,7 @@
     flex-direction: column;
     .main{
       flex: 1;
+      // height: 100%;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       padding: 20rpx;
@@ -557,6 +723,38 @@
                 border-radius: 30rpx;
                 padding: 0 6rpx;
               }
+            }
+          }
+        }
+        .nav3{
+          display: flex;
+          align-items: center;
+          background-color: #FFFFFF;
+          padding: 30rpx 30rpx;
+          margin-top: 20rpx;
+          border-radius: 12rpx;
+          ul{
+            display: flex;
+            width: 100%;
+            li{
+              flex: 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+            }
+            .active{
+              color: #E51937;
+            }
+            .active:after{
+              position: absolute;
+              display: block;
+              content: '';
+              width: 96rpx;
+              height: 2rpx;
+              bottom: -20rpx;
+              /*left: 40rpx;*/
+              background-color: #E51937;
             }
           }
         }
@@ -702,6 +900,11 @@
         min-height: calc(100vh - 200rpx - 220rpx - 440rpx );
       }
 
+    }
+    .main2 {
+      padding: 0;
+      width: 710rpx;
+      margin: 20rpx auto;
     }
   }
 </style>
