@@ -89,7 +89,7 @@
         ],
         list:[],
         current:1,
-        size:10,
+        size:100,
         total:0,
       }
     },
@@ -142,9 +142,9 @@
               _this.currentIndex=index
               _this.getList(index)
             }
-          })  
+          })
         }
-            
+
       },
       async getList(index){
         switch (index){
