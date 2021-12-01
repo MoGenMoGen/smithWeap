@@ -68,7 +68,7 @@ function get(url, data, header, loading) {
       fail: function (err) {
         wx.showToast({
           icon: "none",
-          title: JSON.stringify(err),
+          title: JSON.stringify(err).data.msg,
           duration: 2000
         });
         reject(err);
@@ -127,7 +127,7 @@ function post(url, data, header) {
       fail: function (err) {
         wx.showToast({
           icon: "none",
-          title: JSON.stringify(err),
+          title: JSON.stringify(err).data.msg,
           duration: 2000
         });
         // reject(err)
