@@ -4,7 +4,7 @@
   confession:交底报告组件,
   dailyReport:每日汇报组件,
   exceptionReport:异常报告组件,
-  dateRange:日期选择组件,
+  dateRange:日期选择组件, 
   headerBase:头部组件,
   infoTemplate:货物清点中的信息递归组件,
   inventory:货物清点组件,
